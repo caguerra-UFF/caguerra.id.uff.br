@@ -4275,45 +4275,87 @@ function importDatabaseJson(event) {
   reader.readAsText(file);
 }
 
-// Exportar Tabela SAA em CSV
+// Exportar Tabela SAA em CSV Oficial LMA (IT-LM-GE-003 - Anexo 2)
 function exportSaaCsv() {
+  const term = (document.getElementById('hubSearchInput')?.value || '').toLowerCase().trim();
+  const filterType = document.getElementById('hubFilterType')?.value || 'ALL';
+  const filterStatus = document.getElementById('hubFilterStatus')?.value || 'ALL';
+
+  // Filtra de acordo com a seleção atual da tela de catálogo
+  const targetRots = rotsDatabase.filter(rot => {
+    if (filterType !== 'ALL' && rot.tipo !== filterType) return false;
+    if (filterStatus !== 'ALL' && rot.statusGeral !== filterStatus) return false;
+    if (term) {
+      const matchText = (rot.numero + ' ' + rot.descricao + ' ' + (rot.causaRaiz || '') + ' ' + (rot.respRetomada || '')).toLowerCase();
+      if (!matchText.includes(term)) return false;
+    }
+    return true;
+  });
+
   const allActions = [];
-  rotsDatabase.forEach(rot => {
+  targetRots.forEach(rot => {
     (rot.acoesSaa || []).forEach(a => {
       allActions.push({
-        saa: a.saa,
-        descricao: `"${(a.desc || '').replace(/"/g, '""')}"`,
-        rot: a.rot,
-        responsavel: `"${(a.resp || '').replace(/"/g, '""')}"`,
-        prazo: a.prazo,
-        evidencia: `"${(a.evid || '').replace(/"/g, '""')}"`,
-        conclusao: a.conclusao,
-        eficaz: a.eficaz,
-        dataAvaliacao: a.dataAval,
-        novaAcao: a.novaAcao
+        saa: a.saa || '',
+        descricao: (a.desc || '').replace(/\r?\n/g, ' ').trim(),
+        rot: a.rot || rot.numero || '',
+        tipoRot: formatTipoLabel(rot.tipo),
+        dataRot: formatDateBr(rot.dataAbertura),
+        responsavel: (a.resp || '').replace(/\r?\n/g, ' ').trim(),
+        prazo: formatDateBr(a.prazo),
+        evidencia: (a.evid || '').replace(/\r?\n/g, ' ').trim(),
+        conclusao: a.conclusao || 'Em Andamento',
+        eficaz: a.eficaz || 'Pendente',
+        dataAvaliacao: formatDateBr(a.dataAval),
+        novaAcao: a.novaAcao || '—'
       });
     });
   });
 
   if (allActions.length === 0) {
-    alert('Nenhuma ação SAA cadastrada para exportar.');
+    alert('Nenhuma ação SAA encontrada para os filtros atuais selecionados.');
     return;
   }
 
-  let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-  csvContent += "SAA;DESCRICAO;NO_ROT;RESPONSAVEL;PRAZO;EVIDENCIA;CONCLUSAO;A_ACAO_FOI_EFICAZ;DATA_DE_AVALIACAO;NO_NOVA_ACAO\r\n";
+  const now = new Date();
+  const dataEmissao = now.toLocaleDateString('pt-BR');
+  const horaEmissao = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+  let csvContent = "\uFEFF"; // BOM UTF-8 para abertura correta com acentos no Microsoft Excel
+  csvContent += "# ELETRONUCLEAR - CENTRAL NUCLEAR ALMIRANTE ÁLVARO ALBERTO (CNAAA)\r\n";
+  csvContent += "# LABORATÓRIO DE MONITORAÇÃO AMBIENTAL (LMA)\r\n";
+  csvContent += "# SISTEMA DE ACOMPANHAMENTO DE AÇÕES (SAA) - ANEXO 2 DA IT-LM-GE-003 REV. 00\r\n";
+  csvContent += `# Relatório emitido em: ${dataEmissao} às ${horaEmissao} | Total de Ações: ${allActions.length} | ABNT NBR ISO/IEC 17025:2017 (§ 8.7)\r\n`;
+  csvContent += "# ----------------------------------------------------------------------------------------------------\r\n";
+  csvContent += "Nº SAA;DESCRIÇÃO DA AÇÃO (PLANO SAA);Nº ROT;CLASSIFICAÇÃO / TIPO;DATA ROT;RESPONSÁVEL PELA EXECUÇÃO;PRAZO;EVIDÊNCIA OBJETIVA COMPROVADA;STATUS DE CONCLUSÃO;A AÇÃO FOI EFICAZ?;DATA DE AVALIAÇÃO DA EFICÁCIA;Nº NOVA AÇÃO DERIVADA\r\n";
 
   allActions.forEach(row => {
-    csvContent += `${row.saa};${row.descricao};${row.rot};${row.responsavel};${row.prazo};${row.evidencia};${row.conclusao};${row.eficaz};${row.dataAvaliacao};${row.novaAcao}\r\n`;
+    const esc = (val) => `"${(val || '').replace(/"/g, '""')}"`;
+    csvContent += [
+      esc(row.saa),
+      esc(row.descricao),
+      esc(row.rot),
+      esc(row.tipoRot),
+      esc(row.dataRot),
+      esc(row.responsavel),
+      esc(row.prazo),
+      esc(row.evidencia),
+      esc(row.conclusao),
+      esc(row.eficaz),
+      esc(row.dataAvaliacao),
+      esc(row.novaAcao)
+    ].join(';') + "\r\n";
   });
 
-  const encodedUri = encodeURI(csvContent);
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", `LMA_Acompanhamento_Acoes_SAA_${new Date().toISOString().slice(0,10)}.csv`);
+  link.setAttribute("href", url);
+  link.setAttribute("download", `LMA_SAA_Acompanhamento_Acoes_${now.toISOString().slice(0,10)}.csv`);
   document.body.appendChild(link);
   link.click();
-  link.remove();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 // Helpers de Modal
