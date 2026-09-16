@@ -124,6 +124,8 @@ main{max-width:1550px;margin:auto;padding:24px}
 
 /* Toolbars, Buttons & Badges */
 .toolbar,nav.subnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.hub-filters-trio{display:grid!important;grid-template-columns:minmax(180px,2.2fr) minmax(140px,1.2fr) minmax(130px,1fr)!important;gap:8px!important;align-items:center!important;flex:1 1 auto!important;min-width:0!important;width:auto!important}
+.hub-filters-trio input,.hub-filters-trio select{width:100%!important;min-width:0!important;box-sizing:border-box}
 button,.filebutton,nav.subnav a{font:inherit;border:1px solid var(--line);border-radius:7px;background:white;color:var(--blue);padding:9px 14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .15s ease}
 button:hover,.filebutton:hover,nav.subnav a:hover{background:#eaf2f7;border-color:#b9cbd9}
 button.primary{background:var(--blue);color:white;border-color:var(--blue);font-weight:650}
@@ -709,12 +711,24 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     align-items: stretch;
     gap: 10px;
   }
-  .toolbar > div {
+  .toolbar > div:not(.hub-filters-trio) {
     width: 100%;
     flex-direction: column;
     align-items: stretch;
   }
-  .toolbar input, .toolbar select {
+  .hub-filters-trio {
+    display: grid!important;
+    grid-template-columns: minmax(110px, 1.35fr) minmax(95px, 1fr) minmax(90px, 0.95fr)!important;
+    gap: 4px!important;
+    width: 100%!important;
+  }
+  .hub-filters-trio input, .hub-filters-trio select {
+    font-size: 12px!important;
+    padding: 7px 4px!important;
+    height: 38px!important;
+    min-height: 38px!important;
+  }
+  .toolbar input:not(.hub-filters-trio input), .toolbar select:not(.hub-filters-trio select) {
     width: 100%!important;
     min-width: 0!important;
   }
@@ -1054,10 +1068,10 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     </div>
 
     <!-- Barra de Ferramentas do Hub -->
-    <div class="toolbar" style="justify-content:space-between;align-items:center;">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;flex:1 1 400px;max-width:700px;">
-        <input type="search" id="hubSearchInput" placeholder="Buscar por nº do ROT, descrição, responsável ou palavra-chave..." style="flex:1 1 250px;">
-        <select id="hubFilterType" style="width:auto;">
+    <div class="toolbar" style="justify-content:space-between;align-items:center;gap:12px;">
+      <div class="hub-filters-trio">
+        <input type="search" id="hubSearchInput" placeholder="Buscar por nº do ROT, descrição, responsável ou palavra-chave...">
+        <select id="hubFilterType">
           <option value="ALL">Todos os Tipos</option>
           <option value="TRABALHO_NAO_CONFORME">Trabalho Não Conforme (TNC)</option>
           <option value="DESVIO_DE_PROCESSO">Desvio de Processo</option>
@@ -1065,7 +1079,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           <option value="OPORTUNIDADE_MELHORIA">Oportunidade de Melhoria (OP)</option>
           <option value="RECLAMACAO_CLIENTE">Reclamação de Cliente</option>
         </select>
-        <select id="hubFilterStatus" style="width:auto;">
+        <select id="hubFilterStatus">
           <option value="ALL">Todos os Status</option>
           <option value="ABERTO">Em Aberto</option>
           <option value="INVESTIGACAO">Em Investigação</option>
@@ -1075,7 +1089,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
         </select>
       </div>
 
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div class="hub-actions-group" style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0;">
         <button type="button" id="btnExportSaaCsv" title="Exportar planilha consolidada de ações em formato CSV">📊 Exportar SAA (CSV)</button>
         <button type="button" id="btnHubNewRot" class="primary">+ Novo ROT</button>
       </div>
