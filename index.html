@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tratamento de Ocorrências, TNC e Ações Corretivas · IT-LM-GE-003 · ISO/IEC 17025</title>
-<meta name="theme-color" content="#102e46">
+<meta name="theme-color" content="#0b3b60">
 <style>
 :root{
-  --navy: #102e46;
-  --blue: #0f4c81;
+  --navy: #0b3b60;
+  --blue: #166ca8;
   --teal: #087e83;
   --teal-dark: #065a5e;
   --teal-light: #e8f5f6;
   --bg: #f3f6f9;
   --line: #d8e2ea;
-  --text: #203647;
+  --text: #1b3347;
   --muted: #52697a;
   --warn: #81500a;
   --warn-bg: #fff5df;
@@ -23,6 +23,7 @@
   --ok: #126451;
   --ok-bg: #e9f7f3;
   --accent: #d9932d;
+  --eletronuclear-blue: #1b80c4;
 }
 
 *{box-sizing:border-box}
@@ -30,11 +31,11 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
 body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
 
 /* Topbar & Header */
-.topbar{background:#0d2538;color:white;padding:10px max(24px,calc((100vw - 1600px)/2));display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #1c3c54}
+.topbar{background:#07263e;color:white;padding:10px max(24px,calc((100vw - 1600px)/2));display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #134872}
 .topbar-left{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .topbar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn-nav{background:#163b58;color:white;border:1px solid #28557a;border-radius:7px;padding:7px 14px;font-size:13px;font-weight:650;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:background .15s}
-.btn-nav:hover{background:#1e4d73}
+.btn-nav{background:#0e436c;color:white;border:1px solid #1c6199;border-radius:7px;padding:7px 14px;font-size:13px;font-weight:650;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:background .15s}
+.btn-nav:hover{background:#15578c}
 .badge-active-rot{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#c2d8e8}
 .badge-active-rot b{color:#8ed9d6;font-size:14px}
 
@@ -82,7 +83,7 @@ main{max-width:1550px;margin:auto;padding:24px}
 button,.filebutton,nav.subnav a{font:inherit;border:1px solid var(--line);border-radius:7px;background:white;color:var(--blue);padding:9px 14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .15s ease}
 button:hover,.filebutton:hover,nav.subnav a:hover{background:#eaf2f7;border-color:#b9cbd9}
 button.primary{background:var(--blue);color:white;border-color:var(--blue);font-weight:650}
-button.primary:hover{background:#0c3e6a}
+button.primary:hover{background:#115585}
 button.accent{background:var(--teal);color:white;border-color:var(--teal);font-weight:650}
 button.accent:hover{background:var(--teal-dark)}
 button.danger{background:transparent;color:var(--danger);border-color:#e8b7bd}
@@ -118,7 +119,7 @@ section.panel{background:white;border:1px solid var(--line);border-radius:12px;p
 .field label{font-size:13px;font-weight:650;color:var(--navy)}
 .field label span.req{color:var(--danger);margin-left:2px}
 input,select,textarea{font:inherit;border:1px solid #adbdca;border-radius:6px;padding:9px 11px;color:var(--text);background:#fff;width:100%;transition:border-color .15s,box-shadow .15s}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(15,76,129,0.15)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(22,108,168,0.18)}
 textarea{min-height:92px;resize:vertical}
 input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:middle;margin:0 7px 0 0;cursor:pointer}
 .checkline{display:flex;align-items:flex-start;gap:6px;margin:10px 0;font-size:13.5px;cursor:pointer}
@@ -129,14 +130,14 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
 .notice{padding:12px 16px;border-radius:8px;background:var(--warn-bg);color:var(--warn);border-left:4px solid var(--accent);margin:12px 0;font-size:13.5px;line-height:1.5}
 .notice.danger{background:var(--danger-bg);color:var(--danger);border-left-color:var(--danger)}
 .notice.ok{background:var(--ok-bg);color:var(--ok);border-left-color:var(--ok)}
-.notice.info{background:#eaf2f8;color:#134b73;border-left-color:var(--blue)}
+.notice.info{background:#eaf2f8;color:#0d4b75;border-left-color:var(--blue)}
 .notice b{font-weight:700}
 
 /* Interactive Terms (Glossary) */
 .term{text-decoration:underline dotted var(--teal);text-underline-offset:4px;cursor:help;font-weight:600;color:inherit}
 .term:hover{background:#e0f2f0}
 .termwrap{position:relative;display:inline}
-.tip{display:none;position:absolute;z-index:40;top:100%;left:0;width:min(340px,85vw);background:var(--navy);color:white;padding:12px 14px;border-radius:8px;font:13px/1.5 system-ui;box-shadow:0 8px 24px rgba(0,0,0,0.25);border:1px solid #36607d}
+.tip{display:none;position:absolute;z-index:40;top:100%;left:0;width:min(340px,85vw);background:var(--navy);color:white;padding:12px 14px;border-radius:8px;font:13px/1.5 system-ui;box-shadow:0 8px 24px rgba(0,0,0,0.25);border:1px solid #1c5682}
 .tip strong{display:block;margin-bottom:4px;color:#8ed9d6}
 .termwrap:focus-within .tip,.termwrap:hover .tip{display:block}
 
@@ -163,7 +164,7 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
 .save-status-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12.5px;font-weight:750;letter-spacing:.02em}
 .save-status-pill.unsaved{background:#fef4e5;color:#8a570c;border:1px solid #f6dcb3}
 .save-status-pill.saved{background:#e8f5ee;color:#126451;border:1px solid #b3ddc8}
-.save-status-pill.new-draft{background:#eaf2f8;color:#0f4c81;border:1px solid #c0d8ea}
+.save-status-pill.new-draft{background:#eaf2f8;color:var(--blue);border:1px solid #c0d8ea}
 .btn-ok-save{background:#126451!important;color:white!important;border-color:#126451!important;font-weight:700!important;font-size:13.5px!important;padding:8px 16px!important;display:inline-flex!important;align-items:center!important;gap:7px!important;box-shadow:0 2px 6px rgba(18,100,81,0.25);cursor:pointer;border-radius:7px;transition:all .15s ease}
 .btn-ok-save:hover{background:#0e4e3f!important}
 .btn-ok-save:active{transform:scale(0.98)}
@@ -192,7 +193,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 .ishikawa-cat h4{margin:0 0 8px;font-size:13px;color:var(--navy);border-bottom:2px solid var(--teal);padding-bottom:4px;display:flex;justify-content:space-between}
 
 /* Decision Tree Modal */
-.modal-backdrop{position:fixed;inset:0;background:#102e4680;z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-backdrop{position:fixed;inset:0;background:#0b3b6080;z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
 .modal{background:white;border-radius:14px;max-width:860px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.3);padding:26px;position:relative}
 .modal-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}
 .modal-head h2{margin:0}
@@ -268,12 +269,12 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 .wizard-step-item.active{opacity:1;background:#eaf2f7;border-color:#b8d2e5;font-weight:700}
 .wizard-step-item.completed{opacity:.95}
 .wizard-step-num{width:26px;height:26px;border-radius:50%;background:#d8e2ea;color:var(--navy);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:750;flex-shrink:0;transition:all .18s}
-.wizard-step-item.active .wizard-step-num{background:var(--blue);color:white;box-shadow:0 0 0 3px rgba(15,76,129,0.2)}
+.wizard-step-item.active .wizard-step-num{background:var(--blue);color:white;box-shadow:0 0 0 3px rgba(22,108,168,0.22)}
 .wizard-step-item.completed .wizard-step-num{background:var(--ok);color:white}
 .wizard-step-label{font-size:13px;color:var(--navy)}
 .wizard-step-divider{flex:1;height:2px;background:var(--line);min-width:12px}
 
-.wizard-card-wrapper{background:white;border:1px solid var(--line);border-radius:12px;box-shadow:0 4px 16px rgba(16,46,70,0.04);display:flex;flex-direction:column;overflow:hidden}
+.wizard-card-wrapper{background:white;border:1px solid var(--line);border-radius:12px;box-shadow:0 4px 16px rgba(11,59,96,0.05);display:flex;flex-direction:column;overflow:hidden}
 .wizard-card-body{padding:22px;min-height:460px;max-height:calc(100vh - 245px);overflow-y:auto}
 .wizard-step-pane{animation:fadeInStep .2s ease}
 
@@ -373,12 +374,12 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       <button type="button" id="btnQuickNewRot" class="btn-nav" style="background:#087e83;border-color:#087e83;font-weight:700;">+ Novo ROT</button>
       <button type="button" id="btnOpenTrainingCases" class="btn-nav">🧪 Casos da Aula</button>
       <button type="button" id="btnTriggerDecisionTree" class="btn-nav">🌳 Triagem / Fluxograma</button>
-      <button type="button" id="btnPrintOfficial" class="btn-nav" style="background:#0f4c81;border-color:#0f4c81;">🖨️ Imprimir PDF Oficial</button>
+      <button type="button" id="btnPrintOfficial" class="btn-nav" style="background:#166ca8;border-color:#166ca8;">🖨️ Imprimir PDF Oficial</button>
     </div>
 
     <!-- Ações exibidas no topo quando o ROT está aberto em substituição aos botões duplicados -->
     <div id="topbarWorkspaceActions" style="display:none;align-items:center;gap:8px;">
-      <button type="button" class="btn-nav" onclick="showHubView()" style="background:#163b58;font-weight:600;font-size:12.5px;color:#c9e2f5;" title="Sair da ocorrência e voltar à tela inicial">
+      <button type="button" class="btn-nav" onclick="showHubView()" style="background:#0e436c;font-weight:600;font-size:12.5px;color:#c9e2f5;" title="Sair da ocorrência e voltar à tela inicial">
         🏠 Tela Inicial
       </button>
     </div>
@@ -578,7 +579,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
             <div class="step-header-figure">
               <svg viewBox="0 0 44 44" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="44" height="44" rx="8" fill="#eaf2f7"/>
-                <rect x="10" y="8" width="24" height="28" rx="3" fill="#0f4c81"/>
+                <rect x="10" y="8" width="24" height="28" rx="3" fill="#166ca8"/>
                 <rect x="14" y="13" width="16" height="3" rx="1.5" fill="white"/>
                 <rect x="14" y="19" width="16" height="2.5" rx="1" fill="#8ed9d6"/>
                 <rect x="14" y="24" width="11" height="2.5" rx="1" fill="#8ed9d6"/>
@@ -1113,7 +1114,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
             <button type="button" id="btnSaveRotStep6" class="btn-final-ok" onclick="confirmAndSaveRot()" style="font-size:15px;padding:12px 28px;min-width:280px;justify-content:center;">
               ✓ OK · Gravar Dados do Registro
             </button>
-            <button type="button" class="btn-nav" id="btnFormalizeCloseRot" onclick="formalizeCloseCurrentRot()" style="background:#0f4c81;border-color:#0f4c81;color:white;font-weight:700;font-size:14px;padding:12px 22px;" title="Encerrar formalmente esta ocorrência no sistema">
+            <button type="button" class="btn-nav" id="btnFormalizeCloseRot" onclick="formalizeCloseCurrentRot()" style="background:#166ca8;border-color:#166ca8;color:white;font-weight:700;font-size:14px;padding:12px 22px;" title="Encerrar formalmente esta ocorrência no sistema">
               🔒 Formalizar Encerramento do ROT
             </button>
           </div>
@@ -1381,7 +1382,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <svg viewBox="0 0 48 48" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="48" height="48" rx="8" fill="#eaf2f7"/>
-            <path d="M12 10H36V38H12V10Z" fill="#0f4c81" rx="2"/>
+            <path d="M12 10H36V38H12V10Z" fill="#166ca8" rx="2"/>
             <path d="M16 16H32M16 22H32M16 28H26" stroke="white" stroke-width="2" stroke-linecap="round"/>
             <path d="M28 28L32 32L40 24" stroke="#126451" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -3557,7 +3558,7 @@ function buildOfficialPrintHtml(rot) {
       <table class="doc-header-table">
         <tr>
           <td style="width:25%;text-align:center;">
-            <div style="font-weight:bold;font-size:12pt;color:#0d2538;">Eletro nuclear</div>
+            <div style="font-weight:bold;font-size:12pt;color:#0b3b60;">Eletro nuclear</div>
             <div style="font-size:7pt;letter-spacing:1px;">Energia Limpa</div>
           </td>
           <td style="width:50%;text-align:center;">
@@ -3645,7 +3646,7 @@ function buildOfficialPrintHtml(rot) {
       <table class="doc-header-table">
         <tr>
           <td style="width:25%;text-align:center;">
-            <div style="font-weight:bold;font-size:12pt;color:#0d2538;">Eletro nuclear</div>
+            <div style="font-weight:bold;font-size:12pt;color:#0b3b60;">Eletro nuclear</div>
             <div style="font-size:7pt;">Energia Limpa</div>
           </td>
           <td style="width:50%;text-align:center;">
@@ -3735,7 +3736,7 @@ function buildOfficialPrintHtml(rot) {
       <table class="doc-header-table">
         <tr>
           <td style="width:25%;text-align:center;">
-            <div style="font-weight:bold;font-size:12pt;color:#0d2538;">Eletro nuclear</div>
+            <div style="font-weight:bold;font-size:12pt;color:#0b3b60;">Eletro nuclear</div>
             <div style="font-size:7pt;">Energia Limpa</div>
           </td>
           <td style="width:50%;text-align:center;">
@@ -3825,7 +3826,7 @@ function buildOfficialPrintHtml(rot) {
       <table class="doc-header-table">
         <tr>
           <td style="width:25%;text-align:center;">
-            <div style="font-weight:bold;font-size:12pt;color:#0d2538;">Eletro nuclear</div>
+            <div style="font-weight:bold;font-size:12pt;color:#0b3b60;">Eletro nuclear</div>
             <div style="font-size:7pt;">Energia Limpa</div>
           </td>
           <td style="width:50%;text-align:center;">
