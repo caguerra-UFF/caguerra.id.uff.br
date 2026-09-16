@@ -335,12 +335,336 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   .doc-watermark{font-size:7.5pt;color:#555;position:absolute;bottom:0;left:0;right:0;text-align:center;border-top:1px solid #999;padding-top:2px}
 }
 
-@media(max-width:768px){
-  main{padding:14px}
-  section.panel{padding:16px}
-  .grid{grid-template-columns:1fr}
-  .topbar{padding:10px 14px}
-  header.app-header{padding:22px 14px}
+/* ======================================================== */
+/* OTIMIZAÇÕES RESPONSIVAS PARA CELULAR / MOBILE (<= 768px) */
+/* ======================================================== */
+@media (max-width: 768px) {
+  /* Layout Base & Tipografia */
+  body { font-size: 14px; -webkit-tap-highlight-color: transparent; }
+  main { padding: 10px 12px 30px; }
+  section.panel { padding: 16px 12px; border-radius: 10px; margin: 12px 0; }
+  h1 { font-size: 22px; line-height: 1.2; margin: 6px 0; }
+  h2 { font-size: 17px; margin: 0 0 8px; }
+  h3 { font-size: 15px; margin: 12px 0 6px; }
+
+  /* Elementos interativos amigáveis ao toque (evita auto-zoom no iOS) */
+  input, select, textarea {
+    font-size: 16px!important;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  button, .filebutton, nav.subnav a {
+    min-height: 42px;
+    padding: 9px 12px;
+  }
+
+  /* Topbar Mobile */
+  .topbar {
+    padding: 8px 12px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .topbar-left, .topbar-right {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  #topbarHubActions {
+    width: 100%;
+    display: grid!important;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  #topbarHubActions button {
+    width: 100%;
+    justify-content: center;
+    padding: 9px 6px;
+    font-size: 12px;
+  }
+  #topbarWorkspaceActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  #btnGoToHub {
+    width: 100%;
+    justify-content: center;
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+  #topbarHubBrand {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  /* Header e Logos Mobile */
+  header.app-header {
+    padding: 16px 12px;
+  }
+  .app-header-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .header-logos-wrapper {
+    width: 100%;
+    justify-content: center;
+    padding: 8px 12px;
+    margin-top: 4px;
+  }
+  .header-logos-wrapper img {
+    height: 38px;
+    max-width: 120px;
+  }
+  .author-line {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  /* Painel de Métricas (Cards) */
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .metric {
+    padding: 12px;
+  }
+  .metric strong {
+    font-size: 22px;
+  }
+  .metric small {
+    font-size: 11px;
+  }
+
+  /* Toolbar do Catálogo / Hub */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .toolbar > div {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .toolbar input, .toolbar select {
+    width: 100%!important;
+    min-width: 0!important;
+  }
+  .toolbar button {
+    width: 100%;
+    justify-content: center;
+    padding: 11px 14px;
+  }
+
+  /* Grade de ROTs (Hub) */
+  .rot-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .rot-card {
+    padding: 16px 14px;
+  }
+  .rot-card-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .rot-card-actions button {
+    flex: 1 1 120px;
+    justify-content: center;
+  }
+  .add-rot-card {
+    min-height: 180px;
+    padding: 20px 14px;
+  }
+
+  /* Banner de Gravação e Status */
+  .save-action-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+  .save-status-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    flex: auto;
+  }
+  .save-action-banner button, .btn-ok-save {
+    width: 100%!important;
+    justify-content: center!important;
+    padding: 11px 16px!important;
+  }
+
+  /* Wizard Workspace & Stepper Horizontal Touch */
+  .workspace-top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+  .workspace-top-bar > div {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .wizard-stepper {
+    padding: 6px 8px;
+    margin-bottom: 10px;
+    gap: 4px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .wizard-stepper::-webkit-scrollbar {
+    display: none;
+  }
+  .wizard-step-item {
+    padding: 6px 10px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+  .wizard-step-label {
+    font-size: 12px;
+  }
+  .wizard-step-divider {
+    min-width: 8px;
+  }
+
+  /* Wizard Card e Remoção de Scroll Trap no Mobile */
+  .wizard-card-wrapper {
+    border-radius: 10px;
+  }
+  .wizard-card-body {
+    padding: 14px;
+    min-height: auto;
+    max-height: none!important;
+    overflow-y: visible!important;
+  }
+  .wizard-step-header {
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+  .step-header-figure svg {
+    width: 32px;
+    height: 32px;
+  }
+  .wizard-step-header h2 {
+    font-size: 16px;
+  }
+
+  /* Wizard Rodapé Fixo / Sticky Mobile */
+  .wizard-nav-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 90;
+    background: #ffffff;
+    box-shadow: 0 -4px 14px rgba(11,59,96,0.12);
+    border-top: 1.5px solid var(--line);
+    padding: 10px 14px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .wizard-nav-footer > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .wizard-nav-footer button {
+    flex: 1;
+    justify-content: center;
+    padding: 11px 12px;
+    font-size: 14px;
+  }
+  .btn-final-ok {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Formulários e Seleção de Tipo */
+  .tipo-card-grid {
+    grid-template-columns: 1fr!important;
+    gap: 8px;
+  }
+  .grid, .grid-3 {
+    grid-template-columns: 1fr!important;
+    gap: 12px;
+  }
+
+  /* Ferramentas de Causa Raiz */
+  .ishikawa-grid {
+    grid-template-columns: 1fr!important;
+  }
+  .whys-list .why-item {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .why-badge {
+    align-self: flex-start;
+  }
+
+  /* Modais Adaptativos para Mobile */
+  .modal-backdrop {
+    padding: 8px;
+    align-items: flex-end;
+  }
+  .modal {
+    padding: 18px 14px;
+    border-radius: 16px 16px 0 0;
+    max-height: 90vh;
+    width: 100%;
+  }
+  .triagem-direct-grid {
+    grid-template-columns: 1fr!important;
+    gap: 10px;
+  }
+  .author-modal-card {
+    padding: 20px 14px 16px;
+    width: 96%;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+  .author-logos-container {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .author-logo-card {
+    max-width: none;
+    flex: 1 1 90px;
+    height: 75px;
+  }
+
+  /* Tabelas com rolagem suave no toque */
+  .scroll {
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+
+  /* Resumo da Etapa 6 */
+  .review-grid {
+    grid-template-columns: 1fr!important;
+  }
+}
+
+/* Telas muito compactas (<= 400px - smartphones menores) */
+@media (max-width: 400px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  #topbarHubActions {
+    grid-template-columns: 1fr;
+  }
+  .wizard-step-label {
+    display: none;
+  }
+  .wizard-step-item.active .wizard-step-label {
+    display: inline;
+  }
 }
 </style>
 </head>
