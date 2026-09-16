@@ -4,11 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tratamento de Ocorrências, TNC e Ações Corretivas · IT-LM-GE-003 · ISO/IEC 17025</title>
-<meta name="theme-color" content="#0b3b60">
+<meta name="theme-color" content="#1b80c4">
 <style>
 :root{
+  --en-blue: #1b80c4;
+  --en-blue-hover: #156ba6;
+  --en-blue-dark: #10527e;
+  --en-blue-deep: #093757;
+  --en-green: #a5c711;
+  --en-green-hover: #b5d81b;
+  --en-green-dark: #8aa70e;
+  --en-green-light: #f3f9d2;
+  --en-gray: #7c7b7b;
   --navy: #0b3b60;
-  --blue: #166ca8;
+  --blue: #1b80c4;
   --teal: #087e83;
   --teal-dark: #065a5e;
   --teal-light: #e8f5f6;
@@ -30,28 +39,62 @@
 html{scroll-behavior:smooth;scroll-padding-top:20px}
 body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
 
-/* Topbar & Header */
-.topbar{background:#07263e;color:white;padding:10px max(24px,calc((100vw - 1600px)/2));display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #134872}
+/* Topbar & Header com as Cores Oficiais da Eletronuclear (Azul #1b80c4 e Verde #a5c711) */
+.topbar{
+  background: linear-gradient(90deg, #093757 0%, #0d4a75 50%, #105587 100%);
+  color: white;
+  padding: 10px max(24px,calc((100vw - 1600px)/2));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  border-bottom: 2.5px solid var(--en-green);
+}
 .topbar-left{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .topbar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn-nav{background:#0e436c;color:white;border:1px solid #1c6199;border-radius:7px;padding:7px 14px;font-size:13px;font-weight:650;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:background .15s}
-.btn-nav:hover{background:#15578c}
+.btn-nav{
+  background: rgba(255,255,255,0.12);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all .18s ease;
+}
+.btn-nav:hover{
+  background: var(--en-blue);
+  border-color: #5bb3ea;
+  box-shadow: 0 2px 8px rgba(27,128,196,0.35);
+}
 .badge-active-rot{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#c2d8e8}
-.badge-active-rot b{color:#8ed9d6;font-size:14px}
+.badge-active-rot b{color:var(--en-green);font-size:14px}
 
-header.app-header{background:var(--navy);color:white;padding:28px max(24px,calc((100vw - 1552px)/2));border-bottom:3px solid var(--teal)}
-header.app-header p{max-width:980px;color:#c7dce9;margin:8px 0 0;font-size:14.5px;line-height:1.5}
+header.app-header{
+  background: linear-gradient(135deg, #093757 0%, #105587 35%, #1b80c4 85%, #2390db 100%);
+  color: white;
+  padding: 28px max(24px,calc((100vw - 1552px)/2));
+  border-bottom: 5px solid var(--en-green);
+  box-shadow: 0 8px 24px rgba(9,55,87,0.25);
+}
+header.app-header p{max-width:980px;color:#e8f4fc;margin:8px 0 0;font-size:14.5px;line-height:1.5}
 .app-header-container{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
 
 /* Header Logos & Desenvolvedor */
 .author-line{margin-top:12px;font-size:13px;color:#d8ecf8;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .author-line strong{color:#ffffff}
-.author-modal-trigger{background:rgba(255,255,255,0.18);color:#ffffff;border:1px solid rgba(255,255,255,0.45);border-radius:12px;padding:2px 8px;font-size:11.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .2s ease}
-.author-modal-trigger:hover{background:#ffffff;color:var(--navy);transform:scale(1.05)}
+.author-modal-trigger{background:rgba(165,199,17,0.22);color:#ffffff;border:1px solid var(--en-green);border-radius:12px;padding:2px 8px;font-size:11.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .2s ease}
+.author-modal-trigger:hover{background:var(--en-green);color:#082903;transform:scale(1.05)}
 
-.header-logos-wrapper{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.96);padding:8px 14px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.15);border:1px solid rgba(255,255,255,0.3);flex-shrink:0}
-.header-logos-wrapper img{height:46px;max-width:130px;object-fit:contain;display:block}
-.header-logos-divider{width:1.5px;height:38px;background:#cbd5e1}
+.header-logos-wrapper{display:flex;align-items:center;gap:14px;background:#ffffff;padding:10px 16px;border-radius:14px;box-shadow:0 6px 22px rgba(9,55,87,0.25);border:2.5px solid var(--en-green);flex-shrink:0}
+.header-logos-wrapper img{height:48px;max-width:135px;object-fit:contain;display:block}
+.header-logos-divider{width:1.5px;height:40px;background:#cbd5e1}
 
 /* Modal Desenvolvedor */
 .author-modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:99999;opacity:0;transition:opacity .25s ease}
@@ -71,7 +114,7 @@ header.app-header p{max-width:980px;color:#c7dce9;margin:8px 0 0;font-size:14.5p
 .author-logo-card:hover{transform:translateY(-2px);border-color:var(--teal);box-shadow:0 6px 16px rgba(0,0,0,0.1)}
 .author-logo-card img{max-height:100%;max-width:100%;object-fit:contain;display:block}
 
-.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8ed9d6;font-weight:700}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--en-green);font-weight:800;text-shadow:0 1px 3px rgba(0,0,0,0.3)}
 h1{font-size:clamp(26px,3.8vw,38px);line-height:1.15;margin:10px 0}
 h2{font-size:21px;margin:0 0 12px;color:var(--navy)}
 h3{font-size:16px;margin:16px 0 8px;color:var(--navy)}
@@ -912,20 +955,20 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 <div class="topbar">
   <div class="topbar-left">
     <!-- Identificação do sistema (visível no Hub / Tela Inicial) -->
-    <div id="topbarHubBrand" style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:13.5px;color:#8ed9d6;">
-      <span style="font-size:17px;">🏢</span>
-      <span>LMA · Tratamento de Ocorrências e Ações Corretivas (ISO/IEC 17025)</span>
+    <div id="topbarHubBrand" style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:13.5px;color:#ffffff;">
+      <span style="font-size:17px;color:var(--en-green);">⚛️</span>
+      <span><strong style="color:var(--en-green);letter-spacing:.04em;">LMA</strong> · Tratamento de Ocorrências e Ações Corretivas (ISO/IEC 17025)</span>
     </div>
 
     <!-- Botão destacado para voltar à Tela Inicial (visível quando ROT aberto) -->
-    <button type="button" id="btnGoToHub" class="btn-nav" style="display:none;background:#087e83;border-color:#087e83;font-weight:750;padding:8px 16px;box-shadow:0 2px 8px rgba(8,126,131,0.25);" title="Voltar ao catálogo geral de ocorrências (Tela Inicial)">
+    <button type="button" id="btnGoToHub" class="btn-nav" style="display:none;background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;padding:8px 16px;box-shadow:0 2px 8px rgba(165,199,17,0.35);" title="Voltar ao catálogo geral de ocorrências (Tela Inicial)">
       🏠 Ir para a Tela Inicial (Catálogo)
     </button>
 
     <!-- Indicador do ROT aberto na barra superior -->
     <div class="badge-active-rot" id="topbarActiveBadge" style="display:none;">
-      <span style="color:#a2c4db;font-size:12px;">Editando:</span>
-      <b id="topbarActiveRotCode" style="color:#8ed9d6;font-size:14px;">ROT Nº ---</b>
+      <span style="color:#c2d8e8;font-size:12px;">Editando:</span>
+      <b id="topbarActiveRotCode" style="color:var(--en-green);font-size:14px;">ROT Nº ---</b>
       <span id="topbarActiveRotPill" class="badge tnc active-rot-pill-elem">Trabalho Não Conforme</span>
     </div>
   </div>
@@ -933,15 +976,15 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   <div class="topbar-right">
     <!-- Botões exibidos apenas no Hub (tela inicial) - Ocultados quando ROT está aberto -->
     <div id="topbarHubActions" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <button type="button" id="btnQuickNewRot" class="btn-nav" style="background:#087e83;border-color:#087e83;font-weight:700;">+ Novo ROT</button>
+      <button type="button" id="btnQuickNewRot" class="btn-nav" style="background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;box-shadow:0 2px 6px rgba(165,199,17,0.3);">+ Novo ROT</button>
       <button type="button" id="btnOpenTrainingCases" class="btn-nav">🧪 Casos da Aula</button>
       <button type="button" id="btnTriggerDecisionTree" class="btn-nav">🌳 Triagem / Fluxograma</button>
-      <button type="button" id="btnPrintOfficial" class="btn-nav" style="background:#166ca8;border-color:#166ca8;">🖨️ Imprimir PDF Oficial</button>
+      <button type="button" id="btnPrintOfficial" class="btn-nav" style="background:var(--en-blue);border-color:#156ba6;color:#ffffff;font-weight:700;">🖨️ Imprimir PDF Oficial</button>
     </div>
 
     <!-- Ações exibidas no topo quando o ROT está aberto em substituição aos botões duplicados -->
     <div id="topbarWorkspaceActions" style="display:none;align-items:center;gap:8px;">
-      <button type="button" class="btn-nav" onclick="showHubView()" style="background:#0e436c;font-weight:600;font-size:12.5px;color:#c9e2f5;" title="Sair da ocorrência e voltar à tela inicial">
+      <button type="button" class="btn-nav" onclick="showHubView()" style="background:#10527e;border-color:var(--en-blue);font-weight:650;font-size:12.5px;color:#ffffff;" title="Sair da ocorrência e voltar à tela inicial">
         🏠 Tela Inicial
       </button>
     </div>
