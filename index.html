@@ -473,11 +473,6 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       </div>
 
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button type="button" id="btnExportDatabaseJson" title="Fazer backup seguro de todos os ROTs em arquivo JSON">💾 Exportar Banco (JSON)</button>
-        <label class="filebutton" title="Restaurar backup ou carregar registros JSON">
-          📂 Importar JSON
-          <input type="file" id="importDatabaseJsonFile" accept=".json,application/json" hidden>
-        </label>
         <button type="button" id="btnExportSaaCsv" title="Exportar planilha consolidada de ações em formato CSV">📊 Exportar SAA (CSV)</button>
         <button type="button" id="btnHubNewRot" class="primary">+ Novo ROT</button>
       </div>
@@ -1619,7 +1614,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
       <div class="author-info-block">
         <div class="author-block-title">Mestrado em:</div>
-        <div class="author-item">Tecnologias Nucleares: Computação</div>
+        <div class="author-item">Ciência e Tecnologias Nucleares: Métodos Computacionais</div>
       </div>
     </div>
 
@@ -2054,9 +2049,12 @@ function setupEventListeners() {
   document.getElementById('hubFilterStatus').addEventListener('change', renderHub);
 
   // Exportar / Importar
-  document.getElementById('btnExportDatabaseJson').addEventListener('click', exportDatabaseJson);
-  document.getElementById('importDatabaseJsonFile').addEventListener('change', importDatabaseJson);
-  document.getElementById('btnExportSaaCsv').addEventListener('click', exportSaaCsv);
+  const btnExpJson = document.getElementById('btnExportDatabaseJson');
+  if (btnExpJson) btnExpJson.addEventListener('click', exportDatabaseJson);
+  const fileImpJson = document.getElementById('importDatabaseJsonFile');
+  if (fileImpJson) fileImpJson.addEventListener('change', importDatabaseJson);
+  const btnExpCsv = document.getElementById('btnExportSaaCsv');
+  if (btnExpCsv) btnExpCsv.addEventListener('click', exportSaaCsv);
 
 
   // Navegação Wizard (Prev/Next)
