@@ -1091,7 +1091,6 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
       <div class="hub-actions-group" style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0;">
         <button type="button" id="btnExportSaaCsv" title="Exportar planilha consolidada de ações em formato CSV">📊 Exportar SAA (CSV)</button>
-        <button type="button" id="btnHubNewRot" class="primary">+ Novo ROT</button>
       </div>
     </div>
 
@@ -2748,7 +2747,8 @@ function updateSaveBannerStatus(state, customMessage) {
 function setupEventListeners() {
   // Navegação
   document.getElementById('btnGoToHub').addEventListener('click', showHubView);
-  document.getElementById('btnHubNewRot').addEventListener('click', openNewRotTriagemModal);
+  const btnHubNew = document.getElementById('btnHubNewRot');
+  if (btnHubNew) btnHubNew.addEventListener('click', openNewRotTriagemModal);
   document.getElementById('btnQuickNewRot').addEventListener('click', openNewRotTriagemModal);
   document.getElementById('btnOpenTrainingCases').addEventListener('click', () => openModal('modalTrainingCases'));
   document.getElementById('btnCloseModalCases').addEventListener('click', () => closeModal('modalTrainingCases'));
