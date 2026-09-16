@@ -92,7 +92,7 @@ header.app-header p{max-width:980px;color:#e8f4fc;margin:8px 0 0;font-size:14.5p
 .author-modal-trigger{background:rgba(165,199,17,0.22);color:#ffffff;border:1px solid var(--en-green);border-radius:12px;padding:2px 8px;font-size:11.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .2s ease}
 .author-modal-trigger:hover{background:var(--en-green);color:#082903;transform:scale(1.05)}
 
-.header-logos-wrapper{display:flex;align-items:center;gap:14px;background:#ffffff;padding:10px 16px;border-radius:14px;box-shadow:0 6px 22px rgba(9,55,87,0.25);border:2.5px solid var(--en-green);flex-shrink:0}
+.header-logos-wrapper{display:flex;align-items:center;gap:14px;background:#ffffff;padding:10px 16px;border-radius:14px;box-shadow:0 6px 22px rgba(9,55,87,0.25);border:2.5px solid var(--en-green);flex-shrink:0;margin-left:auto;align-self:flex-start}
 .header-logos-wrapper img{height:48px;max-width:135px;object-fit:contain;display:block}
 .header-logos-divider{width:1.5px;height:40px;background:#cbd5e1}
 
@@ -673,10 +673,13 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     gap: 12px;
   }
   .header-logos-wrapper {
-    width: 100%;
-    justify-content: center;
+    width: auto;
+    max-width: 100%;
+    margin-left: auto!important;
+    align-self: flex-end!important;
+    justify-content: flex-end;
     padding: 8px 12px;
-    margin-top: 4px;
+    margin-top: 6px;
   }
   .header-logos-wrapper img {
     height: 38px;
@@ -1008,7 +1011,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 <!-- HEADER APLICAÇÃO -->
 <header class="app-header">
   <div class="app-header-container">
-    <div style="flex:1 1 auto; min-width: 0;">
+    <div style="flex:1 1 650px; min-width: 280px; max-width: 1050px;">
       <div class="eyebrow">Laboratório de Monitoração Ambiental (LMA) · Central Nuclear Almirante Álvaro Alberto · CNAAA</div>
       <h1 id="appHeaderTitle">Tratamento de Ocorrências, Trabalhos Não Conformes e Ações Corretivas</h1>
       <p id="appHeaderDesc">Cumprimento à <b>Instrução de Trabalho IT-LM-GE-003 Rev. 0</b> e aos requisitos normativos <b>ABNT NBR ISO/IEC 17025:2017 (§ 7.10, § 8.5 e § 8.7)</b>;</p>
