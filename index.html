@@ -221,16 +221,14 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 .triagem-card.op:hover{border-color:#0277bd;background:#e1f5fe}
 .triagem-card.op.selected{border-color:#0277bd;background:#e1f5fe;box-shadow:0 0 0 3.5px rgba(2,136,209,0.28),0 8px 24px rgba(2,136,209,0.15)}
 
-/* Área de confirmação inline dentro do card selecionado */
-.triagem-card-confirm-area{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.08);animation:fadeInStep .2s ease}
-.triagem-card.selected .triagem-card-confirm-area{display:block}
-.btn-triagem-confirm-inline{width:100%;background:#126451;color:white;border:0;border-radius:8px;padding:11px 14px;font-size:13.5px;font-weight:750;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 10px rgba(18,100,81,0.25);transition:all .15s;margin-bottom:6px}
-.btn-triagem-confirm-inline:hover{background:#0d4b3d;box-shadow:0 5px 14px rgba(18,100,81,0.35)}
-.btn-triagem-cancel-inline{width:100%;background:transparent;border:1px solid rgba(0,0,0,0.12);border-radius:7px;padding:7px 10px;font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;text-align:center}
-.btn-triagem-cancel-inline:hover{background:rgba(0,0,0,0.05);color:var(--navy)}
-
-/* barra confirm-bar removida (substituída pelo inline acima) */
-.triagem-confirm-bar{display:none!important}
+/* Barra de confirmação da seleção de cartões */
+.triagem-confirm-bar{display:none;align-items:center;justify-content:space-between;gap:12px;background:#ffffff;border:1.5px solid var(--teal);border-radius:10px;padding:12px 16px;margin-top:14px;box-shadow:0 6px 20px rgba(8,126,131,0.15);animation:fadeInStep .2s ease}
+.triagem-confirm-bar.visible{display:flex!important}
+.triagem-confirm-selected{display:flex;align-items:center;gap:12px;flex:1}
+.btn-triagem-confirm{background:#126451;color:white;border:none;border-radius:8px;padding:10px 18px;font-size:13.5px;font-weight:750;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 3px 10px rgba(18,100,81,0.25);transition:all .15s ease}
+.btn-triagem-confirm:hover{background:#0e4e3f;transform:translateY(-1px)}
+.btn-triagem-cancel-sel{background:transparent;border:1px solid var(--line);border-radius:7px;padding:8px 12px;font-size:12.5px;color:var(--muted);cursor:pointer;transition:all .15s}
+.btn-triagem-cancel-sel:hover{background:#f1f5f9;color:var(--navy)}
 
 
 .triagem-card-title{font-size:14px;font-weight:750;margin-bottom:4px;display:flex;align-items:center;gap:6px}
@@ -622,6 +620,20 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     grid-template-columns: 1fr!important;
     gap: 10px;
   }
+  .triagem-confirm-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+  .triagem-confirm-selected {
+    justify-content: center;
+    text-align: center;
+  }
+  .triagem-confirm-bar button {
+    width: 100%;
+    justify-content: center;
+  }
   .author-modal-card {
     padding: 20px 14px 16px;
     width: 96%;
@@ -720,7 +732,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     <div style="flex:1 1 650px;">
       <div class="eyebrow">Laboratório de Monitoração Ambiental (LMA) · Central Nuclear Almirante Álvaro Alberto · CNAAA</div>
       <h1 id="appHeaderTitle">Tratamento de Ocorrências, Trabalhos Não Conformes e Ações Corretivas</h1>
-      <p id="appHeaderDesc">Sistemática operacional integrada em estrito cumprimento à <b>Instrução de Trabalho IT-LM-GE-003 Rev. 0</b> e aos requisitos normativos <b>ABNT NBR ISO/IEC 17025:2017 (§ 7.10, § 8.5 e § 8.7)</b>. Tratamento completo de desvios, análises de causas fundamentais, gestão de ações SAA e elo mandatório com a Matriz de Riscos e Oportunidades.</p>
+      <p id="appHeaderDesc">Cumprimento à <b>Instrução de Trabalho IT-LM-GE-003 Rev. 0</b> e aos requisitos normativos <b>ABNT NBR ISO/IEC 17025:2017 (§ 7.10, § 8.5 e § 8.7)</b>;</p>
       
       <!-- Linha Desenvolvido por com Modal de Informações -->
       <div class="author-line">
@@ -1570,18 +1582,18 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     <div class="modal-head">
       <div>
         <span class="badge neutral">IT-LM-GE-003 · Item 6.3.6</span>
-        <h2 id="modalTreeTitle">Abertura de Ocorrência: Triagem & Classificação Inicial</h2>
+        <h2 id="modalTreeTitle">Abertura de Ocorrência: Seleção do Tipo</h2>
       </div>
       <button type="button" class="modal-close" id="btnCloseModalTree">&times;</button>
     </div>
 
-    <!-- SEÇÃO 1: ESCOLHA DIRETA RÁPIDA -->
+    <!-- SEÇÃO 1: CARTÕES ILUSTRADOS DE SELEÇÃO -->
     <div style="margin-bottom:6px;">
-      <h3 style="font-size:15px;margin:0 0 4px;color:var(--navy);">1. Escolha Direta (Se você já souber a natureza do evento):</h3>
-      <p class="hint" style="margin:0 0 10px;">Clique no card para <b>selecionar</b> o tipo — depois confirme com o botão verde para abrir o formulário:</p>
+      <h3 style="font-size:15px;margin:0 0 4px;color:var(--navy);">Selecione o Tipo de Ocorrência:</h3>
+      <p class="hint" style="margin:0 0 12px;font-size:13px;">Clique em um cartão para <b>selecionar</b> (ou dê <b>duplo clique</b> para abrir diretamente):</p>
       
       <div class="triagem-direct-grid">
-        <div class="triagem-card tnc" id="triagemCard_TRABALHO_NAO_CONFORME" onclick="selectTriagemCard('TRABALHO_NAO_CONFORME')" title="Selecionar: Trabalho Não Conforme">
+        <div class="triagem-card tnc" id="triagemCard_TRABALHO_NAO_CONFORME" onclick="selectTriagemCard('TRABALHO_NAO_CONFORME')" ondblclick="commitTriagemCardDblClick('TRABALHO_NAO_CONFORME')" title="1 clique para selecionar ou duplo clique para abrir diretamente">
           <div class="triagem-card-header-flex">
             <div class="triagem-figure">
               <svg viewBox="0 0 60 60" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1604,7 +1616,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           </div>
         </div>
 
-        <div class="triagem-card desvio" id="triagemCard_DESVIO_DE_PROCESSO" onclick="selectTriagemCard('DESVIO_DE_PROCESSO')" title="Selecionar: Desvio de Processo">
+        <div class="triagem-card desvio" id="triagemCard_DESVIO_DE_PROCESSO" onclick="selectTriagemCard('DESVIO_DE_PROCESSO')" ondblclick="commitTriagemCardDblClick('DESVIO_DE_PROCESSO')" title="1 clique para selecionar ou duplo clique para abrir diretamente">
           <div class="triagem-card-header-flex">
             <div class="triagem-figure">
               <svg viewBox="0 0 60 60" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1626,7 +1638,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           </div>
         </div>
 
-        <div class="triagem-card nc" id="triagemCard_NAO_CONFORMIDADE" onclick="selectTriagemCard('NAO_CONFORMIDADE')" title="Selecionar: Não Conformidade">
+        <div class="triagem-card nc" id="triagemCard_NAO_CONFORMIDADE" onclick="selectTriagemCard('NAO_CONFORMIDADE')" ondblclick="commitTriagemCardDblClick('NAO_CONFORMIDADE')" title="1 clique para selecionar ou duplo clique para abrir diretamente">
           <div class="triagem-card-header-flex">
             <div class="triagem-figure">
               <svg viewBox="0 0 60 60" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1650,7 +1662,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           </div>
         </div>
 
-        <div class="triagem-card op" id="triagemCard_OPORTUNIDADE_MELHORIA" onclick="selectTriagemCard('OPORTUNIDADE_MELHORIA')" title="Selecionar: Oportunidade de Melhoria">
+        <div class="triagem-card op" id="triagemCard_OPORTUNIDADE_MELHORIA" onclick="selectTriagemCard('OPORTUNIDADE_MELHORIA')" ondblclick="commitTriagemCardDblClick('OPORTUNIDADE_MELHORIA')" title="1 clique para selecionar ou duplo clique para abrir diretamente">
           <div class="triagem-card-header-flex">
             <div class="triagem-figure">
               <svg viewBox="0 0 60 60" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1692,10 +1704,16 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       </div>
     </div>
 
-    <!-- SEÇÃO 2: ÁRVORE DE DECISÃO DO FLUXOGRAMA (ITEM 6.3.6) -->
-    <div style="border-top:1px solid var(--line);padding-top:16px;">
-      <h3 style="font-size:15px;margin:0 0 4px;color:var(--navy);">2. Ou Siga a Árvore de Decisão do Fluxograma de Rotina (Item 6.3.6):</h3>
-      <p class="hint" style="margin:0 0 12px;">Em caso de dúvida, responda às perguntas sequenciais do procedimento para diagnóstico automático:</p>
+    <!-- BOTÃO DISCRETO DE AJUDA DA NORMA (FLUXOGRAMA RETRÁTIL) -->
+    <div style="border-top:1px solid var(--line);padding-top:12px;margin-top:14px;text-align:center;">
+      <button type="button" class="btn-nav" id="btnToggleTreeHelp" onclick="toggleDecisionTreeHelp()" style="font-size:12.5px;padding:7px 14px;background:#f8fbfd;color:var(--muted);border-color:#cbd5e1;" title="Visualizar árvore de perguntas sequenciais do procedimento IT-LM-GE-003">
+        📖 Consultar Fluxograma da Norma (Ajuda Passo a Passo)
+      </button>
+    </div>
+
+    <div id="treeQuestionsHelpContainer" style="display:none;margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;animation:fadeInStep .2s ease;">
+      <h3 style="font-size:14px;margin:0 0 4px;color:var(--navy);">Diagnóstico por Perguntas Sequenciais (Item 6.3.6):</h3>
+      <p class="hint" style="margin:0 0 10px;">Responda às perguntas sequenciais caso tenha dúvidas sobre a classificação:</p>
 
       <div class="tree-step" id="step1">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
@@ -1766,9 +1784,9 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       <div id="treeResultBox" style="display:none;margin-top:16px;padding:16px;border-radius:8px;"></div>
     </div>
 
-    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;border-top:1px solid var(--line);padding-top:14px;">
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px;border-top:1px solid var(--line);padding-top:14px;">
       <button type="button" id="btnApplyTreeClassification" class="primary" style="display:none;">Confirmar e Iniciar ROT</button>
-      <button type="button" id="btnCancelTree" class="btn-nav">Cancelar / Fechar</button>
+      <button type="button" id="btnCancelTree" class="btn-nav">Fechar / Cancelar</button>
     </div>
   </div>
 </div>
@@ -2347,11 +2365,11 @@ function updateSaveBannerStatus(state, customMessage) {
 function setupEventListeners() {
   // Navegação
   document.getElementById('btnGoToHub').addEventListener('click', showHubView);
-  document.getElementById('btnHubNewRot').addEventListener('click', () => createAndOpenNewRotWithTipo('TRABALHO_NAO_CONFORME'));
-  document.getElementById('btnQuickNewRot').addEventListener('click', () => createAndOpenNewRotWithTipo('TRABALHO_NAO_CONFORME'));
+  document.getElementById('btnHubNewRot').addEventListener('click', openNewRotTriagemModal);
+  document.getElementById('btnQuickNewRot').addEventListener('click', openNewRotTriagemModal);
   document.getElementById('btnOpenTrainingCases').addEventListener('click', () => openModal('modalTrainingCases'));
   document.getElementById('btnCloseModalCases').addEventListener('click', () => closeModal('modalTrainingCases'));
-  document.getElementById('btnTriggerDecisionTree').addEventListener('click', () => openDecisionTree('UPDATE_ACTIVE'));
+  document.getElementById('btnTriggerDecisionTree').addEventListener('click', openNewRotTriagemModal);
   document.getElementById('btnCallDecisionTreeInForm').addEventListener('click', () => openDecisionTree('UPDATE_ACTIVE'));
   document.getElementById('btnCloseModalTree').addEventListener('click', () => closeModal('modalDecisionTree'));
   document.getElementById('btnCancelTree').addEventListener('click', () => closeModal('modalDecisionTree'));
@@ -3113,7 +3131,7 @@ function renderHub() {
     <div class="add-rot-title">Abrir Novo Registro (ROT)</div>
     <p class="hint" style="max-width:240px;margin:0 auto;">Identificar, registrar e tratar ocorrência conforme IT-LM-GE-003.</p>
   `;
-  addCard.addEventListener('click', () => createAndOpenNewRot());
+  addCard.addEventListener('click', openNewRotTriagemModal);
   grid.appendChild(addCard);
 
   filtered.forEach(rot => {
@@ -3125,69 +3143,97 @@ function renderHub() {
     else if (rot.tipo === 'DESVIO_DE_PROCESSO') badgeHtml = '<span class="badge desvio">Desvio de Processo</span>';
     else if (rot.tipo === 'NAO_CONFORMIDADE') badgeHtml = '<span class="badge nc">Não Conformidade</span>';
     else if (rot.tipo === 'OPORTUNIDADE_MELHORIA') badgeHtml = '<span class="badge op">Oportunidade de Melhoria</span>';
-    else badgeHtml = '<span class="badge rec">Reclamação de Cliente</span>';
+    else badgeHtml = `<span class="badge neutral">${rot.tipo}</span>`;
 
     let statusPill = '';
-    if (rot.statusGeral === 'ENCERRADO') statusPill = '<span class="badge ok">Encerrado</span>';
-    else if (rot.statusGeral === 'ACOES_ANDAMENTO') statusPill = '<span class="badge neutral">Ações em Andamento</span>';
-    else if (rot.statusGeral === 'INVESTIGACAO') statusPill = '<span class="badge neutral">Em Investigação</span>';
-    else statusPill = '<span class="badge neutral">Aberto</span>';
+    if (rot.statusGeral === 'ENCERRADO') statusPill = '<span class="badge ok">✓ Concluída</span>';
+    else if (rot.statusGeral === 'ABERTO') statusPill = '<span class="badge danger">Aberta</span>';
+    else statusPill = '<span class="badge desvio">Em Andamento</span>';
 
-    const acoesCount = (rot.acoesSaa || []).length;
+    const isEncerrado = rot.statusGeral === 'ENCERRADO';
+    const closeBtnLabel = isEncerrado ? '↺ Reabrir' : '✓ Encerrar';
+    const closeBtnTitle = isEncerrado ? 'Reabrir ocorrência para novas ações' : 'Encerrar ocorrência formalmente com justificativa';
+    const closeBtnStyle = isEncerrado ? 'background:#f8fafc;color:var(--text);border-color:#cbd5e1;' : 'background:#e9f7f3;color:#126451;border-color:#b3ddc8;font-weight:700;';
 
     card.innerHTML = `
       <div>
         <div class="rot-card-head">
-          <span class="rot-code">ROT Nº ${rot.numero}</span>
-          ${badgeHtml}
+          <span class="rot-code">${rot.numero || '---'}</span>
+          <div style="display:flex;gap:6px;align-items:center;">
+            ${badgeHtml}
+            ${statusPill}
+          </div>
         </div>
-        <h3>${rot.tipo === 'TRABALHO_NAO_CONFORME' ? 'TNC: ' : ''}${rot.descricao ? rot.descricao.slice(0, 75) + '...' : 'Registro sem descrição'}</h3>
-        <p class="rot-desc">${rot.descricao || 'Sem descrição inserida.'}</p>
-        
-        <div class="rot-meta">
-          <div class="rot-meta-row"><span>Data de Abertura:</span> <b>${formatDateBr(rot.dataAbertura)}</b></div>
-          <div class="rot-meta-row"><span>Origem:</span> <b>${rot.origem || 'Rotina'}</b></div>
-          <div class="rot-meta-row"><span>Ações SAA Vinculadas:</span> <b>${acoesCount} ação(ões)</b></div>
-          <div class="rot-meta-row"><span>Status Geral:</span> ${statusPill}</div>
-        </div>
+        <h3>${rot.descricao ? escapeHtml(rot.descricao.slice(0, 75)) + (rot.descricao.length > 75 ? '...' : '') : 'Ocorrência sem título'}</h3>
+        <div class="rot-desc">${escapeHtml(rot.descricao || 'Nenhuma descrição detalhada registrada.')}</div>
       </div>
 
-      <div class="rot-card-actions">
-        <button type="button" class="primary" style="flex:1;" onclick="showRotWorkspace('${rot.id}')">Abrir Tratamento</button>
-        ${rot.statusGeral !== 'ENCERRADO'
-          ? `<button type="button" class="smallbtn" style="background:#126451;color:white;border-color:#0e5041;font-weight:750;" onclick="quickCloseRot('${rot.id}', event)" title="Encerrar formalmente este ROT">✓ Encerrar</button>`
-          : `<button type="button" class="smallbtn" style="background:#f1f5f9;color:var(--muted);border-color:var(--line);font-size:11.5px;" onclick="quickReopenRot('${rot.id}', event)" title="Reabrir este ROT para novas ações">↺ Reabrir</button>`
-        }
-        <button type="button" class="smallbtn" title="Imprimir Folhas do ROT" onclick="printSpecificRot('${rot.id}')">🖨️</button>
-        <button type="button" class="danger smallbtn" title="Excluir ROT" onclick="deleteRot('${rot.id}')">🗑️</button>
+      <div>
+        <div class="rot-meta">
+          <div class="rot-meta-row"><span>Data Abertura:</span> <b>${formatDateBr(rot.dataAbertura)}</b></div>
+          <div class="rot-meta-row"><span>Origem:</span> <b>${rot.origem || 'Rotina'}</b></div>
+          <div class="rot-meta-row"><span>Ações SAA:</span> <b>${(rot.acoesSaa || []).length} cadastrada(s)</b></div>
+        </div>
+        <div class="rot-card-actions">
+          <button type="button" class="primary smallbtn" onclick="openRotInWorkspace('${rot.id}', event)" style="flex:1;">Abrir / Editar</button>
+          <button type="button" class="smallbtn" onclick="${isEncerrado ? 'quickReopenRot' : 'quickCloseRot'}('${rot.id}', event)" style="${closeBtnStyle}" title="${closeBtnTitle}">${closeBtnLabel}</button>
+          <button type="button" class="smallbtn" onclick="printSpecificRot('${rot.id}', event)" title="Imprimir Anexos 1 e 2 deste registro">🖨️</button>
+          <button type="button" class="danger smallbtn" onclick="deleteRot('${rot.id}', event)" title="Excluir Ocorrência">🗑️</button>
+        </div>
       </div>
     `;
 
+    card.addEventListener('click', (e) => {
+      // Se clicou em botão interno, não dispara o clique do card
+      if (e.target.closest('button')) return;
+      openRotInWorkspace(rot.id);
+    });
+
     grid.appendChild(card);
   });
-}
 
-// Atualização dos KPIs do Hub
-function updateHubKpis() {
-  document.getElementById('kpiTotalRots').innerText = rotsDatabase.length;
-  document.getElementById('kpiTotalTnc').innerText = rotsDatabase.filter(r => r.tipo === 'TRABALHO_NAO_CONFORME').length;
-  document.getElementById('kpiTotalDesvios').innerText = rotsDatabase.filter(r => r.tipo === 'DESVIO_DE_PROCESSO').length;
-  
+  // Atualização dos KPIs do Hub
+  let totalTnc = rotsDatabase.filter(r => r.tipo === 'TRABALHO_NAO_CONFORME').length;
+  let totalDesvios = rotsDatabase.filter(r => r.tipo === 'DESVIO_DE_PROCESSO').length;
   let totalAcoes = 0;
   let totalComRisco = 0;
   rotsDatabase.forEach(r => {
     totalAcoes += (r.acoesSaa || []).length;
     if (r.matrizRiscoRevisada) totalComRisco++;
   });
+
+  document.getElementById('kpiTotalRots').innerText = rotsDatabase.length;
+  document.getElementById('kpiTotalTnc').innerText = totalTnc;
+  document.getElementById('kpiTotalDesvios').innerText = totalDesvios;
   document.getElementById('kpiTotalAcoes').innerText = totalAcoes;
 
   const percRisco = rotsDatabase.length > 0 ? Math.round((totalComRisco / rotsDatabase.length) * 100) : 100;
   document.getElementById('kpiTotalRiscos').innerText = percRisco + '%';
 }
 
-// Criar Novo ROT (Entra direto no Wizard de 6 etapas consecutivas)
+// Atualização dos KPIs do Hub
+function updateHubKpis() {
+  let totalTnc = rotsDatabase.filter(r => r.tipo === 'TRABALHO_NAO_CONFORME').length;
+  let totalDesvios = rotsDatabase.filter(r => r.tipo === 'DESVIO_DE_PROCESSO').length;
+  let totalAcoes = 0;
+  let totalComRisco = 0;
+  rotsDatabase.forEach(r => {
+    totalAcoes += (r.acoesSaa || []).length;
+    if (r.matrizRiscoRevisada) totalComRisco++;
+  });
+
+  document.getElementById('kpiTotalRots').innerText = rotsDatabase.length;
+  document.getElementById('kpiTotalTnc').innerText = totalTnc;
+  document.getElementById('kpiTotalDesvios').innerText = totalDesvios;
+  document.getElementById('kpiTotalAcoes').innerText = totalAcoes;
+
+  const percRisco = rotsDatabase.length > 0 ? Math.round((totalComRisco / rotsDatabase.length) * 100) : 100;
+  document.getElementById('kpiTotalRiscos').innerText = percRisco + '%';
+}
+
+// Criar Novo ROT (Abre o modal de seleção com os 4 cartões ilustrados)
 function createAndOpenNewRot() {
-  createAndOpenNewRotWithTipo('TRABALHO_NAO_CONFORME');
+  openNewRotTriagemModal();
 }
 
 function createAndOpenNewRotWithTipo(tipo) {
@@ -3522,6 +3568,11 @@ function resetDecisionTreeSteps() {
   document.getElementById('btnApplyTreeClassification').style.display = 'none';
   // Limpa seleção dos cards de triagem direta
   clearTriagemSelection();
+  // Recolhe container de ajuda da norma
+  const helpEl = document.getElementById('treeQuestionsHelpContainer');
+  if (helpEl) helpEl.style.display = 'none';
+  const helpBtn = document.getElementById('btnToggleTreeHelp');
+  if (helpBtn) helpBtn.innerHTML = '📖 Consultar Fluxograma da Norma (Ajuda Passo a Passo)';
 }
 
 // Seleção em dois passos para os cards de triagem direta
@@ -3582,6 +3633,25 @@ function commitTriagemSelection() {
   if (!selectedTriagemTipo) return;
   confirmTriagemClassification(selectedTriagemTipo);
   clearTriagemSelection();
+}
+
+function commitTriagemCardDblClick(tipo) {
+  selectedTriagemTipo = tipo;
+  confirmTriagemClassification(tipo);
+  clearTriagemSelection();
+}
+
+function toggleDecisionTreeHelp() {
+  const el = document.getElementById('treeQuestionsHelpContainer');
+  const btn = document.getElementById('btnToggleTreeHelp');
+  if (!el) return;
+  if (el.style.display === 'none' || !el.style.display) {
+    el.style.display = 'block';
+    if (btn) btn.innerHTML = '▲ Ocultar Ajuda do Fluxograma';
+  } else {
+    el.style.display = 'none';
+    if (btn) btn.innerHTML = '📖 Consultar Fluxograma da Norma (Ajuda Passo a Passo)';
+  }
 }
 
 
