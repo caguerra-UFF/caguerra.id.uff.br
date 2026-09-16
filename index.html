@@ -1422,7 +1422,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
             </div>
             <div>
               <h2>6. Revisão Consolidada, Homologação & Gravação Oficial</h2>
-              <p>Confira os dados consolidados do registro abaixo. Para oficializar e persistir no banco de dados, confirme no botão OK:</p>
+              <p>Confira os dados consolidados do registro abaixo. Para homologar e persistir no banco de dados, confirme no botão de gravação:</p>
             </div>
           </div>
 
@@ -1436,26 +1436,23 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
             <!-- Atualizado dinamicamente -->
           </div>
 
-          <!-- Botões Oficiais de Gravação (OK) e Encerramento em Destaque -->
-          <div style="text-align:center;margin:16px 0 12px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
-            <button type="button" id="btnSaveRotStep6" class="btn-final-ok" onclick="confirmAndSaveRot()" style="font-size:15px;padding:12px 28px;min-width:280px;justify-content:center;">
-              ✓ OK · Gravar Dados do Registro
+          <!-- Botão Oficial Único de Gravação e Encerramento em Destaque -->
+          <div style="text-align:center;margin:18px 0 14px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+            <button type="button" id="btnSaveRotStep6" class="btn-final-ok" onclick="confirmAndSaveRot(true)" style="font-size:15px;padding:12px 28px;min-width:280px;justify-content:center;" title="Gravar ocorrência no sistema e retornar ao catálogo">
+              ✓ Gravar e Concluir ROT
             </button>
             <button type="button" class="btn-nav" id="btnFormalizeCloseRot" onclick="formalizeCloseCurrentRot()" style="background:#166ca8;border-color:#166ca8;color:white;font-weight:700;font-size:14px;padding:12px 22px;" title="Encerrar formalmente esta ocorrência no sistema">
               🔒 Formalizar Encerramento do ROT
             </button>
           </div>
 
-          <!-- Ações Complementares de Impressão e Encerramento -->
+          <!-- Ações Complementares de Impressão e Pré-visualização -->
           <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px;border-top:1px solid var(--line);padding-top:12px;">
             <button type="button" class="btn-nav" onclick="printCurrentRot()">
               🖨️ Imprimir PDF Oficial (Anexos 1 e 2)
             </button>
             <button type="button" class="btn-nav" onclick="openDocumentPreviewModal()">
               🔍 Ver Espelho Oficial em Tela
-            </button>
-            <button type="button" class="btn-nav" onclick="showHubView()">
-              🏛️ Concluir e Retornar ao Catálogo
             </button>
           </div>
         </div>
@@ -1475,9 +1472,6 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
         <div style="display:flex;gap:10px;align-items:center;">
           <button type="button" id="btnWizardNext" class="primary" onclick="nextWizardStep()">
             Avançar para Próxima Etapa ➔
-          </button>
-          <button type="button" id="btnFooterSaveRot" class="btn-final-ok" onclick="confirmAndSaveRot()" style="display:none;">
-            ✓ OK · Gravar Dados do Registro
           </button>
         </div>
       </div>
@@ -2332,10 +2326,10 @@ function updateSaveBannerStatus(state, customMessage) {
       reviewNotice.innerHTML = `✓ <b>Registro gravado com sucesso!</b> ${customMessage || ''}`;
     } else if (state === 'new_draft') {
       reviewNotice.className = 'notice info';
-      reviewNotice.innerHTML = `⚠️ <b>Novo registro ainda não gravado.</b> Confira os dados e clique em <b>✓ OK · Gravar Dados do Registro</b> abaixo.`;
+      reviewNotice.innerHTML = `⚠️ <b>Novo registro ainda não gravado.</b> Confira os dados consolidados e clique em <b>✓ Gravar e Concluir ROT</b> abaixo.`;
     } else {
       reviewNotice.className = 'notice';
-      reviewNotice.innerHTML = `⚠️ <b>Alterações pendentes.</b> Clique em <b>✓ OK · Gravar Dados do Registro</b> abaixo para salvar.`;
+      reviewNotice.innerHTML = `⚠️ <b>Alterações pendentes.</b> Clique em <b>✓ Gravar e Concluir ROT</b> abaixo para persistir no banco e retornar ao catálogo.`;
     }
   }
 }
@@ -2354,10 +2348,9 @@ function setupEventListeners() {
   document.getElementById('btnCancelTree').addEventListener('click', () => closeModal('modalDecisionTree'));
   document.getElementById('btnPrintOfficial').addEventListener('click', () => printCurrentRot());
 
-  // Botões do Banner de Gravação Manual (Botão OK)
+  // Botão de Gravação Rápida na barra superior
   const btnSaveMain = document.getElementById('btnSaveRotMain');
-  if (btnSaveMain) btnSaveMain.addEventListener('click', confirmAndSaveRot);
-
+  if (btnSaveMain) btnSaveMain.addEventListener('click', () => confirmAndSaveRot(false));
 
   const btnDiscard = document.getElementById('btnDiscardRot');
   if (btnDiscard) btnDiscard.addEventListener('click', discardCurrentRotDraft);
@@ -2383,11 +2376,9 @@ function setupEventListeners() {
   const btnWizNext = document.getElementById('btnWizardNext');
   if (btnWizNext) btnWizNext.addEventListener('click', nextWizardStep);
 
-  const btnFooterSave = document.getElementById('btnFooterSaveRot');
-  if (btnFooterSave) btnFooterSave.addEventListener('click', confirmAndSaveRot);
-
+  // Botão Oficial Único de Gravação e Conclusão na Etapa 6
   const btnSaveStep6 = document.getElementById('btnSaveRotStep6');
-  if (btnSaveStep6) btnSaveStep6.addEventListener('click', confirmAndSaveRot);
+  if (btnSaveStep6) btnSaveStep6.addEventListener('click', () => confirmAndSaveRot(true));
 
 
   // Mudança do tipo de ocorrência no formulário
@@ -2598,14 +2589,18 @@ function goToWizardStep(stepNum) {
   // Show/hide navigation buttons
   const btnPrev = document.getElementById('btnWizardPrev');
   const btnNext = document.getElementById('btnWizardNext');
-  const btnFooterSave = document.getElementById('btnFooterSaveRot');
+  const btnMainSave = document.getElementById('btnSaveRotMain');
 
   if (btnPrev) btnPrev.style.display = (stepNum > 1) ? 'inline-flex' : 'none';
   if (btnNext) {
     btnNext.style.display = (stepNum < WIZARD_TOTAL_STEPS) ? 'inline-flex' : 'none';
     btnNext.innerHTML = stepNum === WIZARD_TOTAL_STEPS - 1 ? 'Revisar & Gravar ➔' : 'Avançar para Próxima Etapa ➔';
   }
-  if (btnFooterSave) btnFooterSave.style.display = (stepNum === WIZARD_TOTAL_STEPS) ? 'inline-flex' : 'none';
+
+  // Na Etapa 6, oculta o botão da barra superior para que haja RIGOROSAMENTE APENAS UM botão na tela
+  if (btnMainSave) {
+    btnMainSave.style.display = (stepNum === WIZARD_TOTAL_STEPS) ? 'none' : 'inline-flex';
+  }
 
   // On step 6: render review summary
   if (stepNum === WIZARD_TOTAL_STEPS) {
@@ -2904,8 +2899,8 @@ function readFormIntoDraft() {
   }
 }
 
-// BOTÃO OK: Confirmar e Gravar os Dados do Registro Manualmente no Sistema
-function confirmAndSaveRot() {
+// BOTÃO OFICIAL: Confirmar e Gravar os Dados do Registro no Sistema
+function confirmAndSaveRot(returnToHub = false) {
   if (!activeRotDraft) return;
 
   readFormIntoDraft();
@@ -2952,7 +2947,12 @@ function confirmAndSaveRot() {
     renderWizardReviewSummary();
   }
 
-  alert(`✓ OK!\n\nOs dados do registro "ROT Nº ${activeRotDraft.numero}" foram gravados com sucesso no sistema!\n\nO registro está formalmente salvo no banco de dados local.`);
+  if (returnToHub) {
+    alert(`✓ Sucesso!\n\nOs dados da ocorrência "ROT Nº ${activeRotDraft.numero}" foram gravados com sucesso no sistema!\n\nRetornando ao Catálogo de Ocorrências.`);
+    showHubView();
+  } else {
+    alert(`✓ Sucesso!\n\nOs dados do registro "ROT Nº ${activeRotDraft.numero}" foram gravados com sucesso no sistema!\n\nO registro está salvo no banco de dados local.`);
+  }
 }
 
 // Descartar / Cancelar Edição Ativa
