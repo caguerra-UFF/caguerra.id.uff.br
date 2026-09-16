@@ -187,10 +187,114 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 .tool-box{background:#f8fbfd;border:1px solid var(--line);border-radius:9px;padding:16px;margin:14px 0}
 .whys-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .why-item{display:flex;align-items:flex-start;gap:10px;background:white;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
-.why-badge{font-weight:750;font-size:12px;background:var(--teal-light);color:var(--teal-dark);padding:4px 8px;border-radius:6px;white-space:nowrap;margin-top:6px}
-.ishikawa-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
-.ishikawa-cat{background:white;border:1px solid #d1dfea;border-radius:8px;padding:12px}
-.ishikawa-cat h4{margin:0 0 8px;font-size:13px;color:var(--navy);border-bottom:2px solid var(--teal);padding-bottom:4px;display:flex;justify-content:space-between}
+/* Ishikawa Diagram Board & Spine */
+.ishikawa-diagram-board {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0 6px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+.ishikawa-cards-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.15fr;
+  gap: 12px;
+}
+.ish-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+.ish-card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(14,67,108,0.12);
+  border-color: #0284c7;
+}
+.ish-card-header {
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 12.5px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.ish-card-hint {
+  margin-left: auto;
+  font-size: 10.5px;
+  font-weight: 600;
+  opacity: 0.82;
+}
+.ish-card-body {
+  padding: 6px 8px;
+  flex: 1;
+  display: flex;
+}
+.ish-input {
+  width: 100%;
+  min-height: 62px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-family: inherit;
+  resize: vertical;
+  line-height: 1.35;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+.ish-input:focus {
+  outline: none;
+  border-color: #0284c7;
+  background: #f0f9ff;
+}
+.ishikawa-spine-container {
+  width: 100%;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  margin: -3px 0;
+}
+.ishikawa-svg {
+  width: 100%;
+  height: 72px;
+  display: block;
+}
+.ish-card-effect {
+  border-top: 3.5px solid #0e436c;
+  background: #f8fbfd;
+}
+.effect-header {
+  background: #0e436c;
+  color: #ffffff;
+}
+.ish-effect-preview {
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: #0f172a;
+  padding: 4px;
+  max-height: 75px;
+  overflow-y: auto;
+  font-style: italic;
+}
+@media (max-width: 950px) {
+  .ishikawa-cards-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ishikawa-spine-container {
+    display: none!important;
+  }
+}
+
 
 /* Decision Tree Modal */
 .modal-backdrop{position:fixed;inset:0;background:#0b3b6080;z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
@@ -713,8 +817,11 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   }
 
   /* Ferramentas de Causa Raiz */
-  .ishikawa-grid {
+  .ishikawa-cards-row {
     grid-template-columns: 1fr!important;
+  }
+  .ishikawa-spine-container {
+    display: none!important;
   }
   .whys-list .why-item {
     flex-direction: column;
@@ -1345,35 +1452,160 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
             </div>
           </div>
 
-          <!-- Ishikawa 6M Expansível -->
-          <details style="margin-top:14px;background:#f8fbfd;padding:10px 14px;border-radius:8px;border:1px solid var(--line);">
-            <summary style="font-weight:700;color:var(--navy);cursor:pointer;font-size:13px;">
-              🐟 Diagrama de Ishikawa (6M Metrológico) - Opcional para Investigação Multicausal
+          <!-- Ishikawa 6M Expansível e Interativo com Espinha Vetorial -->
+          <details open style="margin-top:16px;background:#f8fbfd;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);">
+            <summary style="font-weight:750;color:var(--navy);cursor:pointer;font-size:13.5px;display:flex;align-items:center;gap:8px;">
+              <span>🐟</span>
+              <span>Diagrama de Ishikawa (6M Metrológico) - Espinha de Peixe Dinâmica</span>
+              <span style="margin-left:auto;font-size:11px;font-weight:600;color:var(--teal);background:var(--teal-light);padding:2px 8px;border-radius:10px;">Interativo & Integrado</span>
             </summary>
-            <div class="ishikawa-grid" style="margin-top:10px;gap:10px;">
-              <div class="ishikawa-cat" style="padding:8px;">
-                <h4 style="font-size:12px;margin:0 0 4px;">Método</h4>
-                <input type="text" id="ish_metodo" placeholder="Procedimento, norma..." style="font-size:12px;padding:5px;">
+            
+            <div class="ishikawa-diagram-board">
+              <!-- LINHA SUPERIOR DE CARTÕES (3Ms Superiores + Card de Efeito) -->
+              <div class="ishikawa-cards-row ishikawa-top-cards">
+                <!-- 1. Método -->
+                <div class="ish-card" style="border-top: 3.5px solid #2563eb;">
+                  <div class="ish-card-header" style="background:#eff6ff;color:#1d4ed8;">
+                    <span class="ish-card-icon">📋</span>
+                    <span class="ish-card-title">1. Método</span>
+                    <small class="ish-card-hint">Procedimentos</small>
+                  </div>
+                  <div class="ish-card-body">
+                    <textarea id="ish_metodo" class="ish-input" placeholder="Falhas no procedimento, norma técnica, instrução desatualizada..."></textarea>
+                  </div>
+                </div>
+
+                <!-- 2. Mão de Obra -->
+                <div class="ish-card" style="border-top: 3.5px solid #2563eb;">
+                  <div class="ish-card-header" style="background:#eff6ff;color:#1d4ed8;">
+                    <span class="ish-card-icon">👥</span>
+                    <span class="ish-card-title">2. Mão de Obra</span>
+                    <small class="ish-card-hint">Treinamento</small>
+                  </div>
+                  <div class="ish-card-body">
+                    <textarea id="ish_mao_de_obra" class="ish-input" placeholder="Falta de treinamento, habilitação técnica, atenção..."></textarea>
+                  </div>
+                </div>
+
+                <!-- 3. Material -->
+                <div class="ish-card" style="border-top: 3.5px solid #2563eb;">
+                  <div class="ish-card-header" style="background:#eff6ff;color:#1d4ed8;">
+                    <span class="ish-card-icon">🧪</span>
+                    <span class="ish-card-title">3. Material</span>
+                    <small class="ish-card-hint">Reagentes / MRC</small>
+                  </div>
+                  <div class="ish-card-body">
+                    <textarea id="ish_material" class="ish-input" placeholder="Reagente vencido, MRC sem rastreabilidade, contaminação..."></textarea>
+                  </div>
+                </div>
+
+                <!-- Card Efeito / Problema (Cabeça do Peixe) -->
+                <div class="ish-card ish-card-effect">
+                  <div class="ish-card-header effect-header">
+                    <span class="ish-card-icon">🎯</span>
+                    <span class="ish-card-title">Efeito / Ocorrência</span>
+                  </div>
+                  <div class="ish-card-body effect-body">
+                    <div id="ishEffectBoxText" class="ish-effect-preview">
+                      Descreva a ocorrência no Campo 4 para exibir o efeito aqui.
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="ishikawa-cat" style="padding:8px;">
-                <h4 style="font-size:12px;margin:0 0 4px;">Máquina</h4>
-                <input type="text" id="ish_maquina" placeholder="Equipamento, sensor..." style="font-size:12px;padding:5px;">
+
+              <!-- ESPINHA CENTRAL DO PEIXE (SVG VETORIAL) -->
+              <div class="ishikawa-spine-container">
+                <svg class="ishikawa-svg" viewBox="0 0 1000 70" preserveAspectRatio="none">
+                  <!-- Cauda do peixe -->
+                  <path d="M 12 10 Q 55 30, 80 35 Q 55 40, 12 60 Q 45 35, 12 10 Z" fill="#0284c7" stroke="#0369a1" stroke-width="2"/>
+                  
+                  <!-- Espinha Dorsal Horizontal -->
+                  <line x1="75" y1="35" x2="815" y2="35" stroke="#0284c7" stroke-width="7" stroke-linecap="round"/>
+                  
+                  <!-- Costelas Superiores Anguladas (conectando aos 3 cards de cima) -->
+                  <line x1="120" y1="4" x2="195" y2="35" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+                  <circle cx="120" cy="6" r="4.5" fill="#0284c7"/>
+                  
+                  <line x1="365" y1="4" x2="440" y2="35" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+                  <circle cx="365" cy="6" r="4.5" fill="#0284c7"/>
+                  
+                  <line x1="610" y1="4" x2="685" y2="35" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+                  <circle cx="610" cy="6" r="4.5" fill="#0284c7"/>
+                  
+                  <!-- Costelas Inferiores Anguladas (conectando aos 3 cards de baixo) -->
+                  <line x1="120" y1="66" x2="195" y2="35" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+                  <circle cx="120" cy="64" r="4.5" fill="#0284c7"/>
+                  
+                  <line x1="365" y1="66" x2="440" y2="35" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+                  <circle cx="365" cy="64" r="4.5" fill="#0284c7"/>
+                  
+                  <line x1="610" y1="66" x2="685" y2="35" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+                  <circle cx="610" cy="64" r="4.5" fill="#0284c7"/>
+                  
+                  <!-- Cabeça do Peixe (Seta indicando o Efeito) -->
+                  <path d="M 810 6 Q 865 12, 940 35 Q 865 58, 810 64 Q 795 35, 810 6 Z" fill="#0e436c" stroke="#07263e" stroke-width="2"/>
+                  <text x="860" y="32" text-anchor="middle" fill="#ffffff" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="800" letter-spacing="1">EFEITO</text>
+                  <text x="860" y="46" text-anchor="middle" fill="#7dd3fc" font-family="Segoe UI,Arial,sans-serif" font-size="8.5" font-weight="700">OCORRÊNCIA</text>
+                  
+                  <!-- Conexão para o Card do Efeito no topo -->
+                  <path d="M 860 14 L 860 6" stroke="#0e436c" stroke-width="3" stroke-dasharray="3 3"/>
+                </svg>
               </div>
-              <div class="ishikawa-cat" style="padding:8px;">
-                <h4 style="font-size:12px;margin:0 0 4px;">Material</h4>
-                <input type="text" id="ish_material" placeholder="Reagentes, MRC..." style="font-size:12px;padding:5px;">
-              </div>
-              <div class="ishikawa-cat" style="padding:8px;">
-                <h4 style="font-size:12px;margin:0 0 4px;">Mão de Obra</h4>
-                <input type="text" id="ish_mao_de_obra" placeholder="Treinamento..." style="font-size:12px;padding:5px;">
-              </div>
-              <div class="ishikawa-cat" style="padding:8px;">
-                <h4 style="font-size:12px;margin:0 0 4px;">Medição</h4>
-                <input type="text" id="ish_medicao" placeholder="Incerteza, calibração..." style="font-size:12px;padding:5px;">
-              </div>
-              <div class="ishikawa-cat" style="padding:8px;">
-                <h4 style="font-size:12px;margin:0 0 4px;">Meio Ambiente</h4>
-                <input type="text" id="ish_meio_ambiente" placeholder="Temperatura, umidade..." style="font-size:12px;padding:5px;">
+
+              <!-- LINHA INFERIOR DE CARTÕES (3Ms Inferiores + Card de Ação Rápida) -->
+              <div class="ishikawa-cards-row ishikawa-bottom-cards">
+                <!-- 4. Medição -->
+                <div class="ish-card" style="border-bottom: 3.5px solid #087e83;">
+                  <div class="ish-card-header" style="background:#f0fdfa;color:#0f766e;">
+                    <span class="ish-card-icon">📏</span>
+                    <span class="ish-card-title">4. Medição</span>
+                    <small class="ish-card-hint">Calibração</small>
+                  </div>
+                  <div class="ish-card-body">
+                    <textarea id="ish_medicao" class="ish-input" placeholder="Incerteza analítica, calibração fora do prazo, tolerância..."></textarea>
+                  </div>
+                </div>
+
+                <!-- 5. Meio Ambiente -->
+                <div class="ish-card" style="border-bottom: 3.5px solid #087e83;">
+                  <div class="ish-card-header" style="background:#f0fdfa;color:#0f766e;">
+                    <span class="ish-card-icon">🌡️</span>
+                    <span class="ish-card-title">5. Meio Ambiente</span>
+                    <small class="ish-card-hint">Ambiente LMA</small>
+                  </div>
+                  <div class="ish-card-body">
+                    <textarea id="ish_meio_ambiente" class="ish-input" placeholder="Variação de temperatura, umidade, poeira, interferência..."></textarea>
+                  </div>
+                </div>
+
+                <!-- 6. Máquina -->
+                <div class="ish-card" style="border-bottom: 3.5px solid #087e83;">
+                  <div class="ish-card-header" style="background:#f0fdfa;color:#0f766e;">
+                    <span class="ish-card-icon">⚙️</span>
+                    <span class="ish-card-title">6. Máquina</span>
+                    <small class="ish-card-hint">Equipamento</small>
+                  </div>
+                  <div class="ish-card-body">
+                    <textarea id="ish_maquina" class="ish-input" placeholder="Instabilidade do sensor, ruído óptico, desgaste mecânico..."></textarea>
+                  </div>
+                </div>
+
+                <!-- Card de Ação Rápida / Síntese -->
+                <div class="ish-card" style="border-bottom: 3.5px solid #0e436c;background:#fffbeb;">
+                  <div class="ish-card-header" style="background:#fef3c7;color:#b45309;">
+                    <span class="ish-card-icon">⚡</span>
+                    <span class="ish-card-title">Síntese de Causas</span>
+                  </div>
+                  <div class="ish-card-body" style="flex-direction:column;gap:8px;justify-content:center;padding:8px 10px;">
+                    <button type="button" id="btnApplyIshikawaToCause" style="background:var(--navy);color:white;border:none;border-radius:6px;padding:8px 10px;font-size:11.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+                      <span>⚡</span> <span>Copiar p/ Campo 7</span>
+                    </button>
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                      <small style="font-size:10px;color:#92400e;line-height:1.2;">Transfere os 6Ms p/ Causa Raiz</small>
+                      <button type="button" id="btnClearIshikawa" style="background:transparent;border:none;color:#b91c1c;font-size:10.5px;font-weight:600;cursor:pointer;text-decoration:underline;padding:2px;">Limpar</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </details>
@@ -2535,6 +2767,16 @@ function setupEventListeners() {
     }
   });
 
+  // Diagrama de Ishikawa 6M (Espinha de Peixe)
+  const btnApplyIsh = document.getElementById('btnApplyIshikawaToCause');
+  if (btnApplyIsh) {
+    btnApplyIsh.addEventListener('click', applyIshikawaToCause);
+  }
+  const btnClearIsh = document.getElementById('btnClearIshikawa');
+  if (btnClearIsh) {
+    btnClearIsh.addEventListener('click', clearIshikawaDiagram);
+  }
+
   // Modal SAA
   document.getElementById('btnOpenNewSaaModal').addEventListener('click', () => openNewSaaModal());
   document.getElementById('btnCloseModalSaa').addEventListener('click', () => closeModal('modalSaaAction'));
@@ -2919,6 +3161,64 @@ function populateRotForm(rot) {
   // Ajusta visibilidade condicional
   handleTipoOcorrenciaChange();
   renderSaaTableWorkspace();
+  syncIshikawaEffectText();
+}
+
+// Funções do Diagrama de Ishikawa 6M (Espinha de Peixe Metrológica)
+function syncIshikawaEffectText() {
+  const effectEl = document.getElementById('ishEffectBoxText');
+  if (!effectEl) return;
+  const desc = (document.getElementById('f_descricao')?.value || '').trim();
+  const num = (document.getElementById('f_rotNum')?.value || '').trim();
+  if (desc) {
+    effectEl.innerText = (num ? '[' + num + '] ' : '') + desc;
+  } else {
+    effectEl.innerText = 'Descreva a ocorrência no Campo 4 para exibir o efeito aqui.';
+  }
+}
+
+function applyIshikawaToCause() {
+  const m1 = document.getElementById('ish_metodo')?.value.trim();
+  const m2 = document.getElementById('ish_mao_de_obra')?.value.trim();
+  const m3 = document.getElementById('ish_material')?.value.trim();
+  const m4 = document.getElementById('ish_medicao')?.value.trim();
+  const m5 = document.getElementById('ish_meio_ambiente')?.value.trim();
+  const m6 = document.getElementById('ish_maquina')?.value.trim();
+
+  const lines = [];
+  if (m1) lines.push('• 1. Método: ' + m1);
+  if (m2) lines.push('• 2. Mão de Obra: ' + m2);
+  if (m3) lines.push('• 3. Material: ' + m3);
+  if (m4) lines.push('• 4. Medição: ' + m4);
+  if (m5) lines.push('• 5. Meio Ambiente: ' + m5);
+  if (m6) lines.push('• 6. Máquina: ' + m6);
+
+  if (lines.length === 0) {
+    alert('Preencha ao menos uma das causas (6M) no Diagrama de Ishikawa antes de transferir.');
+    return;
+  }
+
+  const causaField = document.getElementById('f_causaRaiz');
+  const current = causaField.value.trim();
+  const compiled = '[Análise Multicausal - Diagrama de Ishikawa 6M Metrológico]:\n' + lines.join('\n');
+
+  if (current) {
+    causaField.value = current + '\n\n' + compiled;
+  } else {
+    causaField.value = compiled;
+  }
+
+  onFormFieldInput();
+  alert('Análise do Diagrama de Ishikawa compilada com sucesso na Análise de Causas (Campo 7)!');
+}
+
+function clearIshikawaDiagram() {
+  if (!confirm('Deseja realmente limpar todos os 6 campos do Diagrama de Ishikawa?')) return;
+  ['ish_metodo', 'ish_mao_de_obra', 'ish_material', 'ish_medicao', 'ish_meio_ambiente', 'ish_maquina'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  onFormFieldInput();
 }
 
 // Manipulador de Alterações nos Campos (Modo Rascunho / Sem gravação automática)
@@ -2926,6 +3226,7 @@ function onFormFieldInput() {
   if (!activeRotDraft) return;
   hasUnsavedChanges = true;
   readFormIntoDraft();
+  syncIshikawaEffectText();
 
   if (isNewDraft) {
     updateSaveBannerStatus('new_draft');
