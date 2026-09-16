@@ -719,10 +719,6 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
         🏠 Tela Inicial
       </button>
     </div>
-
-    <button type="button" id="btnTopSaveRot" class="btn-ok-save" style="display:none;" title="Gravar e confirmar dados do registro ativo">
-      💾 OK · Gravar Dados
-    </button>
   </div>
 </div>
 
@@ -2302,7 +2298,6 @@ function getActiveRot() {
 // Atualização Visual do Status de Gravação (Pill no topo do Wizard)
 function updateSaveBannerStatus(state, customMessage) {
   const pill = document.getElementById('saveStatusPill');
-  const btnTop = document.getElementById('btnTopSaveRot');
   const btnMain = document.getElementById('btnSaveRotMain');
 
   if (pill) {
@@ -2316,22 +2311,6 @@ function updateSaveBannerStatus(state, customMessage) {
     } else {
       pill.classList.add('unsaved');
       pill.innerHTML = '⚠️ Alterações pendentes';
-    }
-  }
-
-  if (btnTop) {
-    if (state === 'saved') {
-      btnTop.style.display = 'inline-flex';
-      btnTop.innerHTML = '✓ Dados Gravados';
-      btnTop.style.background = '#126451';
-    } else if (state === 'new_draft') {
-      btnTop.style.display = 'inline-flex';
-      btnTop.innerHTML = '💾 OK · Gravar Dados';
-      btnTop.style.background = '#087e83';
-    } else {
-      btnTop.style.display = 'inline-flex';
-      btnTop.innerHTML = '💾 OK · Gravar Alterações';
-      btnTop.style.background = '#b25e09';
     }
   }
 
@@ -2379,8 +2358,6 @@ function setupEventListeners() {
   const btnSaveMain = document.getElementById('btnSaveRotMain');
   if (btnSaveMain) btnSaveMain.addEventListener('click', confirmAndSaveRot);
 
-  const btnTopSave = document.getElementById('btnTopSaveRot');
-  if (btnTopSave) btnTopSave.addEventListener('click', confirmAndSaveRot);
 
   const btnDiscard = document.getElementById('btnDiscardRot');
   if (btnDiscard) btnDiscard.addEventListener('click', discardCurrentRotDraft);
@@ -2480,7 +2457,6 @@ function updateTopbarMode(isWorkspaceOpen) {
   const topbarActiveBadge = document.getElementById('topbarActiveBadge');
   const hubActions = document.getElementById('topbarHubActions');
   const wsActions = document.getElementById('topbarWorkspaceActions');
-  const btnTop = document.getElementById('btnTopSaveRot');
 
   if (isWorkspaceOpen) {
     if (hubBrand) hubBrand.style.display = 'none';
@@ -2488,14 +2464,12 @@ function updateTopbarMode(isWorkspaceOpen) {
     if (topbarActiveBadge) topbarActiveBadge.style.display = 'inline-flex';
     if (hubActions) hubActions.style.display = 'none'; // Some os botões duplicados do topo!
     if (wsActions) wsActions.style.display = 'inline-flex';
-    if (btnTop) btnTop.style.display = 'none';
   } else {
     if (hubBrand) hubBrand.style.display = 'inline-flex';
     if (btnGoToHub) btnGoToHub.style.display = 'none';
     if (topbarActiveBadge) topbarActiveBadge.style.display = 'none';
     if (hubActions) hubActions.style.display = 'flex'; // Reaparecem no Hub
     if (wsActions) wsActions.style.display = 'none';
-    if (btnTop) btnTop.style.display = 'none';
   }
 }
 
