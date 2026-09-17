@@ -92,9 +92,14 @@ body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-a
   background: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.25);
   color: #c2d8e8;
-  cursor: default;
+  cursor: pointer;
   user-select: none;
   transition: all .2s ease;
+}
+.cloud-sync-pill:hover{
+  filter: brightness(1.25);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 .cloud-sync-pill.connected{
   background: rgba(18, 100, 81, 0.45);
@@ -1084,7 +1089,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
   <div class="topbar-right">
     <!-- Indicador de Status da Nuvem Firebase/Firestore -->
-    <div id="cloudSyncPill" class="cloud-sync-pill" title="Status da sincronização em tempo real com o Cloud Firestore (Firebase)">☁️ Nuvem: Conectando...</div>
+    <div id="cloudSyncPill" class="cloud-sync-pill" onclick="showCloudStatusModal()" title="Clique para ver detalhes da conexão Firebase ou forçar sincronização">☁️ Nuvem: Conectando...</div>
 
     <!-- Botões exibidos apenas no Hub (tela inicial) - Ocultados quando ROT está aberto -->
     <div id="topbarHubActions" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
@@ -2843,6 +2848,27 @@ function initFirebase() {
   }
 }
 
+function showCloudStatusModal() {
+  const statusMsg = isCloudOnline 
+    ? `✓ Conectado ao Firebase Cloud Firestore com sucesso!\n\n` +
+      `• Projeto Firebase: DUAPP (duapp-ea6a8)\n` +
+      `• Coleção: lma_rots\n` +
+      `• Ocorrências Sincronizadas na Nuvem: ${rotsDatabase.length} ROT(s)\n` +
+      `• Modo: Tempo Real ativo (onSnapshot)\n\n` +
+      `Deseja forçar o reenvio de todas as ocorrências locais para a nuvem agora?`
+    : `⚠️ Sistema operando no momento em Modo Local (Offline).\n\n` +
+      `Os dados continuam salvos com segurança no seu navegador (localStorage).\n\n` +
+      `Deseja tentar restabelecer a conexão com o Cloud Firestore agora?`;
+
+  if (confirm(statusMsg)) {
+    if (!isCloudOnline) {
+      initFirebase();
+    } else {
+      syncAllRotsToCloud();
+    }
+  }
+}
+
 function listenToCloudDatabase() {
   if (!firestoreDb) return;
   
@@ -2850,6 +2876,7 @@ function listenToCloudDatabase() {
     isCloudOnline = true;
     if (snapshot.empty) {
       console.log('Coleção lma_rots vazia no Cloud Firestore. Realizando seed inicial...');
+      updateCloudSyncStatus('connected', `☁️ Nuvem: ${rotsDatabase.length} ROTs`, 'Conectado ao Cloud Firestore (duapp-ea6a8)');
       seedInitialCloudData();
       return;
     }
@@ -2876,7 +2903,7 @@ function listenToCloudDatabase() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(rotsDatabase));
     } catch(e) {}
 
-    updateCloudSyncStatus('connected', `☁️ Nuvem: ${rotsDatabase.length} ROTs`, 'Sincronizado em tempo real com Firebase Cloud Firestore (Projeto DUAPP)');
+    updateCloudSyncStatus('connected', `☁️ Nuvem: ${rotsDatabase.length} ROTs`, 'Sincronizado em tempo real com Firebase Cloud Firestore (Projeto DUAPP - lma_rots)');
     
     renderHub();
     updateHubKpis();
@@ -2884,9 +2911,9 @@ function listenToCloudDatabase() {
       renderWizardReviewSummary();
     }
   }, (error) => {
-    console.warn('Aviso no listener do Cloud Firestore:', error);
+    console.error('Aviso no listener do Cloud Firestore:', error);
     isCloudOnline = false;
-    updateCloudSyncStatus('offline', '⚠️ Modo Local (Offline)', 'Sem conexão com nuvem. Dados seguros localmente.');
+    updateCloudSyncStatus('offline', '⚠️ Modo Local (Offline)', 'Erro na nuvem: ' + (error.message || error));
   });
 }
 
