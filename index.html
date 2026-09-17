@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tratamento de Ocorrências, TNC e Ações Corretivas · IT-LM-GE-003 · ISO/IEC 17025</title>
 <meta name="theme-color" content="#1b80c4">
+
+<!-- Firebase App e Cloud Firestore SDK (Compat v10) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+
 <style>
 :root{
   --en-blue: #1b80c4;
@@ -75,6 +80,37 @@ body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-a
 }
 .badge-active-rot{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#c2d8e8}
 .badge-active-rot b{color:var(--en-green);font-size:14px}
+
+.cloud-sync-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 650;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #c2d8e8;
+  cursor: default;
+  user-select: none;
+  transition: all .2s ease;
+}
+.cloud-sync-pill.connected{
+  background: rgba(18, 100, 81, 0.45);
+  border-color: #34d399;
+  color: #a7f3d0;
+}
+.cloud-sync-pill.syncing{
+  background: rgba(245, 158, 11, 0.35);
+  border-color: #fcd34d;
+  color: #fef08a;
+}
+.cloud-sync-pill.offline{
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255,255,255,0.2);
+  color: #94a3b8;
+}
 
 header.app-header{
   background: linear-gradient(135deg, #093757 0%, #105587 35%, #1b80c4 85%, #2390db 100%);
@@ -1047,6 +1083,9 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   </div>
 
   <div class="topbar-right">
+    <!-- Indicador de Status da Nuvem Firebase/Firestore -->
+    <div id="cloudSyncPill" class="cloud-sync-pill" title="Status da sincronização em tempo real com o Cloud Firestore (Firebase)">☁️ Nuvem: Conectando...</div>
+
     <!-- Botões exibidos apenas no Hub (tela inicial) - Ocultados quando ROT está aberto -->
     <div id="topbarHubActions" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <button type="button" id="btnQuickNewRot" class="btn-nav" style="background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;box-shadow:0 2px 6px rgba(165,199,17,0.3);">+ Novo ROT</button>
@@ -2725,6 +2764,30 @@ let isNewDraft = false;          // True quando for um novo ROT ainda não grava
 let hasUnsavedChanges = false;   // True quando houver alterações pendentes de gravação manual (botão OK)
 let lastSavedRotId = null;       // ID do último ROT gravado com sucesso para destaque visual no Hub
 
+// Configuração do Firebase & Cloud Firestore (Projeto DUAPP - lma_rots)
+const firebaseConfig = {
+  projectId: "duapp-ea6a8",
+  appId: "1:899938665434:web:65e6c61d81ffe37ae7b6e3",
+  databaseURL: "https://duapp-ea6a8-default-rtdb.firebaseio.com",
+  storageBucket: "duapp-ea6a8.firebasestorage.app",
+  apiKey: "AIzaSyBt77mpmpK308DBw4SsQ4uf20fM2wycD-o",
+  authDomain: "duapp-ea6a8.firebaseapp.com",
+  messagingSenderId: "899938665434",
+  measurementId: "G-ZD8P9PSC08"
+};
+
+const FIRESTORE_COLLECTION = 'lma_rots';
+let firestoreDb = null;
+let isCloudOnline = false;
+
+function updateCloudSyncStatus(status, text, tooltip) {
+  const pill = document.getElementById('cloudSyncPill');
+  if (!pill) return;
+  pill.className = 'cloud-sync-pill ' + status;
+  pill.innerHTML = text;
+  if (tooltip) pill.title = tooltip;
+}
+
 // Inicialização
 function initApp() {
   loadDatabase();
@@ -2732,6 +2795,7 @@ function initApp() {
   renderHub();
   updateHubKpis();
   updateTopbarMode(false);
+  initFirebase();
 }
 
 function loadDatabase() {
@@ -2757,6 +2821,137 @@ function saveDatabase() {
     console.error('Falha ao persistir no localStorage:', e);
   }
   updateHubKpis();
+}
+
+// Integração Cloud Firestore (Nuvem em Tempo Real)
+function initFirebase() {
+  if (typeof firebase === 'undefined') {
+    console.warn('Firebase SDK não carregado. Operando em modo local.');
+    updateCloudSyncStatus('offline', '⚠️ Modo Local (Offline)', 'Firebase SDK não carregado. Ocorrências salvas localmente.');
+    return;
+  }
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    firestoreDb = firebase.firestore();
+    updateCloudSyncStatus('syncing', '☁️ Nuvem: Conectando...', 'Conectando ao Firebase Cloud Firestore (duapp-ea6a8)...');
+    listenToCloudDatabase();
+  } catch (err) {
+    console.error('Erro ao inicializar Firebase:', err);
+    updateCloudSyncStatus('offline', '⚠️ Modo Local (Offline)', 'Falha na conexão: ' + err.message);
+  }
+}
+
+function listenToCloudDatabase() {
+  if (!firestoreDb) return;
+  
+  firestoreDb.collection(FIRESTORE_COLLECTION).onSnapshot((snapshot) => {
+    isCloudOnline = true;
+    if (snapshot.empty) {
+      console.log('Coleção lma_rots vazia no Cloud Firestore. Realizando seed inicial...');
+      seedInitialCloudData();
+      return;
+    }
+
+    const cloudRots = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (!data.id) data.id = doc.id;
+      cloudRots.push(data);
+    });
+
+    // Ordenação decrescente (mais recentes primeiro)
+    cloudRots.sort((a, b) => {
+      if (b.numero && a.numero) {
+        return b.numero.localeCompare(a.numero, undefined, { numeric: true });
+      }
+      return (b.id || '').localeCompare(a.id || '');
+    });
+
+    rotsDatabase = cloudRots;
+    
+    // Espelha no localStorage para cache offline imediato
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rotsDatabase));
+    } catch(e) {}
+
+    updateCloudSyncStatus('connected', `☁️ Nuvem: ${rotsDatabase.length} ROTs`, 'Sincronizado em tempo real com Firebase Cloud Firestore (Projeto DUAPP)');
+    
+    renderHub();
+    updateHubKpis();
+    if (currentWizardStep === WIZARD_TOTAL_STEPS) {
+      renderWizardReviewSummary();
+    }
+  }, (error) => {
+    console.warn('Aviso no listener do Cloud Firestore:', error);
+    isCloudOnline = false;
+    updateCloudSyncStatus('offline', '⚠️ Modo Local (Offline)', 'Sem conexão com nuvem. Dados seguros localmente.');
+  });
+}
+
+async function saveRotToCloud(rot) {
+  if (!firestoreDb) return;
+  try {
+    updateCloudSyncStatus('syncing', '☁️ Nuvem: Gravando...', 'Gravando no Cloud Firestore...');
+    const docId = String(rot.id || rot.numero).replace(/[\/\s]/g, '_');
+    const cleanRot = JSON.parse(JSON.stringify(rot));
+    await firestoreDb.collection(FIRESTORE_COLLECTION).doc(docId).set(cleanRot, { merge: true });
+    updateCloudSyncStatus('connected', `☁️ Nuvem: ${rotsDatabase.length} ROTs`, 'Sincronizado com Firebase Cloud Firestore');
+    console.log(`ROT ${rot.numero} (${docId}) gravado no Cloud Firestore com sucesso.`);
+  } catch (err) {
+    console.error('Falha ao salvar ROT no Cloud Firestore:', err);
+    updateCloudSyncStatus('offline', '⚠️ Falha Nuvem (Salvo Local)', 'Erro ao gravar na nuvem: ' + err.message);
+  }
+}
+
+async function deleteRotFromCloud(rotId) {
+  if (!firestoreDb) return;
+  try {
+    updateCloudSyncStatus('syncing', '☁️ Nuvem: Excluindo...', 'Excluindo do Cloud Firestore...');
+    const docId = String(rotId).replace(/[\/\s]/g, '_');
+    await firestoreDb.collection(FIRESTORE_COLLECTION).doc(docId).delete();
+    updateCloudSyncStatus('connected', `☁️ Nuvem: ${rotsDatabase.length} ROTs`, 'Sincronizado com Firebase Cloud Firestore');
+    console.log(`ROT ${rotId} removido do Cloud Firestore.`);
+  } catch (err) {
+    console.error('Falha ao excluir ROT do Cloud Firestore:', err);
+  }
+}
+
+async function seedInitialCloudData() {
+  if (!firestoreDb) return;
+  try {
+    const dataToSeed = (rotsDatabase && rotsDatabase.length > 0) ? rotsDatabase : PRESET_CASES;
+    const batch = firestoreDb.batch();
+    dataToSeed.forEach(rot => {
+      const docId = String(rot.id || rot.numero).replace(/[\/\s]/g, '_');
+      const cleanRot = JSON.parse(JSON.stringify(rot));
+      const ref = firestoreDb.collection(FIRESTORE_COLLECTION).doc(docId);
+      batch.set(ref, cleanRot);
+    });
+    await batch.commit();
+    console.log('Seed inicial gravado com sucesso no Cloud Firestore!');
+  } catch (err) {
+    console.error('Erro ao efetuar seed inicial no Firestore:', err);
+  }
+}
+
+async function syncAllRotsToCloud() {
+  if (!firestoreDb || !rotsDatabase.length) return;
+  try {
+    updateCloudSyncStatus('syncing', '☁️ Nuvem: Sincronizando tudo...', 'Enviando banco completo para o Cloud Firestore...');
+    const batch = firestoreDb.batch();
+    rotsDatabase.forEach(rot => {
+      const docId = String(rot.id || rot.numero).replace(/[\/\s]/g, '_');
+      const cleanRot = JSON.parse(JSON.stringify(rot));
+      const ref = firestoreDb.collection(FIRESTORE_COLLECTION).doc(docId);
+      batch.set(ref, cleanRot);
+    });
+    await batch.commit();
+    updateCloudSyncStatus('connected', `☁️ Nuvem: ${rotsDatabase.length} ROTs`, 'Sincronizado com Firebase Cloud Firestore');
+  } catch (err) {
+    console.error('Erro na sincronização em lote com o Firestore:', err);
+  }
 }
 
 function getActiveRot() {
@@ -3502,6 +3697,7 @@ function confirmAndSaveRot(returnToHub = false) {
 
   lastSavedRotId = snapshot.id;
   saveDatabase();
+  saveRotToCloud(snapshot);
   hasUnsavedChanges = false;
 
   const horaFormatada = new Date().toLocaleTimeString();
@@ -3514,10 +3710,10 @@ function confirmAndSaveRot(returnToHub = false) {
   }
 
   if (returnToHub) {
-    alert(`✓ Sucesso!\n\nOs dados da ocorrência "ROT Nº ${activeRotDraft.numero}" foram gravados com sucesso no sistema!\n\nRetornando ao Catálogo de Ocorrências.`);
+    alert(`✓ Sucesso!\n\nOs dados da ocorrência "ROT Nº ${activeRotDraft.numero}" foram gravados com sucesso no sistema e sincronizados com a nuvem Firebase!\n\nRetornando ao Catálogo de Ocorrências.`);
     showHubView(true); // Reseta filtros do Hub para que a nova ocorrência apareça de imediato no topo!
   } else {
-    alert(`✓ Sucesso!\n\nOs dados do registro "ROT Nº ${activeRotDraft.numero}" foram gravados com sucesso no sistema!\n\nO registro está salvo no banco de dados local.`);
+    alert(`✓ Sucesso!\n\nOs dados do registro "ROT Nº ${activeRotDraft.numero}" foram gravados com sucesso no sistema e sincronizados com a nuvem Firebase!\n\nVocê pode continuar editando ou clicar em 'Voltar ao Catálogo' quando desejar.`);
   }
 }
 
@@ -3846,6 +4042,7 @@ function deleteRot(rotId) {
       hasUnsavedChanges = false;
     }
     saveDatabase();
+    deleteRotFromCloud(rotId);
     renderHub();
   }
 }
@@ -3867,6 +4064,7 @@ function quickCloseRot(rotId, event) {
   rot.matrizRiscoRevisada = true;
 
   saveDatabase();
+  saveRotToCloud(rot);
   renderHub();
   updateHubKpis();
 
@@ -3882,7 +4080,7 @@ function quickCloseRot(rotId, event) {
     if (currentWizardStep === 6) renderWizardReviewSummary();
   }
 
-  alert(`✓ Sucesso!\n\nA ocorrência "ROT Nº ${rot.numero}" foi formalmente ENCERRADA no sistema com eficácia atestada e Matriz de Riscos revisada.`);
+  alert(`✓ Sucesso!\n\nA ocorrência "ROT Nº ${rot.numero}" foi formalmente ENCERRADA no sistema e na nuvem com eficácia atestada e Matriz de Riscos revisada.`);
 }
 
 function quickReopenRot(rotId, event) {
@@ -3896,6 +4094,7 @@ function quickReopenRot(rotId, event) {
 
   rot.statusGeral = (rot.acoesSaa && rot.acoesSaa.length > 0) ? 'ACOES_ANDAMENTO' : 'ABERTO';
   saveDatabase();
+  saveRotToCloud(rot);
   renderHub();
   updateHubKpis();
 
@@ -3905,7 +4104,7 @@ function quickReopenRot(rotId, event) {
     if (currentWizardStep === 6) renderWizardReviewSummary();
   }
 
-  alert(`A ocorrência "ROT Nº ${rot.numero}" foi reaberta para andamento.`);
+  alert(`A ocorrência "ROT Nº ${rot.numero}" foi reaberta para andamento e sincronizada na nuvem.`);
 }
 
 // Formalizar Encerramento do ROT Ativo diretamente pela Etapa 6
@@ -4378,8 +4577,9 @@ function importDatabaseJson(event) {
         if (confirm(`Substituir banco atual por ${parsed.length} ocorrências do arquivo importado?`)) {
           rotsDatabase = parsed;
           saveDatabase();
+          syncAllRotsToCloud();
           renderHub();
-          alert('Banco de ocorrências importado com sucesso!');
+          alert('Banco de ocorrências importado e sincronizado com a nuvem Firebase com sucesso!');
         }
       } else {
         alert('Formato de arquivo JSON inválido.');
