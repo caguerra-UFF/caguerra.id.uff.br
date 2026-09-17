@@ -668,7 +668,225 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 .btn-triagem-cancel-sel{background:transparent;border:1px solid var(--line);border-radius:7px;padding:8px 12px;font-size:12.5px;color:var(--muted);cursor:pointer;transition:all .15s}
 .btn-triagem-cancel-sel:hover{background:#f1f5f9;color:var(--navy)}
 
+/* ======================================================== */
+/* PAINEL DE UPLOAD E EVIDÊNCIAS MULTIMÍDIA (SAA & EFICÁCIA) */
+/* ======================================================== */
+.evidence-upload-panel {
+  background: #f8fafc;
+  border: 1px solid #d8e2ea;
+  border-radius: 9px;
+  padding: 12px;
+  margin-top: 8px;
+}
+.evidence-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn-evidence-action {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 7px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 650;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--navy);
+  transition: all .18s ease;
+  user-select: none;
+}
+.btn-evidence-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.btn-evidence-action.camera:hover {
+  border-color: #0284c7;
+  color: #0284c7;
+  background: #f0f9ff;
+}
+.btn-evidence-action.gallery:hover {
+  border-color: #10b981;
+  color: #059669;
+  background: #ecfdf5;
+}
+.btn-evidence-action.pdf:hover {
+  border-color: #ef4444;
+  color: #dc2626;
+  background: #fef2f2;
+}
+.evidence-paste-hint {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-left: auto;
+}
+.evidence-dropzone {
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 12px;
+  margin-top: 8px;
+  min-height: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: border-color .2s, background .2s;
+}
+.evidence-dropzone.dragover {
+  border-color: var(--blue);
+  background: #f0f7fb;
+}
+.evidence-empty-msg {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px;
+}
+.evidence-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+}
+.evidence-card {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform .15s, box-shadow .15s;
+}
+.evidence-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: var(--blue);
+}
+.evidence-thumb-wrap {
+  height: 80px;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+.evidence-thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.evidence-pdf-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  color: #dc2626;
+  gap: 4px;
+}
+.evidence-pdf-badge svg {
+  fill: #dc2626;
+}
+.evidence-pdf-badge span {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.evidence-card-info {
+  padding: 6px 8px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.evidence-card-name {
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--navy);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.evidence-card-meta {
+  font-size: 10px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.evidence-card-del {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #cbd5e1;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--danger);
+  font-size: 12px;
+  transition: all .15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.evidence-card-del:hover {
+  background: var(--danger);
+  color: #ffffff;
+  border-color: var(--danger);
+}
 
+/* Badges de Evidência na Tabela do Workspace */
+.evidence-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.badge-evidence {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all .15s ease;
+  user-select: none;
+}
+.badge-evidence.img {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+.badge-evidence.img:hover {
+  background: #dbeafe;
+  transform: translateY(-1px);
+}
+.badge-evidence.pdf {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+.badge-evidence.pdf:hover {
+  background: #fee2e2;
+  transform: translateY(-1px);
+}
 .triagem-card-title{font-size:14px;font-weight:750;margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .triagem-card-sub{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.02em}
 .triagem-card-desc{font-size:12px;color:var(--navy);line-height:1.35;margin-bottom:10px;flex-grow:1}
@@ -2069,8 +2287,38 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
               </div>
 
               <div class="field">
-                <label for="f_descEficacia">Descrição da Análise da Eficácia <span class="req">*</span></label>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:6px;">
+                  <label for="f_descEficacia" style="margin:0;">Descrição da Análise da Eficácia <span class="req">*</span></label>
+                  <span class="hint" style="font-size:11.5px;">📸 Anexar laudos/fotos de comprovação</span>
+                </div>
                 <textarea id="f_descEficacia" placeholder="Citar expressamente quais ações foram eficazes e quais não foram, com evidências técnicas..." style="min-height:85px;"></textarea>
+
+                <!-- Painel de Evidências Técnicas da Eficácia -->
+                <div class="evidence-upload-panel" id="eficaciaEvidencePanel">
+                  <div class="evidence-actions-bar">
+                    <label class="btn-evidence-action camera" title="Tirar foto agora usando a câmera">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+                      <span>Câmera</span>
+                      <input type="file" id="inputEficaciaCamera" accept="image/*" capture="environment" style="display:none;" onchange="handleEvidenceFileInput(event, 'eficacia')">
+                    </label>
+                    <label class="btn-evidence-action gallery" title="Selecionar fotos ou imagens da eficácia">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                      <span>Fotos</span>
+                      <input type="file" id="inputEficaciaGallery" accept="image/*" multiple style="display:none;" onchange="handleEvidenceFileInput(event, 'eficacia')">
+                    </label>
+                    <label class="btn-evidence-action pdf" title="Anexar laudo, certificado ou PDF">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+                      <span>PDF / Laudo</span>
+                      <input type="file" id="inputEficaciaPdf" accept=".pdf,application/pdf" multiple style="display:none;" onchange="handleEvidenceFileInput(event, 'eficacia')">
+                    </label>
+                  </div>
+                  <div class="evidence-dropzone" id="eficaciaDropzone" ondragover="handleEvidenceDragOver(event)" ondragleave="handleEvidenceDragLeave(event)" ondrop="handleEvidenceDrop(event, 'eficacia')">
+                    <div class="evidence-empty-msg" id="eficaciaEvidenceEmptyMsg">
+                      <span>Nenhum laudo ou foto anexado à comprovação de eficácia.</span>
+                    </div>
+                    <div class="evidence-items-grid" id="eficaciaEvidenceItemsGrid" style="display:none;"></div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -2530,8 +2778,50 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     </div>
 
     <div class="field" style="margin-top:12px;">
-      <label for="m_saaEvid">Evidência de Conclusão</label>
-      <textarea id="m_saaEvid" placeholder="Registro, foto, relatório técnico, OS ou certificado comprobatório..."></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:6px;">
+        <label for="m_saaEvid" style="margin:0;">Evidência de Conclusão e Documentação Comprobatória</label>
+        <span class="hint" style="font-size:11.5px;">📸 Câmera, fotos, PDFs e clipboard (Ctrl+V)</span>
+      </div>
+      <textarea id="m_saaEvid" placeholder="Descrever a evidência objetiva: relatório técnico, OS, certificado de calibração, fotos comprobatórias..."></textarea>
+
+      <!-- Painel de Anexos Multimídia de Evidência -->
+      <div class="evidence-upload-panel" id="saaEvidencePanel">
+        <div class="evidence-actions-bar">
+          <!-- Botão Câmera (ativa câmera do smartphone/tablet/webcam diretamente) -->
+          <label class="btn-evidence-action camera" title="Tirar foto agora usando a câmera do dispositivo">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+            <span>Tirar Foto (Câmera)</span>
+            <input type="file" id="inputSaaCamera" accept="image/*" capture="environment" style="display:none;" onchange="handleEvidenceFileInput(event, 'saa')">
+          </label>
+
+          <!-- Botão Galeria / Imagens do Armazenamento -->
+          <label class="btn-evidence-action gallery" title="Selecionar fotos ou imagens do armazenamento">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <span>Fotos / Galeria</span>
+            <input type="file" id="inputSaaGallery" accept="image/*" multiple style="display:none;" onchange="handleEvidenceFileInput(event, 'saa')">
+          </label>
+
+          <!-- Botão Documento PDF / Arquivos -->
+          <label class="btn-evidence-action pdf" title="Anexar certificado, laudo ou relatório em PDF">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+            <span>Anexar PDF / Laudo</span>
+            <input type="file" id="inputSaaPdf" accept=".pdf,application/pdf" multiple style="display:none;" onchange="handleEvidenceFileInput(event, 'saa')">
+          </label>
+
+          <span class="evidence-paste-hint" title="Você também pode copiar uma imagem e colar aqui com Ctrl+V">
+            📋 Cole com <b>Ctrl+V</b> ou arraste
+          </span>
+        </div>
+
+        <!-- Dropzone / Grade de Miniaturas -->
+        <div class="evidence-dropzone" id="saaDropzone" ondragover="handleEvidenceDragOver(event)" ondragleave="handleEvidenceDragLeave(event)" ondrop="handleEvidenceDrop(event, 'saa')">
+          <div class="evidence-empty-msg" id="saaEvidenceEmptyMsg">
+            <span>Nenhuma foto ou PDF anexado até o momento.</span>
+            <small>Clique nos botões acima, arraste arquivos para cá ou cole com Ctrl+V.</small>
+          </div>
+          <div class="evidence-items-grid" id="saaEvidenceItemsGrid" style="display:none;"></div>
+        </div>
+      </div>
     </div>
 
     <div class="grid" style="margin-top:12px;">
@@ -2567,6 +2857,30 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;border-top:1px solid var(--line);padding-top:14px;">
       <button type="button" id="btnSaveSaaAction" class="primary">Salvar Ação SAA</button>
       <button type="button" id="btnCancelSaaAction" class="btn-action-outline">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================== -->
+<!-- MODAL: VISUALIZAÇÃO PRÉVIA DE EVIDÊNCIA (LIGHTBOX)       -->
+<!-- ======================================================== -->
+<div class="modal-backdrop" id="modalEvidencePreview" style="display:none;z-index:99999;">
+  <div class="modal" style="max-width:860px;padding:20px;">
+    <div class="modal-head" style="margin-bottom:12px;padding-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+        <span id="previewEvidenceIcon" style="font-size:24px;flex-shrink:0;">🖼️</span>
+        <div style="min-width:0;">
+          <h3 id="previewEvidenceTitle" style="margin:0;font-size:16px;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Visualizar Evidência</h3>
+          <span id="previewEvidenceMeta" style="font-size:12px;color:var(--muted);"></span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <a id="btnDownloadEvidence" href="#" download class="btn-action-outline smallbtn" style="text-decoration:none;" title="Baixar arquivo original">⬇️ Baixar</a>
+        <button type="button" class="modal-close" onclick="closeModal('modalEvidencePreview')">&times;</button>
+      </div>
+    </div>
+    <div id="previewEvidenceBody" style="display:flex;justify-content:center;align-items:center;background:#0f172a;border-radius:8px;min-height:360px;max-height:72vh;overflow:auto;padding:10px;">
+      <!-- Imagem ou iframe de PDF injetado dinamicamente -->
     </div>
   </div>
 </div>
@@ -2738,6 +3052,7 @@ function createEmptyRot() {
     dataEficacia: '',
     descEficacia: '',
     statusEficacia: '', // 'SIM' ou 'NAO'
+    eficaciaEvidencias: [],
     
     // Campo 10 (Encerramento)
     necessidadeNovoRot: 'NAO',
@@ -3609,6 +3924,7 @@ function renderWizardReviewSummary() {
           <b>${a.saa}</b> · ${a.resp || '—'} · Prazo: ${formatDateBr(a.prazo)}<br>
           <span class="badge ${a.eficaz === 'SIM' ? 'ok' : a.eficaz === 'NÃO' ? 'tnc' : 'neutral'}" style="font-size:10px">${a.eficaz}</span>
           ${a.conclusao ? `· ${a.conclusao}` : ''}
+          ${(a.evidenciasArquivos && a.evidenciasArquivos.length) ? `<span style="margin-left:6px;color:var(--blue);font-weight:650;">📎 ${a.evidenciasArquivos.length} anexo(s)</span>` : ''}
         </div>`).join('')}
       ${acoesCount > 3 ? `<p class="hint">... e mais ${acoesCount - 3} ação(ões) no registro completo.</p>` : ''}
     </div>
@@ -3618,6 +3934,7 @@ function renderWizardReviewSummary() {
       <div class="review-row"><span>Status de Eficácia</span><b>${rot.statusEficacia === 'SIM' ? '<span class="badge ok">Eficaz ✓</span>' : rot.statusEficacia === 'NAO' ? '<span class="badge tnc">Não Eficaz ✗</span>' : '<span class="badge neutral">Pendente</span>'}</b></div>
       <div class="review-row"><span>Responsável Eficácia</span><b>${rot.respEficacia || '—'}</b></div>
       <div class="review-row"><span>Data de Avaliação</span><b>${formatDateBr(rot.dataEficacia)}</b></div>
+      ${(rot.eficaciaEvidencias && rot.eficaciaEvidencias.length) ? `<div class="review-row"><span>Evidências Técnicas</span><b>📎 ${rot.eficaciaEvidencias.length} anexo(s)</b></div>` : ''}
       <div class="review-row"><span>Matriz de Riscos Revisada</span><b>${rot.matrizRiscoRevisada ? '<span class="badge ok">Sim ✓</span>' : '<span class="badge neutral">Pendente</span>'}</b></div>
     </div>
 
@@ -3702,6 +4019,8 @@ function populateRotForm(rot) {
   document.getElementById('f_prazoEficacia').value = rot.prazoEficacia || '';
   document.getElementById('f_dataEficacia').value = rot.dataEficacia || '';
   document.getElementById('f_descEficacia').value = rot.descEficacia || '';
+  currentEficaciaEvidenceFiles = (rot.eficaciaEvidencias && Array.isArray(rot.eficaciaEvidencias)) ? JSON.parse(JSON.stringify(rot.eficaciaEvidencias)) : [];
+  renderEvidenceList('eficacia');
 
   if (rot.statusEficacia === 'SIM') document.getElementById('eficaz_sim').checked = true;
   else if (rot.statusEficacia === 'NAO') document.getElementById('eficaz_nao').checked = true;
@@ -3858,6 +4177,7 @@ function readFormIntoDraft() {
   activeRotDraft.prazoEficacia = document.getElementById('f_prazoEficacia').value;
   activeRotDraft.dataEficacia = document.getElementById('f_dataEficacia').value;
   activeRotDraft.descEficacia = document.getElementById('f_descEficacia').value.trim();
+  activeRotDraft.eficaciaEvidencias = currentEficaciaEvidenceFiles ? JSON.parse(JSON.stringify(currentEficaciaEvidenceFiles)) : [];
 
   const selEficaz = document.querySelector('input[name="f_statusEficacia"]:checked');
   activeRotDraft.statusEficacia = selEficaz ? selEficaz.value : '';
@@ -4479,6 +4799,353 @@ function closeAuthorModal() {
 }
 
 
+// ========================================================
+// SISTEMA DE EVIDÊNCIAS MULTIMÍDIA (FOTOS, CÂMERA, PDFS)
+// ========================================================
+let currentSaaEvidenceFiles = [];
+let currentEficaciaEvidenceFiles = [];
+
+// Formata o tamanho de arquivos em string legível
+function formatFileSize(bytes) {
+  if (!bytes || bytes <= 0) return '0 B';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+// Manipulador do input de arquivos (câmera, galeria ou pdf)
+async function handleEvidenceFileInput(event, context) {
+  const files = event.target.files;
+  if (!files || files.length === 0) return;
+  await processFilesForEvidence(Array.from(files), context);
+  event.target.value = '';
+}
+
+// Processa lista de arquivos (comprime imagens e converte PDFs)
+async function processFilesForEvidence(files, context) {
+  for (const file of files) {
+    try {
+      if (file.type && file.type.startsWith('image/')) {
+        const compressed = await compressImageFile(file);
+        addEvidenceFileToContext(compressed, context);
+      } else if (file.type === 'application/pdf' || (file.name && file.name.toLowerCase().endsWith('.pdf'))) {
+        const pdfObj = await processPdfFile(file);
+        addEvidenceFileToContext(pdfObj, context);
+      } else {
+        const docObj = await processGenericDocumentFile(file);
+        addEvidenceFileToContext(docObj, context);
+      }
+    } catch (err) {
+      console.error('Erro ao processar evidência:', err);
+      alert('Não foi possível processar o arquivo: ' + (file.name || 'arquivo') + '\n\n' + err.message);
+    }
+  }
+  renderEvidenceList(context);
+}
+
+function addEvidenceFileToContext(evidenceObj, context) {
+  if (context === 'saa') {
+    currentSaaEvidenceFiles.push(evidenceObj);
+  } else if (context === 'eficacia') {
+    currentEficaciaEvidenceFiles.push(evidenceObj);
+    hasUnsavedChanges = true;
+    updateSaveBannerStatus(isNewDraft ? 'new_draft' : 'unsaved');
+  }
+}
+
+// Compressão inteligente no cliente para salvar no Firestore/LocalStorage sem estourar cotas
+async function compressImageFile(file, maxWidth = 1280, maxHeight = 1280, quality = 0.8) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Falha na leitura do arquivo de imagem.'));
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Formato de imagem inválido.'));
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          if (width > height) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        const approxSize = Math.round((dataUrl.length * 3) / 4);
+
+        const cleanName = file.name ? (file.name.replace(/\.[^/.]+$/, "") + '.jpg') : ('foto_' + Date.now() + '.jpg');
+
+        resolve({
+          id: 'evid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+          nome: cleanName,
+          tipo: 'image/jpeg',
+          tamanho: approxSize,
+          dataUrl: dataUrl,
+          dataEnvio: new Date().toISOString()
+        });
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// Processa PDF em DataURL
+async function processPdfFile(file) {
+  return new Promise((resolve, reject) => {
+    if (file.size > 2.5 * 1024 * 1024) {
+      alert(`Aviso: O arquivo PDF "${file.name}" possui ${(file.size / (1024*1024)).toFixed(1)}MB. Arquivos muito volumosos podem afetar a velocidade de sincronização.`);
+    }
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Falha na leitura do arquivo PDF.'));
+    reader.onload = (e) => {
+      resolve({
+        id: 'evid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+        nome: file.name || 'documento.pdf',
+        tipo: 'application/pdf',
+        tamanho: file.size,
+        dataUrl: e.target.result,
+        dataEnvio: new Date().toISOString()
+      });
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// Processa documento genérico
+async function processGenericDocumentFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Falha na leitura do arquivo.'));
+    reader.onload = (e) => {
+      resolve({
+        id: 'evid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+        nome: file.name || 'documento',
+        tipo: file.type || 'application/octet-stream',
+        tamanho: file.size,
+        dataUrl: e.target.result,
+        dataEnvio: new Date().toISOString()
+      });
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// Renderiza miniaturas no container de evidências (SAA ou Eficácia)
+function renderEvidenceList(context) {
+  const isSaa = context === 'saa';
+  const list = isSaa ? currentSaaEvidenceFiles : currentEficaciaEvidenceFiles;
+  const emptyMsg = document.getElementById(isSaa ? 'saaEvidenceEmptyMsg' : 'eficaciaEvidenceEmptyMsg');
+  const itemsGrid = document.getElementById(isSaa ? 'saaEvidenceItemsGrid' : 'eficaciaEvidenceItemsGrid');
+
+  if (!itemsGrid) return;
+
+  if (!list || list.length === 0) {
+    if (emptyMsg) emptyMsg.style.display = 'flex';
+    itemsGrid.style.display = 'none';
+    itemsGrid.innerHTML = '';
+    return;
+  }
+
+  if (emptyMsg) emptyMsg.style.display = 'none';
+  itemsGrid.style.display = 'grid';
+  itemsGrid.innerHTML = '';
+
+  list.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'evidence-card';
+
+    let thumbHtml = '';
+    if (item.tipo && item.tipo.startsWith('image/')) {
+      thumbHtml = `
+        <div class="evidence-thumb-wrap" onclick="openEvidenceDirectPreview('${context}', ${idx})" title="Clique para ampliar a foto">
+          <img src="${item.dataUrl}" alt="${escapeHtml(item.nome)}">
+        </div>
+      `;
+    } else {
+      thumbHtml = `
+        <div class="evidence-thumb-wrap" onclick="openEvidenceDirectPreview('${context}', ${idx})" title="Clique para visualizar o documento PDF">
+          <div class="evidence-pdf-badge">
+            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5z"/></svg>
+            <span>PDF</span>
+          </div>
+        </div>
+      `;
+    }
+
+    card.innerHTML = `
+      ${thumbHtml}
+      <button type="button" class="evidence-card-del" onclick="removeEvidenceFile('${context}', '${item.id}')" title="Remover este anexo">&times;</button>
+      <div class="evidence-card-info">
+        <div class="evidence-card-name" title="${escapeHtml(item.nome)}">${escapeHtml(item.nome)}</div>
+        <div class="evidence-card-meta">
+          <span>${formatFileSize(item.tamanho)}</span>
+          <span style="color:var(--teal);cursor:pointer;font-weight:700;" onclick="openEvidenceDirectPreview('${context}', ${idx})">Ver</span>
+        </div>
+      </div>
+    `;
+    itemsGrid.appendChild(card);
+  });
+}
+
+function removeEvidenceFile(context, fileId) {
+  if (context === 'saa') {
+    currentSaaEvidenceFiles = currentSaaEvidenceFiles.filter(f => f.id !== fileId);
+    renderEvidenceList('saa');
+  } else if (context === 'eficacia') {
+    currentEficaciaEvidenceFiles = currentEficaciaEvidenceFiles.filter(f => f.id !== fileId);
+    renderEvidenceList('eficacia');
+    hasUnsavedChanges = true;
+    updateSaveBannerStatus(isNewDraft ? 'new_draft' : 'unsaved');
+  }
+}
+
+// Drag and drop
+function handleEvidenceDragOver(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.add('dragover');
+}
+function handleEvidenceDragLeave(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.remove('dragover');
+}
+function handleEvidenceDrop(e, context) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.remove('dragover');
+  if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+    processFilesForEvidence(Array.from(e.dataTransfer.files), context);
+  }
+}
+
+// Captura de Prints com Ctrl+V (Clipboard)
+document.addEventListener('paste', (e) => {
+  const modalSaa = document.getElementById('modalSaaAction');
+  const isSaaOpen = modalSaa && modalSaa.style.display !== 'none';
+  const isStep5 = currentWizardStep === 5;
+
+  if (!isSaaOpen && !isStep5) return;
+
+  const items = (e.clipboardData || window.clipboardData)?.items;
+  if (!items) return;
+
+  const imageFiles = [];
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type && items[i].type.indexOf('image') !== -1) {
+      const file = items[i].getAsFile();
+      if (file) imageFiles.push(file);
+    }
+  }
+
+  if (imageFiles.length > 0) {
+    const targetContext = isSaaOpen ? 'saa' : 'eficacia';
+    processFilesForEvidence(imageFiles, targetContext);
+  }
+});
+
+// Abertura do Modal de Visualização (Lightbox)
+function openEvidenceDirectPreview(context, index) {
+  const list = context === 'saa' ? currentSaaEvidenceFiles : currentEficaciaEvidenceFiles;
+  if (!list || !list[index]) return;
+  displayEvidenceModal(list[index]);
+}
+
+function openEvidencePreviewFromAction(actionIndex, fileIndex) {
+  const rot = getActiveRot();
+  if (!rot || !rot.acoesSaa || !rot.acoesSaa[actionIndex]) return;
+  const arquivos = rot.acoesSaa[actionIndex].evidenciasArquivos;
+  if (!arquivos || !arquivos[fileIndex]) return;
+  displayEvidenceModal(arquivos[fileIndex]);
+}
+
+function displayEvidenceModal(file) {
+  const titleEl = document.getElementById('previewEvidenceTitle');
+  const metaEl = document.getElementById('previewEvidenceMeta');
+  const iconEl = document.getElementById('previewEvidenceIcon');
+  const bodyEl = document.getElementById('previewEvidenceBody');
+  const dlBtn = document.getElementById('btnDownloadEvidence');
+
+  if (titleEl) titleEl.innerText = file.nome || 'Evidência Comprobatória';
+  if (metaEl) metaEl.innerText = `${formatFileSize(file.tamanho)} · Anexado em ${formatDateBr(file.dataEnvio ? file.dataEnvio.slice(0,10) : '')}`;
+  if (dlBtn) {
+    dlBtn.href = file.dataUrl;
+    dlBtn.download = file.nome || 'evidencia';
+  }
+
+  if (bodyEl) {
+    bodyEl.innerHTML = '';
+    if (file.tipo && file.tipo.startsWith('image/')) {
+      if (iconEl) iconEl.innerText = '🖼️';
+      const img = document.createElement('img');
+      img.src = file.dataUrl;
+      img.alt = file.nome;
+      img.style.maxWidth = '100%';
+      img.style.maxHeight = '68vh';
+      img.style.objectFit = 'contain';
+      img.style.borderRadius = '6px';
+      img.style.boxShadow = '0 8px 30px rgba(0,0,0,0.5)';
+      bodyEl.appendChild(img);
+    } else if (file.tipo === 'application/pdf' || (file.nome && file.nome.toLowerCase().endsWith('.pdf'))) {
+      if (iconEl) iconEl.innerText = '📄';
+      const iframe = document.createElement('iframe');
+      iframe.src = file.dataUrl;
+      iframe.style.width = '100%';
+      iframe.style.height = '68vh';
+      iframe.style.border = 'none';
+      iframe.style.borderRadius = '6px';
+      bodyEl.appendChild(iframe);
+    } else {
+      if (iconEl) iconEl.innerText = '📎';
+      bodyEl.innerHTML = `
+        <div style="color:white;text-align:center;padding:40px;">
+          <div style="font-size:48px;margin-bottom:12px;">📁</div>
+          <h4 style="margin:0 0 8px;color:#cbd5e1;">${escapeHtml(file.nome)}</h4>
+          <p style="color:#94a3b8;font-size:13px;margin:0 0 16px;">Arquivo em formato não visualizável diretamente no navegador.</p>
+          <a href="${file.dataUrl}" download="${escapeHtml(file.nome)}" class="primary" style="padding:8px 16px;text-decoration:none;display:inline-block;border-radius:6px;">Baixar Arquivo (${formatFileSize(file.tamanho)})</a>
+        </div>
+      `;
+    }
+  }
+
+  openModal('modalEvidencePreview');
+}
+
+// Renderiza a célula de Evidência com texto e badges interativos
+function formatEvidenceCell(textoEvid, arquivosList, actionIndex) {
+  let html = '';
+  if (textoEvid && textoEvid.trim()) {
+    html += `<div style="margin-bottom:4px;">${escapeHtml(textoEvid.trim())}</div>`;
+  }
+  if (arquivosList && arquivosList.length > 0) {
+    html += `<div class="evidence-badges-row">`;
+    arquivosList.forEach((file, fIdx) => {
+      const isImg = file.tipo && file.tipo.startsWith('image/');
+      const icon = isImg ? '📸' : '📄';
+      const cls = isImg ? 'img' : 'pdf';
+      html += `
+        <span class="badge-evidence ${cls}" onclick="openEvidencePreviewFromAction(${actionIndex}, ${fIdx})" title="Visualizar ${escapeHtml(file.nome)} (${formatFileSize(file.tamanho)})">
+          ${icon} ${escapeHtml(file.nome)}
+        </span>
+      `;
+    });
+    html += `</div>`;
+  }
+  return html || '—';
+}
+
 // Tabela do Anexo 2 no Workspace
 function renderSaaTableWorkspace() {
   const tbody = document.getElementById('tbodySaaWorkspace');
@@ -4500,7 +5167,7 @@ function renderSaaTableWorkspace() {
       <td>${acao.rot}</td>
       <td>${acao.resp}</td>
       <td>${formatDateBr(acao.prazo)}</td>
-      <td>${acao.evid || '—'}</td>
+      <td>${formatEvidenceCell(acao.evid, acao.evidenciasArquivos, index)}</td>
       <td><span class="badge ${acao.conclusao === 'Concluída' ? 'ok' : 'neutral'}">${acao.conclusao}</span></td>
       <td><span class="badge ${acao.eficaz === 'SIM' ? 'ok' : (acao.eficaz === 'NÃO' ? 'tnc' : 'neutral')}">${acao.eficaz}</span></td>
       <td>${formatDateBr(acao.dataAval)}</td>
@@ -4536,6 +5203,9 @@ function openNewSaaModal() {
   document.getElementById('m_saaDataEficaz').value = '';
   document.getElementById('m_saaNovaAcao').value = '';
 
+  currentSaaEvidenceFiles = [];
+  renderEvidenceList('saa');
+
   openModal('modalSaaAction');
 }
 
@@ -4551,11 +5221,14 @@ function editSaaAction(index) {
   document.getElementById('m_saaDesc').value = a.desc;
   document.getElementById('m_saaResp').value = a.resp;
   document.getElementById('m_saaPrazo').value = a.prazo;
-  document.getElementById('m_saaEvid').value = a.evid;
+  document.getElementById('m_saaEvid').value = a.evid || '';
   document.getElementById('m_saaStatus').value = a.conclusao;
   document.getElementById('m_saaEficaz').value = a.eficaz;
   document.getElementById('m_saaDataEficaz').value = a.dataAval;
   document.getElementById('m_saaNovaAcao').value = a.novaAcao;
+
+  currentSaaEvidenceFiles = a.evidenciasArquivos ? JSON.parse(JSON.stringify(a.evidenciasArquivos)) : [];
+  renderEvidenceList('saa');
 
   openModal('modalSaaAction');
 }
@@ -4581,6 +5254,7 @@ function saveSaaActionModal() {
     resp: resp,
     prazo: prazo,
     evid: document.getElementById('m_saaEvid').value.trim(),
+    evidenciasArquivos: currentSaaEvidenceFiles ? JSON.parse(JSON.stringify(currentSaaEvidenceFiles)) : [],
     conclusao: document.getElementById('m_saaStatus').value,
     eficaz: document.getElementById('m_saaEficaz').value,
     dataAval: document.getElementById('m_saaDataEficaz').value,
@@ -5063,6 +5737,11 @@ function buildOfficialPrintHtml(rot) {
     saaRowsHtml = '<tr><td colspan="10" style="text-align:center;padding:12px;">Nenhuma ação SAA registrada.</td></tr>';
   } else {
     acoes.forEach(a => {
+      let evidText = a.evid || '';
+      if (a.evidenciasArquivos && a.evidenciasArquivos.length > 0) {
+        const fileNames = a.evidenciasArquivos.map(f => f.nome).join(', ');
+        evidText = evidText ? `${evidText} [Anexos: ${fileNames}]` : `[Anexos: ${fileNames}]`;
+      }
       saaRowsHtml += `
         <tr>
           <td><b>${a.saa}</b></td>
@@ -5070,7 +5749,7 @@ function buildOfficialPrintHtml(rot) {
           <td>${a.rot}</td>
           <td>${a.resp}</td>
           <td>${formatDateBr(a.prazo)}</td>
-          <td>${a.evid || '—'}</td>
+          <td>${evidText || '—'}</td>
           <td>${a.conclusao}</td>
           <td>${a.eficaz === 'SIM' ? '[X] SIM [ ] NÃO' : (a.eficaz === 'NÃO' ? '[ ] SIM [X] NÃO' : '[ ] SIM [ ] NÃO')}</td>
           <td>${formatDateBr(a.dataAval)}</td>
