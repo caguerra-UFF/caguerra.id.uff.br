@@ -6,9 +6,10 @@
 <title>Tratamento de Ocorrências, TNC e Ações Corretivas · IT-LM-GE-003 · ISO/IEC 17025</title>
 <meta name="theme-color" content="#1b80c4">
 
-<!-- Firebase App e Cloud Firestore SDK (Compat v10) -->
+<!-- Firebase App, Cloud Firestore e Authentication SDK (Compat v10) -->
 <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
 
 <style>
 :root{
@@ -887,6 +888,192 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   background: #fee2e2;
   transform: translateY(-1px);
 }
+
+/* ======================================================== */
+/* AUTENTICAÇÃO GOOGLE E CONTROLE DE PERFIS (RBAC)          */
+/* ======================================================== */
+.btn-google-login {
+  background: #ffffff;
+  color: #1f2937;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all .18s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.btn-google-login:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+.user-chip-wrap {
+  position: relative;
+  display: inline-block;
+}
+.user-chip {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  padding: 3px 12px 3px 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: white;
+  transition: all .18s ease;
+  user-select: none;
+}
+.user-chip:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: var(--en-green);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--en-green);
+  background: #ffffff;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0b3b60;
+}
+.user-info-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  text-align: left;
+}
+.user-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-role-badge {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.user-role-badge.supervisor {
+  color: var(--en-green);
+}
+.user-role-badge.analista {
+  color: #93c5fd;
+}
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+  min-width: 260px;
+  z-index: 1000;
+  overflow: hidden;
+  animation: fadeInStep .15s ease;
+}
+.user-dropdown-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  background: #f8fafc;
+}
+.user-dropdown-header strong {
+  font-size: 13px;
+  color: var(--navy);
+  display: block;
+}
+.user-dropdown-header small {
+  color: var(--muted);
+  font-size: 11px;
+  word-break: break-all;
+}
+.user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  transition: background .15s ease;
+}
+.user-dropdown-item:hover {
+  background: #f0f7fb;
+  color: var(--blue);
+}
+.user-dropdown-item.danger {
+  color: var(--danger);
+  border-top: 1px solid var(--line);
+}
+.user-dropdown-item.danger:hover {
+  background: var(--danger-bg);
+}
+
+/* Banners da Etapa 5 (Eficácia e Riscos) */
+.step5-banner {
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.step5-banner.locked {
+  background: #fff8f0;
+  border: 1.5px solid #f97316;
+  color: #9a3412;
+}
+.step5-banner.authorized {
+  background: #ecfdf5;
+  border: 1.5px solid #10b981;
+  color: #065f46;
+}
+.step5-disabled-mode input:disabled,
+.step5-disabled-mode textarea:disabled,
+.step5-disabled-mode select:disabled {
+  background-color: #f1f5f9 !important;
+  color: #64748b !important;
+  cursor: not-allowed !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: none !important;
+}
+.step5-disabled-mode label.btn-evidence-action {
+  opacity: 0.45 !important;
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+}
+.step5-disabled-mode .checkline {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 .triagem-card-title{font-size:14px;font-weight:750;margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .triagem-card-sub{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.02em}
 .triagem-card-desc{font-size:12px;color:var(--navy);line-height:1.35;margin-bottom:10px;flex-grow:1}
@@ -1500,6 +1687,14 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   <div class="topbar-right">
     <!-- Indicador de Status da Nuvem Firebase/Firestore -->
     <div id="cloudSyncPill" class="cloud-sync-pill" onclick="showCloudStatusModal()" title="Clique para ver detalhes da conexão Firebase ou forçar sincronização">☁️ Nuvem: Conectando...</div>
+
+    <!-- Identificação do Usuário / Login Google & Perfil RBAC -->
+    <div id="authContainer" style="display:flex;align-items:center;">
+      <button type="button" class="btn-google-login" id="btnGoogleLogin" onclick="loginWithGoogle()" title="Fazer login com conta Google para acessar permissões de Supervisor">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        <span>Entrar com Google</span>
+      </button>
+    </div>
 
     <!-- Botões exibidos apenas no Hub (tela inicial) - Ocultados quando ROT está aberto -->
     <div id="topbarHubActions" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
@@ -2254,7 +2449,11 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
             </div>
           </div>
 
-          <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
+          <!-- Container Dinâmico do Guardião de Permissão Normativa (Analista vs. Supervisor) -->
+          <div id="step5AuthNoticeContainer"></div>
+
+          <!-- Grade dos Campos da Etapa 5 (Controlada pelo Perfil do Usuário) -->
+          <div class="grid" id="step5FieldsWrapper" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
             <!-- Coluna Esquerda: Eficácia das Ações -->
             <div style="display:flex;flex-direction:column;gap:10px;">
               <div class="grid" style="grid-template-columns: 1fr 1fr;gap:10px;">
@@ -2886,6 +3085,55 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 </div>
 
 <!-- ======================================================== -->
+<!-- MODAL: GESTÃO DE USUÁRIOS E PERMISSÕES (SUPERVISOR / RQ) -->
+<!-- ======================================================== -->
+<div class="modal-backdrop" id="modalUserManagement" style="display:none;z-index:99990;">
+  <div class="modal" style="max-width:760px;">
+    <div class="modal-head">
+      <div>
+        <span class="badge ok">Controle de Acesso · ISO/IEC 17025</span>
+        <h2 style="margin:4px 0 0;">👥 Gestão de Usuários e Perfis</h2>
+      </div>
+      <button type="button" class="modal-close" onclick="closeModal('modalUserManagement')">&times;</button>
+    </div>
+
+    <div class="notice info" style="margin:10px 0 16px;">
+      <b>Regra de Perfis Normativos (IT-LM-GE-003):</b>
+      <br>• <b>Supervisor / RQ:</b> Acesso irrestrito com autorização privativa para preencher a <b>Etapa 5 (Avaliação da Eficácia & Gestão de Riscos)</b>, revisar a Matriz de Riscos e gerenciar perfis.
+      <br>• <b>Analista:</b> Abre ROTs, registra ações imediatas, investiga causas e cadastra ações SAA com evidências. Visualização somente-leitura na Etapa 5.
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+      <h3 style="margin:0;font-size:15px;color:var(--navy);">Usuários Autorizados no Sistema</h3>
+      <button type="button" class="btn-action-outline smallbtn" onclick="promptAddUserEmail()">
+        + Autorizar Novo E-mail
+      </button>
+    </div>
+
+    <div class="scroll" style="max-height:360px;">
+      <table id="tableUsersList">
+        <thead>
+          <tr>
+            <th>Usuário</th>
+            <th>E-mail</th>
+            <th>Perfil / Função</th>
+            <th>Último Acesso</th>
+            <th style="width:120px;text-align:center;">Alternar Perfil</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyUsersList">
+          <!-- Injetado dinamicamente -->
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-top:18px;border-top:1px solid var(--line);padding-top:12px;">
+      <button type="button" class="btn-action-outline" onclick="closeModal('modalUserManagement')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================== -->
 <!-- MODAL: CASOS DE TREINAMENTO DA AULA                      -->
 <!-- ======================================================== -->
 <div class="modal-backdrop" id="modalTrainingCases" style="display:none;">
@@ -3292,6 +3540,580 @@ const FIRESTORE_COLLECTION = 'lma_rots';
 let firestoreDb = null;
 let isCloudOnline = false;
 
+// ========================================================
+// CONTROLE DE ACESSO (RBAC) & AUTENTICAÇÃO GOOGLE
+// Perfis: SUPERVISOR (Acesso Total + Etapa 5) vs ANALISTA
+// ========================================================
+const FIRESTORE_USERS_COLLECTION = 'lma_users';
+const USERS_STORAGE_KEY = 'lma_users_directory_db';
+const AUTH_USER_STORAGE_KEY = 'lma_active_authenticated_user';
+
+let firebaseAuth = null;
+let googleAuthProvider = null;
+let currentUser = null; // { uid, email, displayName, photoURL, role: 'SUPERVISOR'|'ANALISTA', lastLogin, isDemo }
+let usersDirectory = [];
+
+// E-mails pré-autorizados com perfil SUPERVISOR por padrão normativo
+const DEFAULT_SUPERVISOR_EMAILS = [
+  'caguerra@id.uff.br',
+  'caguerra.uff@gmail.com',
+  'caguerra@gmail.com'
+];
+
+function loadLocalUsersDirectory() {
+  try {
+    const saved = localStorage.getItem(USERS_STORAGE_KEY);
+    if (saved) {
+      usersDirectory = JSON.parse(saved);
+    } else {
+      usersDirectory = [
+        {
+          uid: 'bootstrap_super_1',
+          email: 'caguerra@id.uff.br',
+          displayName: 'Carlos Alberto Guerra (Supervisor / RQ)',
+          role: 'SUPERVISOR',
+          photoURL: '',
+          lastLogin: new Date().toISOString()
+        }
+      ];
+      saveLocalUsersDirectory();
+    }
+  } catch (e) {
+    console.error('Erro ao carregar diretório local de usuários:', e);
+    usersDirectory = [];
+  }
+
+  try {
+    const savedActive = localStorage.getItem(AUTH_USER_STORAGE_KEY);
+    if (savedActive) {
+      currentUser = JSON.parse(savedActive);
+    }
+  } catch (e) {
+    currentUser = null;
+  }
+}
+
+function saveLocalUsersDirectory() {
+  try {
+    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(usersDirectory));
+  } catch (e) {
+    console.error('Erro ao salvar diretório local de usuários:', e);
+  }
+}
+
+function listenToUsersDirectory() {
+  if (!firestoreDb) return;
+
+  firestoreDb.collection(FIRESTORE_USERS_COLLECTION).onSnapshot(
+    (snapshot) => {
+      if (snapshot.empty) {
+        usersDirectory.forEach(u => saveUserToCloud(u));
+        return;
+      }
+      const cloudUsers = [];
+      snapshot.forEach(doc => {
+        const uData = doc.data();
+        cloudUsers.push(uData);
+      });
+
+      const cloudEmails = new Set(cloudUsers.map(u => (u.email || '').toLowerCase()));
+      usersDirectory.forEach(lu => {
+        if (lu.email && !cloudEmails.has(lu.email.toLowerCase())) {
+          cloudUsers.push(lu);
+          saveUserToCloud(lu);
+        }
+      });
+
+      usersDirectory = cloudUsers;
+      saveLocalUsersDirectory();
+
+      // Se o usuário atual foi atualizado remotamente
+      if (currentUser && currentUser.email) {
+        const match = usersDirectory.find(u => (u.email || '').toLowerCase() === currentUser.email.toLowerCase());
+        if (match && match.role !== currentUser.role) {
+          currentUser.role = match.role;
+          localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(currentUser));
+          updateAuthUI();
+          applyStep5Permissions();
+        }
+      }
+
+      const modal = document.getElementById('modalUserManagement');
+      if (modal && modal.style.display === 'flex') {
+        renderUsersTable();
+      }
+    },
+    (err) => {
+      console.warn('Aviso ao sincronizar diretório de usuários com a nuvem:', err);
+    }
+  );
+}
+
+async function saveUserToCloud(userObj) {
+  if (!firestoreDb || !userObj || !userObj.email) return;
+  try {
+    const docId = userObj.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    await firestoreDb.collection(FIRESTORE_USERS_COLLECTION).doc(docId).set(userObj, { merge: true });
+  } catch (e) {
+    console.warn('Falha ao persistir usuário na nuvem:', e);
+  }
+}
+
+function initAuthListener() {
+  if (!firebaseAuth) return;
+
+  firebaseAuth.onAuthStateChanged((user) => {
+    if (user) {
+      handleUserLoggedIn(user);
+    } else {
+      if (currentUser && currentUser.isDemo) {
+        updateAuthUI();
+        applyStep5Permissions();
+      } else {
+        currentUser = null;
+        localStorage.removeItem(AUTH_USER_STORAGE_KEY);
+        updateAuthUI();
+        applyStep5Permissions();
+      }
+    }
+  });
+}
+
+function handleUserLoggedIn(user) {
+  const email = (user.email || '').trim().toLowerCase();
+  const displayName = user.displayName || user.email || 'Usuário Google';
+  const photoURL = user.photoURL || '';
+
+  let role = 'ANALISTA';
+  const existing = usersDirectory.find(u => (u.email || '').toLowerCase() === email);
+
+  if (existing && existing.role) {
+    role = existing.role;
+  } else if (DEFAULT_SUPERVISOR_EMAILS.some(e => e.toLowerCase() === email) || usersDirectory.length === 0) {
+    role = 'SUPERVISOR';
+  }
+
+  currentUser = {
+    uid: user.uid,
+    email: user.email,
+    displayName: displayName,
+    photoURL: photoURL,
+    role: role,
+    lastLogin: new Date().toISOString(),
+    isDemo: false
+  };
+
+  if (existing) {
+    existing.displayName = displayName;
+    existing.photoURL = photoURL;
+    existing.lastLogin = currentUser.lastLogin;
+    existing.role = role;
+  } else {
+    usersDirectory.push(currentUser);
+  }
+
+  saveLocalUsersDirectory();
+  saveUserToCloud(currentUser);
+  localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(currentUser));
+
+  updateAuthUI();
+  applyStep5Permissions();
+}
+
+async function loginWithGoogle() {
+  if (!firebaseAuth || !googleAuthProvider) {
+    offerFallbackAuthChoice('O serviço de autenticação do Firebase ainda não está ativo.');
+    return;
+  }
+
+  try {
+    const result = await firebaseAuth.signInWithPopup(googleAuthProvider);
+    if (result && result.user) {
+      handleUserLoggedIn(result.user);
+    }
+  } catch (error) {
+    console.error('Erro no login Google:', error);
+
+    if (error.code === 'auth/popup-closed-by-user') {
+      return;
+    }
+
+    if (error.code === 'auth/operation-not-allowed' ||
+        error.code === 'auth/configuration-not-found' ||
+        error.code === 'auth/unauthorized-domain') {
+      offerFallbackAuthChoice(
+        `O login oficial do Google precisa ser ativado no Firebase Console (Authentication > Sign-in method > Google).\n\nCódigo: ${error.code}`
+      );
+    } else {
+      offerFallbackAuthChoice(`Não foi possível autenticar com o Google (${error.message}).`);
+    }
+  }
+}
+
+function offerFallbackAuthChoice(reasonMessage) {
+  const msg = `${reasonMessage}\n\n` +
+    `Para testar o fluxo com perfis normativos no sistema agora, selecione uma opção:\n\n` +
+    `• Clique em [OK] para entrar como SUPERVISOR / RQ (Acesso total com liberação da Etapa 5)\n` +
+    `• Clique em [Cancelar] para entrar como ANALISTA (Somente leitura na Etapa 5)`;
+
+  if (confirm(msg)) {
+    setSimulatedUser('SUPERVISOR');
+  } else {
+    setSimulatedUser('ANALISTA');
+  }
+}
+
+function setSimulatedUser(role) {
+  const isSupervisor = (role === 'SUPERVISOR');
+  currentUser = {
+    uid: 'demo_' + role.toLowerCase(),
+    email: isSupervisor ? 'caguerra@id.uff.br' : 'analista.laboratorio@uff.br',
+    displayName: isSupervisor ? 'Carlos Alberto Guerra (Supervisor / RQ)' : 'Analista de Bancada',
+    photoURL: '',
+    role: role,
+    lastLogin: new Date().toISOString(),
+    isDemo: true
+  };
+
+  const existing = usersDirectory.find(u => u.email && u.email.toLowerCase() === currentUser.email.toLowerCase());
+  if (!existing) {
+    usersDirectory.push(currentUser);
+    saveLocalUsersDirectory();
+    saveUserToCloud(currentUser);
+  }
+
+  localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(currentUser));
+  updateAuthUI();
+  applyStep5Permissions();
+}
+
+function logoutUser() {
+  if (firebaseAuth) {
+    try {
+      firebaseAuth.signOut();
+    } catch (e) {}
+  }
+  currentUser = null;
+  localStorage.removeItem(AUTH_USER_STORAGE_KEY);
+  closeUserDropdown();
+  updateAuthUI();
+  applyStep5Permissions();
+}
+
+function switchUserRolePrompt() {
+  closeUserDropdown();
+  if (!currentUser) {
+    offerFallbackAuthChoice('Selecione o perfil desejado para acessar o sistema:');
+    return;
+  }
+  const nextRole = currentUser.role === 'SUPERVISOR' ? 'ANALISTA' : 'SUPERVISOR';
+  if (confirm(`Deseja alternar seu perfil atual de "${currentUser.role}" para "${nextRole}"?\n\nIsso simulará instantaneamente o comportamento visual e as restrições da Etapa 5.`)) {
+    currentUser.role = nextRole;
+
+    const match = usersDirectory.find(u => u.email && u.email.toLowerCase() === currentUser.email.toLowerCase());
+    if (match) {
+      match.role = nextRole;
+      saveLocalUsersDirectory();
+      saveUserToCloud(match);
+    }
+
+    localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(currentUser));
+    updateAuthUI();
+    applyStep5Permissions();
+  }
+}
+
+function updateAuthUI() {
+  const container = document.getElementById('authContainer');
+  if (!container) return;
+
+  if (!currentUser) {
+    container.innerHTML = `
+      <button type="button" class="btn-google-login" id="btnGoogleLogin" onclick="loginWithGoogle()" title="Fazer login com conta Google para acessar permissões de Supervisor">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        <span>Entrar com Google</span>
+      </button>
+    `;
+  } else {
+    const isSupervisor = currentUser.role === 'SUPERVISOR';
+    const roleBadgeClass = isSupervisor ? 'supervisor' : 'analista';
+    const roleTitle = isSupervisor ? '🛡️ Supervisor / RQ' : '🔬 Analista';
+    const initials = (currentUser.displayName || currentUser.email || 'U').charAt(0).toUpperCase();
+    const avatarUrl = currentUser.photoURL
+      ? currentUser.photoURL
+      : `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.displayName || currentUser.email)}&background=${isSupervisor ? '10b981' : '0284c7'}&color=fff&size=64`;
+
+    container.innerHTML = `
+      <div class="user-chip" id="userProfileChip" onclick="toggleUserDropdown(event)" title="Perfil de ${escapeHtml(currentUser.displayName || currentUser.email)}">
+        <img class="user-avatar" src="${avatarUrl}" alt="Avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=0284c7&color=fff'">
+        <div class="user-info-text">
+          <span class="user-name">${escapeHtml(currentUser.displayName || currentUser.email)}</span>
+          <span class="user-role-badge ${roleBadgeClass}">${roleTitle}</span>
+        </div>
+        <span style="font-size:10px;opacity:0.65;margin-left:2px;">▼</span>
+
+        <!-- Menu Suspenso de Opções de Perfil -->
+        <div class="user-dropdown-menu" id="userDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
+          <div class="user-dropdown-header">
+            <strong>${escapeHtml(currentUser.displayName || 'Usuário')}</strong>
+            <small>${escapeHtml(currentUser.email || '—')}</small>
+            <div style="margin-top:6px;">
+              <span class="badge ${isSupervisor ? 'ok' : 'info'}" style="font-size:10.5px;">
+                ${isSupervisor ? '🛡️ Supervisor / RQ (Acesso Total)' : '🔬 Analista de Laboratório'}
+              </span>
+            </div>
+          </div>
+          ${isSupervisor ? `
+            <button type="button" class="user-dropdown-item" onclick="openUserManagementModal()">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+              <span>👥 Gestão de Usuários & Perfis</span>
+            </button>
+          ` : ''}
+          <button type="button" class="user-dropdown-item" onclick="switchUserRolePrompt()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+            <span>Alternar Perfil (Simulação)</span>
+          </button>
+          <button type="button" class="user-dropdown-item danger" onclick="logoutUser()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            <span>Sair da Conta</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function toggleUserDropdown(event) {
+  if (event) event.stopPropagation();
+  const menu = document.getElementById('userDropdownMenu');
+  if (!menu) return;
+  menu.style.display = (menu.style.display === 'none' || !menu.style.display) ? 'block' : 'none';
+}
+
+function closeUserDropdown() {
+  const menu = document.getElementById('userDropdownMenu');
+  if (menu) menu.style.display = 'none';
+}
+
+document.addEventListener('click', () => {
+  closeUserDropdown();
+});
+
+// Guardião de Permissão da Etapa 5 (ISO/IEC 17025 § 8.7.1)
+function applyStep5Permissions() {
+  const container = document.getElementById('step5AuthNoticeContainer');
+  const wrapper = document.getElementById('step5FieldsWrapper');
+  if (!container || !wrapper) return;
+
+  const isSupervisor = currentUser && currentUser.role === 'SUPERVISOR';
+
+  if (isSupervisor) {
+    container.innerHTML = `
+      <div class="step5-banner authorized">
+        <span style="font-size:22px;line-height:1;">🛡️</span>
+        <div style="flex-grow:1;">
+          <div style="font-weight:750;font-size:13.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span>Acesso de Supervisor / RQ Ativo</span>
+            <span class="badge ok" style="font-size:10.5px;">ISO/IEC 17025 § 8.7.1</span>
+            <span style="font-size:12px;color:#065f46;font-weight:600;">(${escapeHtml(currentUser.displayName || currentUser.email)})</span>
+          </div>
+          <div style="font-size:12px;margin-top:3px;color:#064e3b;line-height:1.4;">
+            Conforme a norma <b>ABNT NBR ISO/IEC 17025</b> (§ 8.7.1) e o procedimento <b>IT-LM-GE-003</b> (Item 6.4.9), a avaliação da eficácia das ações corretivas, o parecer técnico e a revisão da Matriz de Riscos Operacionais (§ 8.5) estão sob sua responsabilidade técnica e plenamente habilitados para edição.
+          </div>
+        </div>
+      </div>
+    `;
+    wrapper.classList.remove('step5-disabled-mode');
+  } else {
+    const roleDesc = currentUser ? `🔬 Analista (${currentUser.displayName || currentUser.email})` : 'Usuário Não Autenticado';
+    container.innerHTML = `
+      <div class="step5-banner locked">
+        <span style="font-size:24px;line-height:1;">🔒</span>
+        <div style="flex-grow:1;">
+          <div style="font-weight:750;font-size:13.5px;color:#9a3412;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span>Etapa 5 Restrita a Supervisores / Representantes da Qualidade (RQ)</span>
+            <span class="badge danger" style="font-size:10.5px;">Somente Leitura</span>
+          </div>
+          <div style="font-size:12px;margin-top:4px;color:#7c2d12;line-height:1.45;">
+            <b>Requisito Normativo (ABNT NBR ISO/IEC 17025:2017 § 8.7.1 e IT-LM-GE-003 Item 6.4.9):</b> A avaliação da eficácia do conjunto das ações e a atualização mandatória da Matriz de Riscos constituem atribuição exclusiva da <b>Supervisão do Laboratório / RQ</b>.
+            <br>Seu perfil atual é <b>${escapeHtml(roleDesc)}</b>. Você pode consultar as informações já registradas, mas os campos de edição e conclusão permanecem bloqueados.
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            ${!currentUser ? `
+              <button type="button" class="btn-google-login" onclick="loginWithGoogle()" style="background:#fff;border-color:#ea580c;padding:5px 12px;font-size:12px;">
+                <svg viewBox="0 0 24 24" width="14" height="14"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                <span>Entrar como Supervisor</span>
+              </button>
+            ` : ''}
+            <button type="button" class="btn-action-outline smallbtn" onclick="switchUserRolePrompt()" style="background:#fff;border-color:#ea580c;color:#9a3412;">
+              ⚡ Alternar Perfil (Supervisor ↔ Analista)
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    wrapper.classList.add('step5-disabled-mode');
+  }
+
+  // Trava/Destrava todos os controles da Etapa 5
+  const controls = wrapper.querySelectorAll('input, textarea, select');
+  controls.forEach(ctrl => {
+    ctrl.disabled = !isSupervisor;
+  });
+
+  // Trava botões de anexo de evidência
+  const evidenceLabels = wrapper.querySelectorAll('.btn-evidence-action');
+  evidenceLabels.forEach(lbl => {
+    if (isSupervisor) {
+      lbl.style.pointerEvents = 'auto';
+      lbl.style.opacity = '1';
+    } else {
+      lbl.style.pointerEvents = 'none';
+      lbl.style.opacity = '0.45';
+    }
+  });
+
+  // Oculta botões de exclusão de evidência se for analista
+  const evidenceDelBtns = wrapper.querySelectorAll('.evidence-card-del');
+  evidenceDelBtns.forEach(btn => {
+    btn.style.display = isSupervisor ? 'flex' : 'none';
+  });
+}
+
+function openUserManagementModal() {
+  closeUserDropdown();
+  if (!currentUser || currentUser.role !== 'SUPERVISOR') {
+    alert('Acesso restrito: Apenas Supervisores têm permissão para acessar o painel de Gestão de Usuários.');
+    return;
+  }
+  openModal('modalUserManagement');
+  renderUsersTable();
+}
+
+function renderUsersTable() {
+  const tbody = document.getElementById('tbodyUsersList');
+  if (!tbody) return;
+
+  if (!usersDirectory || usersDirectory.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:18px;">Nenhum usuário cadastrado até o momento.</td></tr>`;
+    return;
+  }
+
+  const sorted = [...usersDirectory].sort((a, b) => {
+    if (a.role === 'SUPERVISOR' && b.role !== 'SUPERVISOR') return -1;
+    if (a.role !== 'SUPERVISOR' && b.role === 'SUPERVISOR') return 1;
+    return (a.displayName || a.email || '').localeCompare(b.displayName || b.email || '');
+  });
+
+  tbody.innerHTML = '';
+  sorted.forEach(u => {
+    const isSuper = u.role === 'SUPERVISOR';
+    const isSelf = currentUser && currentUser.email && u.email && currentUser.email.toLowerCase() === u.email.toLowerCase();
+    const initials = (u.displayName || u.email || 'U').charAt(0).toUpperCase();
+    const avatarUrl = u.photoURL ? u.photoURL : `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${isSuper ? '10b981' : '0284c7'}&color=fff&size=40`;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <img src="${avatarUrl}" style="width:26px;height:26px;border-radius:50%;object-fit:cover;" onerror="this.src='https://ui-avatars.com/api/?name=U&background=64748b&color=fff'">
+          <strong>${escapeHtml(u.displayName || 'Sem nome')}</strong>
+          ${isSelf ? '<span class="badge info" style="font-size:9px;">Você</span>' : ''}
+        </div>
+      </td>
+      <td><span style="font-size:12px;color:var(--navy);font-family:monospace;">${escapeHtml(u.email || '—')}</span></td>
+      <td>
+        <span class="badge ${isSuper ? 'ok' : 'info'}" style="font-size:11px;">
+          ${isSuper ? '🛡️ Supervisor / RQ' : '🔬 Analista'}
+        </span>
+      </td>
+      <td><span style="font-size:11.5px;color:var(--muted);">${u.lastLogin ? formatDateBr(u.lastLogin.slice(0, 10)) : '—'}</span></td>
+      <td style="text-align:center;">
+        <button type="button" class="smallbtn ${isSuper ? 'btn-action-outline' : 'btn-primary'}" 
+                onclick="toggleUserRole('${escapeHtml(u.email)}')" 
+                style="${isSuper ? 'font-size:11px;' : 'font-size:11px;background:var(--en-green);border-color:var(--en-green-dark);color:#082903;'}">
+          ${isSuper ? 'Tornar Analista' : 'Promover a Supervisor'}
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function toggleUserRole(email) {
+  if (!currentUser || currentUser.role !== 'SUPERVISOR') {
+    alert('Apenas Supervisores podem alterar perfis de usuários.');
+    return;
+  }
+
+  const user = usersDirectory.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
+  if (!user) return;
+
+  const isSuper = user.role === 'SUPERVISOR';
+  if (isSuper) {
+    const supervisorsCount = usersDirectory.filter(u => u.role === 'SUPERVISOR').length;
+    if (supervisorsCount <= 1) {
+      alert('Atenção: Não é possível rebaixar o único Supervisor cadastrado no sistema.');
+      return;
+    }
+  }
+
+  const newRole = isSuper ? 'ANALISTA' : 'SUPERVISOR';
+  const confirmMsg = isSuper 
+    ? `Deseja rebaixar "${user.displayName || user.email}" para Analista?\n\nEste usuário não terá mais permissão de editar a Etapa 5 ou homologar encerramentos.`
+    : `Deseja promover "${user.displayName || user.email}" a SUPERVISOR / RQ?\n\nEste usuário terá autorização total para avaliar a Etapa 5 (Eficácia e Riscos) e homologar o encerramento do ROT.`;
+
+  if (!confirm(confirmMsg)) return;
+
+  user.role = newRole;
+  saveLocalUsersDirectory();
+  saveUserToCloud(user);
+
+  if (currentUser && currentUser.email && currentUser.email.toLowerCase() === email.toLowerCase()) {
+    currentUser.role = newRole;
+    localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(currentUser));
+    updateAuthUI();
+    applyStep5Permissions();
+  }
+
+  renderUsersTable();
+}
+
+function promptAddUserEmail() {
+  if (!currentUser || currentUser.role !== 'SUPERVISOR') {
+    alert('Apenas Supervisores podem autorizar novos e-mails.');
+    return;
+  }
+
+  const email = prompt('Digite o e-mail Google/institucional a ser autorizado no sistema:\n(Ex: analista@id.uff.br)');
+  if (!email || !email.trim()) return;
+
+  const cleanEmail = email.trim().toLowerCase();
+  const existing = usersDirectory.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+  if (existing) {
+    alert(`O e-mail "${cleanEmail}" já está cadastrado com a função de "${existing.role}".`);
+    return;
+  }
+
+  const roleChoice = confirm(`Autorizar "${cleanEmail}" como SUPERVISOR / RQ?\n\n• [OK] para autorizar como SUPERVISOR\n• [Cancelar] para autorizar como ANALISTA`);
+  const assignedRole = roleChoice ? 'SUPERVISOR' : 'ANALISTA';
+
+  const newUser = {
+    uid: 'invited_' + Date.now(),
+    email: cleanEmail,
+    displayName: cleanEmail.split('@')[0],
+    role: assignedRole,
+    photoURL: '',
+    lastLogin: null
+  };
+
+  usersDirectory.push(newUser);
+  saveLocalUsersDirectory();
+  saveUserToCloud(newUser);
+  renderUsersTable();
+  alert(`✓ E-mail "${cleanEmail}" autorizado com sucesso como ${assignedRole}!`);
+}
+
 function updateCloudSyncStatus(status, text, tooltip) {
   const pill = document.getElementById('cloudSyncPill');
   if (!pill) return;
@@ -3302,12 +4124,14 @@ function updateCloudSyncStatus(status, text, tooltip) {
 
 // Inicialização
 function initApp() {
+  loadLocalUsersDirectory();
   loadDatabase();
   setupEventListeners();
   renderHub();
   updateHubKpis();
   updateTopbarMode(false);
   initFirebase();
+  updateAuthUI();
 }
 
 function loadDatabase() {
@@ -3335,7 +4159,7 @@ function saveDatabase() {
   updateHubKpis();
 }
 
-// Integração Cloud Firestore (Nuvem em Tempo Real)
+// Integração Cloud Firestore & Firebase Auth (Nuvem em Tempo Real)
 function initFirebase() {
   if (typeof firebase === 'undefined') {
     console.warn('Firebase SDK não carregado. Operando em modo local.');
@@ -3347,8 +4171,22 @@ function initFirebase() {
       firebase.initializeApp(firebaseConfig);
     }
     firestoreDb = firebase.firestore();
+
+    // Inicialização do Firebase Auth e Provedor Google
+    if (typeof firebase.auth === 'function') {
+      try {
+        firebaseAuth = firebase.auth();
+        googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+        googleAuthProvider.setCustomParameters({ prompt: 'select_account' });
+        initAuthListener();
+      } catch (authErr) {
+        console.warn('Falha ao inicializar Firebase Auth:', authErr);
+      }
+    }
+
     updateCloudSyncStatus('syncing', '☁️ Nuvem: Conectando...', 'Conectando ao Firebase Cloud Firestore (duapp-ea6a8)...');
     listenToCloudDatabase();
+    listenToUsersDirectory();
   } catch (err) {
     console.error('Erro ao inicializar Firebase:', err);
     updateCloudSyncStatus('offline', '⚠️ Modo Local (Offline)', 'Falha na conexão: ' + err.message);
@@ -3844,6 +4682,11 @@ function goToWizardStep(stepNum) {
     btnMainSave.style.display = (stepNum === WIZARD_TOTAL_STEPS) ? 'none' : 'inline-flex';
   }
 
+  // Na Etapa 5: aplica o guardião de permissões normativas (Supervisor vs. Analista)
+  if (stepNum === 5) {
+    applyStep5Permissions();
+  }
+
   // On step 6: render review summary
   if (stepNum === WIZARD_TOTAL_STEPS) {
     renderWizardReviewSummary();
@@ -4172,24 +5015,25 @@ function readFormIntoDraft() {
     meioAmbiente: document.getElementById('ish_meio_ambiente').value.trim()
   };
 
-  // Campo 9
-  activeRotDraft.respEficacia = document.getElementById('f_respEficacia').value.trim();
-  activeRotDraft.prazoEficacia = document.getElementById('f_prazoEficacia').value;
-  activeRotDraft.dataEficacia = document.getElementById('f_dataEficacia').value;
-  activeRotDraft.descEficacia = document.getElementById('f_descEficacia').value.trim();
-  activeRotDraft.eficaciaEvidencias = currentEficaciaEvidenceFiles ? JSON.parse(JSON.stringify(currentEficaciaEvidenceFiles)) : [];
+  // Campo 9, 10 e Matriz de Riscos (Somente atualiza no rascunho se o usuário ativo for SUPERVISOR)
+  const isSupervisor = currentUser && currentUser.role === 'SUPERVISOR';
+  if (isSupervisor) {
+    activeRotDraft.respEficacia = document.getElementById('f_respEficacia').value.trim();
+    activeRotDraft.prazoEficacia = document.getElementById('f_prazoEficacia').value;
+    activeRotDraft.dataEficacia = document.getElementById('f_dataEficacia').value;
+    activeRotDraft.descEficacia = document.getElementById('f_descEficacia').value.trim();
+    activeRotDraft.eficaciaEvidencias = currentEficaciaEvidenceFiles ? JSON.parse(JSON.stringify(currentEficaciaEvidenceFiles)) : [];
 
-  const selEficaz = document.querySelector('input[name="f_statusEficacia"]:checked');
-  activeRotDraft.statusEficacia = selEficaz ? selEficaz.value : '';
+    const selEficaz = document.querySelector('input[name="f_statusEficacia"]:checked');
+    activeRotDraft.statusEficacia = selEficaz ? selEficaz.value : '';
 
-  // Campo 10
-  const selNovoRot = document.querySelector('input[name="f_novoRot"]:checked');
-  activeRotDraft.necessidadeNovoRot = selNovoRot ? selNovoRot.value : 'NAO';
-  activeRotDraft.numNovoRot = document.getElementById('f_numNovoRot').value.trim();
+    const selNovoRot = document.querySelector('input[name="f_novoRot"]:checked');
+    activeRotDraft.necessidadeNovoRot = selNovoRot ? selNovoRot.value : 'NAO';
+    activeRotDraft.numNovoRot = document.getElementById('f_numNovoRot').value.trim();
 
-  // Matriz de Risco
-  activeRotDraft.matrizRiscoRevisada = document.getElementById('f_matrizRiscoRevisada').checked;
-  activeRotDraft.detalhesRisco = document.getElementById('f_detalhesRisco').value.trim();
+    activeRotDraft.matrizRiscoRevisada = document.getElementById('f_matrizRiscoRevisada').checked;
+    activeRotDraft.detalhesRisco = document.getElementById('f_detalhesRisco').value.trim();
+  }
 
   // Atualiza status geral
   if (activeRotDraft.statusEficacia === 'SIM' && activeRotDraft.matrizRiscoRevisada) {
@@ -4699,6 +5543,10 @@ function deleteRot(rotId) {
 // Encerramento Rápido e Acessível de Ocorrência (Direto do Card ou Workspace)
 function quickCloseRot(rotId, event) {
   if (event) event.stopPropagation();
+  if (!currentUser || currentUser.role !== 'SUPERVISOR') {
+    alert('Acesso Restrito: Conforme a ABNT NBR ISO/IEC 17025 (§ 8.7.1) e IT-LM-GE-003, somente Supervisores / RQ possuem atribuição técnica para avaliar a eficácia e encerrar formalmente ocorrências.');
+    return;
+  }
   const rot = rotsDatabase.find(r => r.id === rotId);
   if (!rot) return;
 
@@ -4709,7 +5557,7 @@ function quickCloseRot(rotId, event) {
   if (!rot.statusEficacia) rot.statusEficacia = 'SIM';
   rot.descEficacia = motivo.trim() || 'Ações concluídas com eficácia.';
   if (!rot.dataEficacia) rot.dataEficacia = new Date().toISOString().slice(0, 10);
-  if (!rot.respEficacia) rot.respEficacia = 'Representante da Qualidade (RQ)';
+  if (!rot.respEficacia) rot.respEficacia = currentUser.displayName || 'Representante da Qualidade (RQ)';
   rot.matrizRiscoRevisada = true;
 
   saveDatabase();
@@ -4734,6 +5582,10 @@ function quickCloseRot(rotId, event) {
 
 function quickReopenRot(rotId, event) {
   if (event) event.stopPropagation();
+  if (!currentUser || currentUser.role !== 'SUPERVISOR') {
+    alert('Acesso Restrito: Apenas Supervisores / RQ têm permissão para reabrir ocorrências encerradas.');
+    return;
+  }
   const rot = rotsDatabase.find(r => r.id === rotId);
   if (!rot) return;
 
@@ -4759,6 +5611,10 @@ function quickReopenRot(rotId, event) {
 // Formalizar Encerramento do ROT Ativo diretamente pela Etapa 6
 function formalizeCloseCurrentRot() {
   if (!activeRotDraft) return;
+  if (!currentUser || currentUser.role !== 'SUPERVISOR') {
+    alert('Acesso Restrito: Conforme a ABNT NBR ISO/IEC 17025 (§ 8.7.1) e IT-LM-GE-003, a homologação formal do encerramento e eficácia do ROT é privativa da Supervisão / RQ.');
+    return;
+  }
   readFormIntoDraft();
 
   if (!confirm(`Confirma o encerramento formal do "ROT Nº ${activeRotDraft.numero}"?\n\nEsta ação registrará o status como ENCERRADO, eficácia como SIM e revisará a Matriz de Riscos.`)) {
@@ -4815,6 +5671,11 @@ function formatFileSize(bytes) {
 
 // Manipulador do input de arquivos (câmera, galeria ou pdf)
 async function handleEvidenceFileInput(event, context) {
+  if (context === 'eficacia' && (!currentUser || currentUser.role !== 'SUPERVISOR')) {
+    alert('Acesso Restrito: Apenas Supervisores / RQ têm autorização técnica para anexar laudos ou evidências na Etapa 5 (ISO/IEC 17025 § 8.7.1).');
+    event.target.value = '';
+    return;
+  }
   const files = event.target.files;
   if (!files || files.length === 0) return;
   await processFilesForEvidence(Array.from(files), context);
@@ -4984,9 +5845,10 @@ function renderEvidenceList(context) {
       `;
     }
 
+    const canDelete = (context !== 'eficacia') || (currentUser && currentUser.role === 'SUPERVISOR');
     card.innerHTML = `
       ${thumbHtml}
-      <button type="button" class="evidence-card-del" onclick="removeEvidenceFile('${context}', '${item.id}')" title="Remover este anexo">&times;</button>
+      ${canDelete ? `<button type="button" class="evidence-card-del" onclick="removeEvidenceFile('${context}', '${item.id}')" title="Remover este anexo">&times;</button>` : ''}
       <div class="evidence-card-info">
         <div class="evidence-card-name" title="${escapeHtml(item.nome)}">${escapeHtml(item.nome)}</div>
         <div class="evidence-card-meta">
@@ -5000,6 +5862,10 @@ function renderEvidenceList(context) {
 }
 
 function removeEvidenceFile(context, fileId) {
+  if (context === 'eficacia' && (!currentUser || currentUser.role !== 'SUPERVISOR')) {
+    alert('Acesso Restrito: Apenas Supervisores / RQ têm autorização para excluir laudos ou evidências na Etapa 5.');
+    return;
+  }
   if (context === 'saa') {
     currentSaaEvidenceFiles = currentSaaEvidenceFiles.filter(f => f.id !== fileId);
     renderEvidenceList('saa');
@@ -5026,6 +5892,10 @@ function handleEvidenceDrop(e, context) {
   e.preventDefault();
   e.stopPropagation();
   e.currentTarget.classList.remove('dragover');
+  if (context === 'eficacia' && (!currentUser || currentUser.role !== 'SUPERVISOR')) {
+    alert('Acesso Restrito: Apenas Supervisores / RQ têm autorização técnica para anexar laudos ou evidências na Etapa 5 (ISO/IEC 17025 § 8.7.1).');
+    return;
+  }
   if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
     processFilesForEvidence(Array.from(e.dataTransfer.files), context);
   }
@@ -5052,6 +5922,10 @@ document.addEventListener('paste', (e) => {
 
   if (imageFiles.length > 0) {
     const targetContext = isSaaOpen ? 'saa' : 'eficacia';
+    if (targetContext === 'eficacia' && (!currentUser || currentUser.role !== 'SUPERVISOR')) {
+      alert('Acesso Restrito: Apenas Supervisores / RQ têm autorização para colar imagens ou laudos na Etapa 5.');
+      return;
+    }
     processFilesForEvidence(imageFiles, targetContext);
   }
 });
