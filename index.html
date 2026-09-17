@@ -2888,6 +2888,17 @@ function listenToCloudDatabase() {
       cloudRots.push(data);
     });
 
+    // Mesclagem inteligente: se havia ROTs salvos localmente que ainda não estão no Firestore, preserva e sincroniza
+    const cloudIds = new Set(cloudRots.map(r => r.id));
+    const pendingLocalRots = rotsDatabase.filter(r => r && r.id && !cloudIds.has(r.id));
+    if (pendingLocalRots.length > 0) {
+      console.log('Sincronizando', pendingLocalRots.length, 'ROT(s) locais para a nuvem...');
+      pendingLocalRots.forEach(lr => {
+        cloudRots.push(lr);
+        saveRotToCloud(lr);
+      });
+    }
+
     // Ordenação decrescente (mais recentes primeiro)
     cloudRots.sort((a, b) => {
       if (b.numero && a.numero) {
@@ -3865,6 +3876,21 @@ function formatTipoLabel(tipo) {
   if (tipo === 'NAO_CONFORMIDADE') return 'Não Conformidade (NC)';
   if (tipo === 'OPORTUNIDADE_MELHORIA') return 'Oportunidade de Melhoria (OP)';
   return tipo || 'Ocorrência';
+}
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function openRotInWorkspace(rotId, event) {
+  if (event) event.stopPropagation();
+  showRotWorkspace(rotId);
 }
 
 // Renderizar Hub e Cards
