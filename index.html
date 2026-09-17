@@ -297,6 +297,161 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
 .rot-meta-row b{color:var(--text)}
 .rot-card-actions{display:flex;gap:8px;margin-top:auto}
 
+/* Temas Normativos dos Cartões do Catálogo (IT-LM-GE-003) */
+.rot-card.card-tnc{
+  background: linear-gradient(180deg, #fff5f5 0%, #ffffff 90px);
+  border: 1.5px solid #e05252;
+  box-shadow: 0 4px 14px rgba(220,38,38,0.07);
+}
+.rot-card.card-tnc:hover{
+  border-color: #b91c1c;
+  box-shadow: 0 10px 24px rgba(220,38,38,0.18);
+}
+.rot-card.card-tnc .rot-code{
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+.rot-card.card-tnc h3{
+  color: #881337;
+}
+.rot-card.card-tnc .rot-meta{
+  background: #fff5f5;
+  border-color: #fecdd3;
+  color: #881337;
+}
+.rot-card.card-tnc .btn-open-rot{
+  background: #dc2626 !important;
+  border-color: #b91c1c !important;
+  color: white !important;
+}
+.rot-card.card-tnc .btn-open-rot:hover{
+  background: #b91c1c !important;
+}
+.rot-card.card-tnc .rot-card-rule-tag{
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+}
+
+.rot-card.card-desvio{
+  background: linear-gradient(180deg, #fffdf2 0%, #ffffff 90px);
+  border: 1.5px solid #d97706;
+  box-shadow: 0 4px 14px rgba(217,119,6,0.07);
+}
+.rot-card.card-desvio:hover{
+  border-color: #b45309;
+  box-shadow: 0 10px 24px rgba(217,119,6,0.18);
+}
+.rot-card.card-desvio .rot-code{
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fcd34d;
+}
+.rot-card.card-desvio h3{
+  color: #78350f;
+}
+.rot-card.card-desvio .rot-meta{
+  background: #fef9ee;
+  border-color: #fde68a;
+  color: #78350f;
+}
+.rot-card.card-desvio .btn-open-rot{
+  background: #d97706 !important;
+  border-color: #b45309 !important;
+  color: white !important;
+}
+.rot-card.card-desvio .btn-open-rot:hover{
+  background: #b45309 !important;
+}
+.rot-card.card-desvio .rot-card-rule-tag{
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+}
+
+.rot-card.card-nc{
+  background: linear-gradient(180deg, #faf5fc 0%, #ffffff 90px);
+  border: 1.5px solid #8e24aa;
+  box-shadow: 0 4px 14px rgba(142,36,170,0.07);
+}
+.rot-card.card-nc:hover{
+  border-color: #6a1b9a;
+  box-shadow: 0 10px 24px rgba(142,36,170,0.18);
+}
+.rot-card.card-nc .rot-code{
+  background: #f3e8ff;
+  color: #6b21a8;
+  border-color: #d8b4fe;
+}
+.rot-card.card-nc h3{
+  color: #581c87;
+}
+.rot-card.card-nc .rot-meta{
+  background: #f8f2fc;
+  border-color: #e9d5ff;
+  color: #581c87;
+}
+.rot-card.card-nc .btn-open-rot{
+  background: #8e24aa !important;
+  border-color: #6a1b9a !important;
+  color: white !important;
+}
+.rot-card.card-nc .btn-open-rot:hover{
+  background: #6a1b9a !important;
+}
+.rot-card.card-nc .rot-card-rule-tag{
+  color: #6b21a8;
+  background: #f3e8ff;
+  border: 1px solid #d8b4fe;
+}
+
+.rot-card.card-op{
+  background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 90px);
+  border: 1.5px solid #0288d1;
+  box-shadow: 0 4px 14px rgba(2,136,209,0.07);
+}
+.rot-card.card-op:hover{
+  border-color: #0277bd;
+  box-shadow: 0 10px 24px rgba(2,136,209,0.18);
+}
+.rot-card.card-op .rot-code{
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+.rot-card.card-op h3{
+  color: #075985;
+}
+.rot-card.card-op .rot-meta{
+  background: #f0f8ff;
+  border-color: #bae6fd;
+  color: #075985;
+}
+.rot-card.card-op .btn-open-rot{
+  background: #0288d1 !important;
+  border-color: #0277bd !important;
+  color: white !important;
+}
+.rot-card.card-op .btn-open-rot:hover{
+  background: #0277bd !important;
+}
+.rot-card.card-op .rot-card-rule-tag{
+  color: #0369a1;
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+}
+
+.rot-card-rule-tag{
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
 /* Banner de Gravação e Confirmação de Registro Manual */
 .save-action-banner{background:white;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 4px 14px rgba(16,46,70,0.06);transition:all .2s ease}
 .save-action-banner.saved{border-left-color:var(--ok);background:#f4fbf8}
@@ -3947,14 +4102,46 @@ function renderHub() {
   filtered.forEach(rot => {
     const card = document.createElement('div');
     const isRecentlySaved = (rot.id === lastSavedRotId);
-    card.className = 'rot-card' + (isRecentlySaved ? ' recently-saved-card' : '');
 
+    let tipoClass = 'card-tnc';
+    let tipoIcon = '🔴';
+    let normRef = 'Requisito 7.10 (ISO 17025)';
+    let fluxoHint = '➔ Pula Campo 5 · Contenção mandatória (Campo 6)';
     let badgeHtml = '';
-    if (rot.tipo === 'TRABALHO_NAO_CONFORME') badgeHtml = '<span class="badge tnc">Trabalho Não Conforme (7.10)</span>';
-    else if (rot.tipo === 'DESVIO_DE_PROCESSO') badgeHtml = '<span class="badge desvio">Desvio de Processo</span>';
-    else if (rot.tipo === 'NAO_CONFORMIDADE') badgeHtml = '<span class="badge nc">Não Conformidade</span>';
-    else if (rot.tipo === 'OPORTUNIDADE_MELHORIA') badgeHtml = '<span class="badge op">Oportunidade de Melhoria</span>';
-    else badgeHtml = `<span class="badge neutral">${rot.tipo}</span>`;
+
+    if (rot.tipo === 'TRABALHO_NAO_CONFORME') {
+      tipoClass = 'card-tnc';
+      tipoIcon = '🔴';
+      normRef = 'Requisito 7.10 (ISO 17025)';
+      fluxoHint = '➔ Pula Campo 5 · Contenção mandatória (Campo 6)';
+      badgeHtml = '<span class="badge tnc">Trabalho Não Conforme (7.10)</span>';
+    } else if (rot.tipo === 'DESVIO_DE_PROCESSO') {
+      tipoClass = 'card-desvio';
+      tipoIcon = '🟠';
+      normRef = 'Item 6.3.6 do Procedimento';
+      fluxoHint = '➔ Abre Campo 5 (Ações Imediatas) e Plano SAA';
+      badgeHtml = '<span class="badge desvio">Desvio de Processo</span>';
+    } else if (rot.tipo === 'NAO_CONFORMIDADE') {
+      tipoClass = 'card-nc';
+      tipoIcon = '🟣';
+      normRef = 'Requisito 8.7 (ISO 17025)';
+      fluxoHint = '➔ Abre Campo 5 (Ações Imediatas) e Plano SAA';
+      badgeHtml = '<span class="badge nc">Não Conformidade (8.7)</span>';
+    } else if (rot.tipo === 'OPORTUNIDADE_MELHORIA') {
+      tipoClass = 'card-op';
+      tipoIcon = '🔵';
+      normRef = 'Item 6.5.3 do Procedimento';
+      fluxoHint = '➔ Abre Campo 5 (Ações Imediatas, se aplicável)';
+      badgeHtml = '<span class="badge op">Oportunidade Melhoria</span>';
+    } else {
+      tipoClass = 'card-neutral';
+      tipoIcon = '⚪';
+      normRef = 'Procedimento IT-LM-GE-003';
+      fluxoHint = '';
+      badgeHtml = `<span class="badge neutral">${rot.tipo || 'Ocorrência'}</span>`;
+    }
+
+    card.className = `rot-card ${tipoClass}` + (isRecentlySaved ? ' recently-saved-card' : '');
 
     let statusPill = '';
     if (rot.statusGeral === 'ENCERRADO') statusPill = '<span class="badge ok">✓ Concluída</span>';
@@ -3971,14 +4158,16 @@ function renderHub() {
     card.innerHTML = `
       <div>
         <div class="rot-card-head">
-          <span class="rot-code">${rot.numero || '---'}</span>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span class="rot-code">${tipoIcon} ${rot.numero || '---'}</span>
+            <span class="rot-card-rule-tag">${normRef}</span>
+          </div>
           <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-            ${badgeHtml}
             ${statusPill}
             ${recentPill}
           </div>
         </div>
-        <h3>${rot.descricao ? escapeHtml(rot.descricao.slice(0, 75)) + (rot.descricao.length > 75 ? '...' : '') : 'Ocorrência sem título'}</h3>
+        <h3 title="${escapeHtml(rot.descricao || '')}">${rot.descricao ? escapeHtml(rot.descricao.slice(0, 75)) + (rot.descricao.length > 75 ? '...' : '') : 'Ocorrência sem título'}</h3>
         <div class="rot-desc">${escapeHtml(rot.descricao || 'Nenhuma descrição detalhada registrada.')}</div>
       </div>
 
@@ -3987,9 +4176,10 @@ function renderHub() {
           <div class="rot-meta-row"><span>Data Abertura:</span> <b>${formatDateBr(rot.dataAbertura)}</b></div>
           <div class="rot-meta-row"><span>Origem:</span> <b>${rot.origem || 'Rotina'}</b></div>
           <div class="rot-meta-row"><span>Ações SAA:</span> <b>${(rot.acoesSaa || []).length} cadastrada(s)</b></div>
+          ${fluxoHint ? `<div class="rot-meta-row" style="margin-top:4px;padding-top:6px;border-top:1px dashed rgba(0,0,0,0.12);font-weight:700;font-size:11.5px;"><span style="color:inherit;">${fluxoHint}</span></div>` : ''}
         </div>
         <div class="rot-card-actions">
-          <button type="button" class="primary smallbtn" onclick="openRotInWorkspace('${rot.id}', event)" style="flex:1;">Abrir / Editar</button>
+          <button type="button" class="btn-open-rot primary smallbtn" onclick="openRotInWorkspace('${rot.id}', event)" style="flex:1;">Abrir / Editar</button>
           <button type="button" class="smallbtn" onclick="${isEncerrado ? 'quickReopenRot' : 'quickCloseRot'}('${rot.id}', event)" style="${closeBtnStyle}" title="${closeBtnTitle}">${closeBtnLabel}</button>
           <button type="button" class="smallbtn" onclick="printSpecificRot('${rot.id}', event)" title="Imprimir Anexos 1 e 2 deste registro">🖨️</button>
           <button type="button" class="danger smallbtn" onclick="deleteRot('${rot.id}', event)" title="Excluir Ocorrência">🗑️</button>
