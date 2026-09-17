@@ -443,6 +443,96 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
   border: 1px solid #bae6fd;
 }
 
+/* ======================================================== */
+/* TEMA VERDE DE OCORRÊNCIA CONCLUÍDA / ENCERRADA (HUB)     */
+/* ======================================================== */
+.rot-card.card-concluido {
+  background: linear-gradient(180deg, #ecfdf5 0%, #f0fdf4 95px, #ffffff 100%) !important;
+  border: 1.5px solid #10b981 !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12) !important;
+}
+.rot-card.card-concluido:hover {
+  border-color: #059669 !important;
+  box-shadow: 0 10px 26px rgba(16, 185, 129, 0.22) !important;
+  transform: translateY(-3px);
+}
+.rot-card.card-concluido .rot-code {
+  background: #d1fae5 !important;
+  color: #065f46 !important;
+  border-color: #6ee7b7 !important;
+}
+.rot-card.card-concluido h3 {
+  color: #064e3b !important;
+}
+.rot-card.card-concluido .rot-desc {
+  color: #14532d !important;
+}
+.rot-card.card-concluido .rot-meta {
+  background: #f0fdf4 !important;
+  border-color: #a7f3d0 !important;
+  color: #065f46 !important;
+}
+.rot-card.card-concluido .rot-meta-row b {
+  color: #064e3b !important;
+}
+.rot-card.card-concluido .rot-meta-row span {
+  color: #047857 !important;
+}
+.rot-card.card-concluido .rot-card-tipo-title {
+  color: #065f46 !important;
+}
+.rot-card.card-concluido .rot-card-sub {
+  color: #047857 !important;
+}
+.rot-card.card-concluido .btn-open-rot {
+  background: #10b981 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+}
+.rot-card.card-concluido .btn-open-rot:hover {
+  background: #059669 !important;
+}
+
+/* ======================================================== */
+/* LINHA HORIZONTAL DIVISÓRIA DE OCORRÊNCIAS ENCERRADAS     */
+/* ======================================================== */
+.hub-closed-divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 34px 0 14px;
+  padding: 6px 0;
+  width: 100%;
+}
+.hub-divider-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.65), rgba(16, 185, 129, 0.12));
+  border-radius: 2px;
+}
+.hub-divider-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  background: #ecfdf5;
+  border: 1.5px solid #10b981;
+  border-radius: 999px;
+  color: #065f46;
+  font-weight: 750;
+  font-size: 13.5px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.12);
+  white-space: nowrap;
+}
+.hub-divider-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+.hub-divider-text {
+  letter-spacing: .01em;
+}
+
 .rot-card-rule-tag{
   font-size: 11px;
   font-weight: 700;
@@ -5309,7 +5399,7 @@ function renderHub() {
 
   grid.innerHTML = '';
 
-  // Card "+ Novo ROT"
+  // Card "+ Novo ROT" (sempre visível no início do catálogo)
   const addCard = document.createElement('div');
   addCard.className = 'add-rot-card';
   addCard.innerHTML = `
@@ -5335,134 +5425,161 @@ function renderHub() {
     grid.appendChild(emptyNotice);
   }
 
-  filtered.forEach(rot => {
-    const card = document.createElement('div');
-    const isRecentlySaved = (rot.id === lastSavedRotId);
+  // Divisão: Ocorrências Ativas/Abertas vs. Ocorrências Encerradas/Concluídas
+  const openRots = filtered.filter(rot => rot.statusGeral !== 'ENCERRADO');
+  const closedRots = filtered.filter(rot => rot.statusGeral === 'ENCERRADO');
 
-    let tipoClass = 'card-tnc';
-    let tipoIcon = '🔴';
-    let tipoNome = 'Trabalho Não Conforme';
-    let normRef = 'Requisito 7.10 (ISO 17025)';
-    let fluxoHint = '➔ Pula Campo 5 · Contenção mandatória (Campo 6)';
-    let tipoSvg = TIPO_SVGS.TRABALHO_NAO_CONFORME;
+  // 1. Renderiza as ocorrências ativas / em andamento
+  openRots.forEach(rot => {
+    grid.appendChild(createRotCardElement(rot));
+  });
 
-    if (rot.tipo === 'TRABALHO_NAO_CONFORME') {
-      tipoClass = 'card-tnc';
-      tipoIcon = '🔴';
-      tipoNome = 'Trabalho Não Conforme';
-      normRef = 'Requisito 7.10 (ISO 17025)';
-      fluxoHint = '➔ Pula Campo 5 · Contenção mandatória (Campo 6)';
-      tipoSvg = TIPO_SVGS.TRABALHO_NAO_CONFORME;
-    } else if (rot.tipo === 'DESVIO_DE_PROCESSO') {
-      tipoClass = 'card-desvio';
-      tipoIcon = '🟠';
-      tipoNome = 'Desvio de Processo';
-      normRef = 'Item 6.3.6 do Procedimento';
-      fluxoHint = '➔ Abre Campo 5 (Ações Imediatas) e Plano SAA';
-      tipoSvg = TIPO_SVGS.DESVIO_DE_PROCESSO;
-    } else if (rot.tipo === 'NAO_CONFORMIDADE') {
-      tipoClass = 'card-nc';
-      tipoIcon = '🟣';
-      tipoNome = 'Não Conformidade';
-      normRef = 'Requisito 8.7 (ISO 17025)';
-      fluxoHint = '➔ Abre Campo 5 (Ações Imediatas) e Plano SAA';
-      tipoSvg = TIPO_SVGS.NAO_CONFORMIDADE;
-    } else if (rot.tipo === 'OPORTUNIDADE_MELHORIA') {
-      tipoClass = 'card-op';
-      tipoIcon = '🔵';
-      tipoNome = 'Oportunidade Melhoria';
-      normRef = 'Item 6.5.3 do Procedimento';
-      fluxoHint = '➔ Abre Campo 5 (Ações Imediatas, se aplicável)';
-      tipoSvg = TIPO_SVGS.OPORTUNIDADE_MELHORIA;
-    } else {
-      tipoClass = 'card-neutral';
-      tipoIcon = '⚪';
-      tipoNome = rot.tipo || 'Ocorrência';
-      normRef = 'Procedimento IT-LM-GE-003';
-      fluxoHint = '';
-      tipoSvg = `<div style="width:44px;height:44px;background:#eef4f8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;">📋</div>`;
-    }
-
-    card.className = `rot-card ${tipoClass}` + (isRecentlySaved ? ' recently-saved-card' : '');
-
-    let statusPill = '';
-    if (rot.statusGeral === 'ENCERRADO') statusPill = '<span class="badge ok">✓ Concluída</span>';
-    else if (rot.statusGeral === 'ABERTO') statusPill = '<span class="badge danger">Aberta</span>';
-    else statusPill = '<span class="badge desvio">Em Andamento</span>';
-
-    let recentPill = isRecentlySaved ? '<span class="badge ok" style="background:#eaf8ef;color:#0e623b;border:1px solid #a3e6be;animation:pulseSave 2s infinite;">✨ Gravado Agora</span>' : '';
-
-    const isEncerrado = rot.statusGeral === 'ENCERRADO';
-    const closeBtnLabel = isEncerrado ? '↺ Reabrir' : '✓ Encerrar';
-    const closeBtnTitle = isEncerrado ? 'Reabrir ocorrência para novas ações' : 'Encerrar ocorrência formalmente com justificativa';
-    const closeBtnStyle = isEncerrado ? 'background:#f8fafc;color:var(--text);border-color:#cbd5e1;' : 'background:#e9f7f3;color:#126451;border-color:#b3ddc8;font-weight:700;';
-
-    card.innerHTML = `
-      <div>
-        <div class="rot-card-head">
-          <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">
-            <div class="rot-card-figure" title="${tipoNome}">
-              ${tipoSvg}
-            </div>
-            <div style="flex:1;min-width:0;">
-              <div class="rot-card-tipo-title">${tipoIcon} ${tipoNome}</div>
-              <div class="rot-card-sub">${normRef}</div>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;">
-            <span class="rot-code">ROT Nº ${rot.numero || '---'}</span>
-            <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
-              ${statusPill}
-              ${recentPill}
-            </div>
-          </div>
-        </div>
-        <h3 title="${escapeHtml(rot.descricao || '')}">${rot.descricao ? escapeHtml(rot.descricao.slice(0, 75)) + (rot.descricao.length > 75 ? '...' : '') : 'Ocorrência sem título'}</h3>
-        <div class="rot-desc">${escapeHtml(rot.descricao || 'Nenhuma descrição detalhada registrada.')}</div>
+  // 2. Se existirem ocorrências encerradas, insere a Linha Divisória Horizontal e renderiza os cartões com tema verde abaixo
+  if (closedRots.length > 0) {
+    const divider = document.createElement('div');
+    divider.className = 'hub-closed-divider';
+    divider.innerHTML = `
+      <div class="hub-divider-line"></div>
+      <div class="hub-divider-badge">
+        <span class="hub-divider-icon">✅</span>
+        <span class="hub-divider-text">Ocorrências Concluídas & Encerradas</span>
+        <span class="badge ok" style="font-size:11px;padding:3px 8px;font-weight:800;background:#d1fae5;color:#065f46;border-color:#6ee7b7;">${closedRots.length}</span>
       </div>
-
-      <div>
-        <div class="rot-meta">
-          <div class="rot-meta-row"><span>Data Abertura:</span> <b>${formatDateBr(rot.dataAbertura)}</b></div>
-          <div class="rot-meta-row"><span>Origem:</span> <b>${rot.origem || 'Rotina'}</b></div>
-          <div class="rot-meta-row"><span>Ações SAA:</span> <b>${(rot.acoesSaa || []).length} cadastrada(s)</b></div>
-          ${fluxoHint ? `<div class="rot-meta-row" style="margin-top:4px;padding-top:6px;border-top:1px dashed rgba(0,0,0,0.12);font-weight:700;font-size:11.5px;"><span style="color:inherit;">${fluxoHint}</span></div>` : ''}
-        </div>
-        <div class="rot-card-actions">
-          <button type="button" class="btn-open-rot primary smallbtn" onclick="openRotInWorkspace('${rot.id}', event)" style="flex:1;">Abrir / Editar</button>
-          <button type="button" class="smallbtn" onclick="${isEncerrado ? 'quickReopenRot' : 'quickCloseRot'}('${rot.id}', event)" style="${closeBtnStyle}" title="${closeBtnTitle}">${closeBtnLabel}</button>
-          <button type="button" class="smallbtn" onclick="printSpecificRot('${rot.id}', event)" title="Imprimir Anexos 1 e 2 deste registro">🖨️</button>
-          <button type="button" class="danger smallbtn" onclick="deleteRot('${rot.id}', event)" title="Excluir Ocorrência">🗑️</button>
-        </div>
-      </div>
+      <div class="hub-divider-line"></div>
     `;
+    grid.appendChild(divider);
 
-    card.addEventListener('click', (e) => {
-      // Se clicou em botão interno, não dispara o clique do card
-      if (e.target.closest('button')) return;
-      openRotInWorkspace(rot.id);
+    closedRots.forEach(rot => {
+      grid.appendChild(createRotCardElement(rot));
     });
+  }
 
-    grid.appendChild(card);
+  // Atualiza KPIs
+  updateHubKpis();
+}
+
+// Criação isolada e padronizada de cada Card de ROT
+function createRotCardElement(rot) {
+  const card = document.createElement('div');
+  const isRecentlySaved = (rot.id === lastSavedRotId);
+  const isEncerrado = (rot.statusGeral === 'ENCERRADO');
+
+  let tipoClass = 'card-tnc';
+  let tipoIcon = '🔴';
+  let tipoNome = 'Trabalho Não Conforme';
+  let normRef = 'Requisito 7.10 (ISO 17025)';
+  let fluxoHint = '➔ Pula Campo 5 · Contenção mandatória (Campo 6)';
+  let tipoSvg = TIPO_SVGS.TRABALHO_NAO_CONFORME;
+
+  if (rot.tipo === 'TRABALHO_NAO_CONFORME') {
+    tipoClass = 'card-tnc';
+    tipoIcon = '🔴';
+    tipoNome = 'Trabalho Não Conforme';
+    normRef = 'Requisito 7.10 (ISO 17025)';
+    fluxoHint = '➔ Pula Campo 5 · Contenção mandatória (Campo 6)';
+    tipoSvg = TIPO_SVGS.TRABALHO_NAO_CONFORME;
+  } else if (rot.tipo === 'DESVIO_DE_PROCESSO') {
+    tipoClass = 'card-desvio';
+    tipoIcon = '🟠';
+    tipoNome = 'Desvio de Processo';
+    normRef = 'Item 6.3.6 do Procedimento';
+    fluxoHint = '➔ Abre Campo 5 (Ações Imediatas) e Plano SAA';
+    tipoSvg = TIPO_SVGS.DESVIO_DE_PROCESSO;
+  } else if (rot.tipo === 'NAO_CONFORMIDADE') {
+    tipoClass = 'card-nc';
+    tipoIcon = '🟣';
+    tipoNome = 'Não Conformidade';
+    normRef = 'Requisito 8.7 (ISO 17025)';
+    fluxoHint = '➔ Abre Campo 5 (Ações Imediatas) e Plano SAA';
+    tipoSvg = TIPO_SVGS.NAO_CONFORMIDADE;
+  } else if (rot.tipo === 'OPORTUNIDADE_MELHORIA') {
+    tipoClass = 'card-op';
+    tipoIcon = '🔵';
+    tipoNome = 'Oportunidade Melhoria';
+    normRef = 'Item 6.5.3 do Procedimento';
+    fluxoHint = '➔ Abre Campo 5 (Ações Imediatas, se aplicável)';
+    tipoSvg = TIPO_SVGS.OPORTUNIDADE_MELHORIA;
+  } else {
+    tipoClass = 'card-neutral';
+    tipoIcon = '⚪';
+    tipoNome = rot.tipo || 'Ocorrência';
+    normRef = 'Procedimento IT-LM-GE-003';
+    fluxoHint = '';
+    tipoSvg = `<div style="width:44px;height:44px;background:#eef4f8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;">📋</div>`;
+  }
+
+  // Se encerrado, aplica a classe de tema verde card-concluido
+  card.className = `rot-card ${tipoClass}` + (isEncerrado ? ' card-concluido' : '') + (isRecentlySaved ? ' recently-saved-card' : '');
+
+  let statusPill = '';
+  if (isEncerrado) {
+    statusPill = '<span class="badge ok" style="font-weight:800;background:#d1fae5;color:#065f46;border-color:#6ee7b7;">✓ Concluída</span>';
+  } else if (rot.statusGeral === 'ABERTO') {
+    statusPill = '<span class="badge danger">Aberta</span>';
+  } else {
+    statusPill = '<span class="badge desvio">Em Andamento</span>';
+  }
+
+  let recentPill = isRecentlySaved ? '<span class="badge ok" style="background:#eaf8ef;color:#0e623b;border:1px solid #a3e6be;animation:pulseSave 2s infinite;">✨ Gravado Agora</span>' : '';
+
+  const closeBtnLabel = isEncerrado ? '↺ Reabrir' : '✓ Encerrar';
+  const closeBtnTitle = isEncerrado ? 'Reabrir ocorrência para novas ações' : 'Encerrar ocorrência formalmente com justificativa';
+  const closeBtnStyle = isEncerrado 
+    ? 'background:#f0fdf4;color:#065f46;border-color:#a7f3d0;font-weight:700;' 
+    : 'background:#e9f7f3;color:#126451;border-color:#b3ddc8;font-weight:700;';
+
+  card.innerHTML = `
+    <div>
+      <div class="rot-card-head">
+        <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">
+          <div class="rot-card-figure" title="${tipoNome}">
+            ${tipoSvg}
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div class="rot-card-tipo-title">${tipoIcon} ${tipoNome}</div>
+            <div class="rot-card-sub">${normRef}</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;">
+          <span class="rot-code">ROT Nº ${rot.numero || '---'}</span>
+          <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+            ${statusPill}
+            ${recentPill}
+          </div>
+        </div>
+      </div>
+      <h3 title="${escapeHtml(rot.descricao || '')}">${rot.descricao ? escapeHtml(rot.descricao.slice(0, 75)) + (rot.descricao.length > 75 ? '...' : '') : 'Ocorrência sem título'}</h3>
+      <div class="rot-desc">${escapeHtml(rot.descricao || 'Nenhuma descrição detalhada registrada.')}</div>
+    </div>
+
+    <div>
+      <div class="rot-meta">
+        <div class="rot-meta-row"><span>Data Abertura:</span> <b>${formatDateBr(rot.dataAbertura)}</b></div>
+        <div class="rot-meta-row"><span>Origem:</span> <b>${rot.origem || 'Rotina'}</b></div>
+        <div class="rot-meta-row"><span>Ações SAA:</span> <b>${(rot.acoesSaa || []).length} cadastrada(s)</b></div>
+        ${isEncerrado ? `
+          <div class="rot-meta-row" style="margin-top:4px;padding-top:6px;border-top:1px dashed #a7f3d0;font-weight:700;font-size:11.5px;color:#065f46;">
+            <span>Eficácia:</span> <b>${rot.statusEficacia === 'SIM' ? '✓ Atestada (Eficaz)' : 'Avaliada'}</b>
+          </div>
+          ${rot.dataEficacia ? `<div class="rot-meta-row" style="font-weight:600;font-size:11.5px;color:#065f46;"><span>Data Encerramento:</span> <b>${formatDateBr(rot.dataEficacia)}</b></div>` : ''}
+        ` : (fluxoHint ? `<div class="rot-meta-row" style="margin-top:4px;padding-top:6px;border-top:1px dashed rgba(0,0,0,0.12);font-weight:700;font-size:11.5px;"><span style="color:inherit;">${fluxoHint}</span></div>` : '')}
+      </div>
+      <div class="rot-card-actions">
+        <button type="button" class="btn-open-rot primary smallbtn" onclick="openRotInWorkspace('${rot.id}', event)" style="flex:1;">Abrir / Editar</button>
+        <button type="button" class="smallbtn" onclick="${isEncerrado ? 'quickReopenRot' : 'quickCloseRot'}('${rot.id}', event)" style="${closeBtnStyle}" title="${closeBtnTitle}">${closeBtnLabel}</button>
+        <button type="button" class="smallbtn" onclick="printSpecificRot('${rot.id}', event)" title="Imprimir Anexos 1 e 2 deste registro">🖨️</button>
+        <button type="button" class="danger smallbtn" onclick="deleteRot('${rot.id}', event)" title="Excluir Ocorrência">🗑️</button>
+      </div>
+    </div>
+  `;
+
+  card.addEventListener('click', (e) => {
+    // Se clicou em botão interno, não dispara o clique do card
+    if (e.target.closest('button')) return;
+    openRotInWorkspace(rot.id);
   });
 
-  // Atualização dos KPIs do Hub
-  let totalTnc = rotsDatabase.filter(r => r.tipo === 'TRABALHO_NAO_CONFORME').length;
-  let totalDesvios = rotsDatabase.filter(r => r.tipo === 'DESVIO_DE_PROCESSO').length;
-  let totalAcoes = 0;
-  let totalComRisco = 0;
-  rotsDatabase.forEach(r => {
-    totalAcoes += (r.acoesSaa || []).length;
-    if (r.matrizRiscoRevisada) totalComRisco++;
-  });
-
-  document.getElementById('kpiTotalRots').innerText = rotsDatabase.length;
-  document.getElementById('kpiTotalTnc').innerText = totalTnc;
-  document.getElementById('kpiTotalDesvios').innerText = totalDesvios;
-  document.getElementById('kpiTotalAcoes').innerText = totalAcoes;
-
-  const percRisco = rotsDatabase.length > 0 ? Math.round((totalComRisco / rotsDatabase.length) * 100) : 100;
-  document.getElementById('kpiTotalRiscos').innerText = percRisco + '%';
+  return card;
 }
 
 // Atualização dos KPIs do Hub
