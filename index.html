@@ -181,6 +181,17 @@ body :not(.topbar) > .btn-nav:not([style*="background"]):not([style*="color"]) {
   border-color: #cbd5e1 !important;
 }
 
+.rot-card.recently-saved-card{
+  border-color: #1b80c4 !important;
+  box-shadow: 0 6px 22px rgba(27,128,196,0.3) !important;
+  background: linear-gradient(180deg, #f0f7fb 0%, #ffffff 22%) !important;
+}
+@keyframes pulseSave{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.06)}
+  100%{transform:scale(1)}
+}
+
 nav.subnav a{padding:8px 12px;font-size:13.5px;font-weight:600;color:var(--text);border-radius:8px}
 nav.subnav a.active{background:var(--navy);color:white;border-color:var(--navy)}
 
@@ -1894,7 +1905,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           <!-- Ações Finais: Gravação de Edição vs Encerramento Normativo Formal -->
           <div style="text-align:center;margin:20px 0 14px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;align-items:stretch;">
             <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
-              <button type="button" id="btnSaveRotStep6" class="btn-final-ok" onclick="confirmAndSaveRot(true)" style="font-size:15px;padding:12px 26px;min-width:280px;justify-content:center;" title="Gravar ocorrência no sistema e retornar ao catálogo geral mantendo o status atual">
+              <button type="button" id="btnSaveRotStep6" class="btn-final-ok" style="font-size:15px;padding:12px 26px;min-width:280px;justify-content:center;" title="Gravar ocorrência no sistema e retornar ao catálogo geral mantendo o status atual">
                 💾 Gravar Dados e Sair da Edição
               </button>
               <span style="font-size:11.5px;color:var(--muted);max-width:280px;line-height:1.25;">Salva alterações e mantém o status atual no catálogo</span>
@@ -2712,6 +2723,7 @@ let activeRotId = null;
 let activeRotDraft = null;       // Objeto de trabalho em memória
 let isNewDraft = false;          // True quando for um novo ROT ainda não gravado
 let hasUnsavedChanges = false;   // True quando houver alterações pendentes de gravação manual (botão OK)
+let lastSavedRotId = null;       // ID do último ROT gravado com sucesso para destaque visual no Hub
 
 // Inicialização
 function initApp() {
@@ -2739,7 +2751,11 @@ function loadDatabase() {
 }
 
 function saveDatabase() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(rotsDatabase));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rotsDatabase));
+  } catch (e) {
+    console.error('Falha ao persistir no localStorage:', e);
+  }
   updateHubKpis();
 }
 
@@ -2946,7 +2962,7 @@ function updateActiveRotDisplay(codeText, tipo) {
 }
 
 // Alternância de Telas
-function showHubView() {
+function showHubView(resetFilters = false) {
   if (hasUnsavedChanges) {
     const msg = isNewDraft 
       ? 'Atenção: Você está com um NOVO REGISTRO em aberto que ainda não foi gravado pelo botão OK.\n\nSe sair agora sem clicar no botão "OK · Gravar Dados", os dados preenchidos serão descartados!\n\nDeseja realmente sair sem gravar?'
@@ -2954,6 +2970,10 @@ function showHubView() {
     if (!confirm(msg)) {
       return;
     }
+  }
+
+  if (resetFilters) {
+    resetHubFilters(false);
   }
 
   activeRotDraft = null;
@@ -2968,6 +2988,16 @@ function showHubView() {
   renderHub();
   updateHubKpis();
   window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function resetHubFilters(shouldRender = true) {
+  const sInput = document.getElementById('hubSearchInput');
+  const fType = document.getElementById('hubFilterType');
+  const fStatus = document.getElementById('hubFilterStatus');
+  if (sInput) sInput.value = '';
+  if (fType) fType.value = 'ALL';
+  if (fStatus) fStatus.value = 'ALL';
+  if (shouldRender) renderHub();
 }
 
 function showRotWorkspace(rotId) {
@@ -3420,7 +3450,7 @@ function readFormIntoDraft() {
   if (activeRotDraft.statusEficacia === 'SIM' && activeRotDraft.matrizRiscoRevisada) {
     activeRotDraft.statusGeral = 'ENCERRADO';
   } else if (activeRotDraft.statusEficacia !== '') {
-    activeRotDraft.statusGeral = 'EFICACIA_AVALIADA';
+    activeRotDraft.statusGeral = 'EFICACIA_PENDENTE';
   } else if (activeRotDraft.acoesSaa && activeRotDraft.acoesSaa.length > 0) {
     activeRotDraft.statusGeral = 'ACOES_ANDAMENTO';
   } else if (activeRotDraft.causaRaiz) {
@@ -3452,7 +3482,11 @@ function confirmAndSaveRot(returnToHub = false) {
   if (!activeRotDraft.descricao) {
     alert('Atenção: O campo "Descrição Detalhada da Ocorrência" (Campo 4) é obrigatório.');
     goToWizardStep(1);
-    document.getElementById('f_descricao').focus();
+    const descField = document.getElementById('f_descricao');
+    if (descField) {
+      descField.focus();
+      descField.style.borderColor = 'var(--danger)';
+    }
     return;
   }
 
@@ -3466,6 +3500,7 @@ function confirmAndSaveRot(returnToHub = false) {
     rotsDatabase[existingIndex] = snapshot;
   }
 
+  lastSavedRotId = snapshot.id;
   saveDatabase();
   hasUnsavedChanges = false;
 
@@ -3480,7 +3515,7 @@ function confirmAndSaveRot(returnToHub = false) {
 
   if (returnToHub) {
     alert(`✓ Sucesso!\n\nOs dados da ocorrência "ROT Nº ${activeRotDraft.numero}" foram gravados com sucesso no sistema!\n\nRetornando ao Catálogo de Ocorrências.`);
-    showHubView();
+    showHubView(true); // Reseta filtros do Hub para que a nova ocorrência apareça de imediato no topo!
   } else {
     alert(`✓ Sucesso!\n\nOs dados do registro "ROT Nº ${activeRotDraft.numero}" foram gravados com sucesso no sistema!\n\nO registro está salvo no banco de dados local.`);
   }
@@ -3618,7 +3653,13 @@ function renderHub() {
 
   const filtered = rotsDatabase.filter(rot => {
     if (filterType !== 'ALL' && rot.tipo !== filterType) return false;
-    if (filterStatus !== 'ALL' && rot.statusGeral !== filterStatus) return false;
+    if (filterStatus !== 'ALL') {
+      if (filterStatus === 'EFICACIA_PENDENTE') {
+        if (rot.statusGeral !== 'EFICACIA_PENDENTE' && rot.statusGeral !== 'EFICACIA_AVALIADA') return false;
+      } else if (rot.statusGeral !== filterStatus) {
+        return false;
+      }
+    }
     if (term) {
       const matchText = (rot.numero + ' ' + rot.descricao + ' ' + (rot.causaRaiz || '') + ' ' + (rot.respRetomada || '')).toLowerCase();
       if (!matchText.includes(term)) return false;
@@ -3639,9 +3680,25 @@ function renderHub() {
   addCard.addEventListener('click', openNewRotTriagemModal);
   grid.appendChild(addCard);
 
+  // Se houver registros gravados mas o filtro filtrou todos, exibe aviso com botão de reset
+  if (filtered.length === 0 && rotsDatabase.length > 0) {
+    const emptyNotice = document.createElement('div');
+    emptyNotice.style.cssText = 'grid-column: 1 / -1; padding: 24px; text-align: center; background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; margin: 10px 0;';
+    emptyNotice.innerHTML = `
+      <div style="font-size: 26px; margin-bottom: 6px;">🔍</div>
+      <h4 style="margin: 0 0 6px; color: var(--navy); font-size: 15px;">Nenhuma ocorrência encontrada para os filtros ativos</h4>
+      <p style="font-size: 13px; color: var(--muted); margin: 0 0 14px;">Você possui <b>${rotsDatabase.length} ocorrência(s)</b> cadastradas no sistema, mas os filtros atuais de busca/tipo/status as ocultaram.</p>
+      <button type="button" class="btn-action-outline" onclick="resetHubFilters()" style="margin: 0 auto;">
+        ↺ Limpar Filtros e Exibir Todos os ${rotsDatabase.length} Registros
+      </button>
+    `;
+    grid.appendChild(emptyNotice);
+  }
+
   filtered.forEach(rot => {
     const card = document.createElement('div');
-    card.className = 'rot-card';
+    const isRecentlySaved = (rot.id === lastSavedRotId);
+    card.className = 'rot-card' + (isRecentlySaved ? ' recently-saved-card' : '');
 
     let badgeHtml = '';
     if (rot.tipo === 'TRABALHO_NAO_CONFORME') badgeHtml = '<span class="badge tnc">Trabalho Não Conforme (7.10)</span>';
@@ -3655,6 +3712,8 @@ function renderHub() {
     else if (rot.statusGeral === 'ABERTO') statusPill = '<span class="badge danger">Aberta</span>';
     else statusPill = '<span class="badge desvio">Em Andamento</span>';
 
+    let recentPill = isRecentlySaved ? '<span class="badge ok" style="background:#eaf8ef;color:#0e623b;border:1px solid #a3e6be;animation:pulseSave 2s infinite;">✨ Gravado Agora</span>' : '';
+
     const isEncerrado = rot.statusGeral === 'ENCERRADO';
     const closeBtnLabel = isEncerrado ? '↺ Reabrir' : '✓ Encerrar';
     const closeBtnTitle = isEncerrado ? 'Reabrir ocorrência para novas ações' : 'Encerrar ocorrência formalmente com justificativa';
@@ -3664,9 +3723,10 @@ function renderHub() {
       <div>
         <div class="rot-card-head">
           <span class="rot-code">${rot.numero || '---'}</span>
-          <div style="display:flex;gap:6px;align-items:center;">
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
             ${badgeHtml}
             ${statusPill}
+            ${recentPill}
           </div>
         </div>
         <h3>${rot.descricao ? escapeHtml(rot.descricao.slice(0, 75)) + (rot.descricao.length > 75 ? '...' : '') : 'Ocorrência sem título'}</h3>
@@ -3870,9 +3930,13 @@ function formalizeCloseCurrentRot() {
   }
   activeRotDraft.matrizRiscoRevisada = true;
 
-  confirmAndSaveRot();
+  confirmAndSaveRot(false);
   populateRotForm(activeRotDraft);
   renderWizardReviewSummary();
+
+  if (confirm(`✓ A ocorrência "ROT Nº ${activeRotDraft.numero}" foi formalmente ENCERRADA com sucesso!\n\nDeseja retornar ao Catálogo Geral de Ocorrências para visualizar a lista atualizada?`)) {
+    showHubView(true);
+  }
 }
 
 // Modal Informativo do Desenvolvedor
