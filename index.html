@@ -136,6 +136,51 @@ button.danger:hover{background:var(--danger-bg)}
 button.smallbtn{padding:5px 9px;font-size:12.5px}
 button:disabled{opacity:.5;cursor:not-allowed}
 
+.btn-action-outline{
+  background: #ffffff;
+  color: #0b3b60;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: all .18s ease;
+}
+.btn-action-outline:hover{
+  background: #f0f7fb;
+  border-color: #1b80c4;
+  color: #1b80c4;
+  box-shadow: 0 3px 10px rgba(27,128,196,0.18);
+  transform: translateY(-1px);
+}
+.btn-action-outline.danger{
+  color: var(--danger);
+  border-color: #fca5a5;
+  background: #ffffff;
+}
+.btn-action-outline.danger:hover{
+  background: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.btn-action-outline.smallbtn{
+  padding: 5px 10px;
+  font-size: 12.5px;
+  font-weight: 650;
+}
+/* Salvaguarda para evitar texto invisível se .btn-nav for instanciado fora da barra escura .topbar */
+body :not(.topbar) > .btn-nav:not([style*="background"]):not([style*="color"]) {
+  color: #0b3b60 !important;
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
 nav.subnav a{padding:8px 12px;font-size:13.5px;font-weight:600;color:var(--text);border-radius:8px}
 nav.subnav a.active{background:var(--navy);color:white;border-color:var(--navy)}
 
@@ -1119,7 +1164,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     <!-- BARRA SUPERIOR DO WORKSPACE -->
     <div class="workspace-top-bar">
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-        <button type="button" id="btnDiscardRot" class="btn-nav danger" title="Descartar rascunho e retornar ao catálogo">
+        <button type="button" id="btnDiscardRot" class="btn-action-outline danger" title="Descartar rascunho e retornar ao catálogo">
           ← Catálogo de Ocorrências
         </button>
         <div class="badge-active-rot" style="display:inline-flex;padding:5px 12px;background:#f8fbfd;border:1px solid var(--line);border-radius:8px;align-items:center;">
@@ -1131,13 +1176,13 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       </div>
 
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <button type="button" id="btnOpenTrainingCasesInForm" class="btn-nav smallbtn" title="Consultar casos reais de aula" onclick="openModal('modalTrainingCases')">
+        <button type="button" id="btnOpenTrainingCasesInForm" class="btn-action-outline smallbtn" title="Consultar casos reais de aula" onclick="openModal('modalTrainingCases')">
           🧪 Casos da Aula
         </button>
-        <button type="button" id="btnOpenDidacticGuideModal" class="btn-nav smallbtn" title="Consultar conceitos teóricos e orientações" onclick="openModal('modalDidacticGuide')">
+        <button type="button" id="btnOpenDidacticGuideModal" class="btn-action-outline smallbtn" title="Consultar conceitos teóricos e orientações" onclick="openModal('modalDidacticGuide')">
           📘 Caderno Didático
         </button>
-        <button type="button" id="btnCallDecisionTreeInForm" class="btn-nav smallbtn" title="Dúvida na classificação? Abrir Árvore de Decisão do Item 6.3.6" onclick="openDecisionTree('UPDATE_ACTIVE')">
+        <button type="button" id="btnCallDecisionTreeInForm" class="btn-action-outline smallbtn" title="Dúvida na classificação? Abrir Árvore de Decisão do Item 6.3.6" onclick="openDecisionTree('UPDATE_ACTIVE')">
           🌳 Triagem / Fluxograma
         </button>
         <button type="button" id="btnSaveRotMain" class="btn-ok-save" title="Confirmar e gravar os dados do registro no sistema" onclick="confirmAndSaveRot()">
@@ -1846,22 +1891,28 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
             <!-- Atualizado dinamicamente -->
           </div>
 
-          <!-- Botão Oficial Único de Gravação e Encerramento em Destaque -->
-          <div style="text-align:center;margin:18px 0 14px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
-            <button type="button" id="btnSaveRotStep6" class="btn-final-ok" onclick="confirmAndSaveRot(true)" style="font-size:15px;padding:12px 28px;min-width:280px;justify-content:center;" title="Gravar ocorrência no sistema e retornar ao catálogo">
-              ✓ Gravar e Concluir ROT
-            </button>
-            <button type="button" class="btn-nav" id="btnFormalizeCloseRot" onclick="formalizeCloseCurrentRot()" style="background:#166ca8;border-color:#166ca8;color:white;font-weight:700;font-size:14px;padding:12px 22px;" title="Encerrar formalmente esta ocorrência no sistema">
-              🔒 Formalizar Encerramento do ROT
-            </button>
+          <!-- Ações Finais: Gravação de Edição vs Encerramento Normativo Formal -->
+          <div style="text-align:center;margin:20px 0 14px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;align-items:stretch;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+              <button type="button" id="btnSaveRotStep6" class="btn-final-ok" onclick="confirmAndSaveRot(true)" style="font-size:15px;padding:12px 26px;min-width:280px;justify-content:center;" title="Gravar ocorrência no sistema e retornar ao catálogo geral mantendo o status atual">
+                💾 Gravar Dados e Sair da Edição
+              </button>
+              <span style="font-size:11.5px;color:var(--muted);max-width:280px;line-height:1.25;">Salva alterações e mantém o status atual no catálogo</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+              <button type="button" id="btnFormalizeCloseRot" onclick="formalizeCloseCurrentRot()" style="background:#166ca8;border:1.5px solid #10527e;color:white;font-weight:700;font-size:14px;padding:12px 24px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 3px 10px rgba(22,108,168,0.25);transition:all .18s;min-width:280px;justify-content:center;" title="Encerrar formalmente o ciclo da ocorrência (Status: ENCERRADO / Eficácia: SIM - IT-LM-GE-003 § 6.3.8)">
+                🔒 Formalizar Encerramento do ROT
+              </button>
+              <span style="font-size:11.5px;color:var(--muted);max-width:280px;line-height:1.25;">Encerra formalmente o ciclo normativo (§ 6.3.8 / § 8.7)</span>
+            </div>
           </div>
 
-          <!-- Ações Complementares de Impressão e Pré-visualização -->
-          <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px;border-top:1px solid var(--line);padding-top:12px;">
-            <button type="button" class="btn-nav" onclick="printCurrentRot()">
+          <!-- Ações Complementares de Impressão e Pré-visualização Oficial -->
+          <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:16px;border-top:1px solid var(--line);padding-top:14px;">
+            <button type="button" class="btn-action-outline" onclick="printCurrentRot()" title="Gerar visualização e salvar PDF oficial dos Anexos 1 e 2">
               🖨️ Imprimir PDF Oficial (Anexos 1 e 2)
             </button>
-            <button type="button" class="btn-nav" onclick="openDocumentPreviewModal()">
+            <button type="button" class="btn-action-outline" onclick="openDocumentPreviewModal()" title="Abrir espelho fiel em tela idêntico aos formulários da IT-LM-GE-003">
               🔍 Ver Espelho Oficial em Tela
             </button>
           </div>
@@ -1871,7 +1922,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
       <!-- BARRA DE NAVEGAÇÃO INFERIOR CONSECUTIVA FIXA -->
       <div class="wizard-nav-footer">
-        <button type="button" id="btnWizardPrev" class="btn-nav" onclick="prevWizardStep()">
+        <button type="button" id="btnWizardPrev" class="btn-action-outline" onclick="prevWizardStep()">
           ← Etapa Anterior
         </button>
 
@@ -1942,7 +1993,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     </div>
 
     <div style="text-align:right;border-top:1px solid var(--line);padding-top:12px;">
-      <button type="button" class="btn-nav" onclick="closeModal('modalDidacticGuide')">Fechar Caderno</button>
+      <button type="button" class="btn-action-outline" onclick="closeModal('modalDidacticGuide')">Fechar Caderno</button>
     </div>
   </div>
 </div>
@@ -1970,7 +2021,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     </div>
 
     <div style="text-align:right;margin-top:12px;border-top:1px solid var(--line);padding-top:10px;">
-      <button type="button" class="btn-nav" onclick="closeModal('modalDocumentPreview')">Fechar Visualização</button>
+      <button type="button" class="btn-action-outline" onclick="closeModal('modalDocumentPreview')">Fechar Visualização</button>
     </div>
   </div>
 </div>
@@ -2106,7 +2157,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
     <!-- BOTÃO DISCRETO DE AJUDA DA NORMA (FLUXOGRAMA RETRÁTIL) -->
     <div style="border-top:1px solid var(--line);padding-top:12px;margin-top:14px;text-align:center;">
-      <button type="button" class="btn-nav" id="btnToggleTreeHelp" onclick="toggleDecisionTreeHelp()" style="font-size:12.5px;padding:7px 14px;background:#f8fbfd;color:var(--muted);border-color:#cbd5e1;" title="Visualizar árvore de perguntas sequenciais do procedimento IT-LM-GE-003">
+      <button type="button" class="btn-action-outline" id="btnToggleTreeHelp" onclick="toggleDecisionTreeHelp()" style="font-size:12.5px;padding:7px 14px;" title="Visualizar árvore de perguntas sequenciais do procedimento IT-LM-GE-003">
         📖 Consultar Fluxograma da Norma (Ajuda Passo a Passo)
       </button>
     </div>
@@ -2126,8 +2177,8 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           <h4 style="margin:0;">1. Houve cumprimento estrito do procedimento técnico ou padrão pré-estabelecido?</h4>
         </div>
         <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
-          <button type="button" class="btn-nav" id="btnStep1Sim">SIM (Procedimento cumprido integralmente)</button>
-          <button type="button" class="btn-nav primary" id="btnStep1Nao">NÃO (Houve falha, desvio ou alteração operacional)</button>
+          <button type="button" class="btn-action-outline" id="btnStep1Sim">SIM (Procedimento cumprido integralmente)</button>
+          <button type="button" class="primary" id="btnStep1Nao">NÃO (Houve falha, desvio ou alteração operacional)</button>
         </div>
       </div>
 
@@ -2142,8 +2193,8 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           <h4 style="margin:0;">2. O desvio foi detectado a tempo (antes da emissão/liberação do resultado ao cliente)?</h4>
         </div>
         <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
-          <button type="button" class="btn-nav primary" id="btnStep2Sim">SIM (Detectado a tempo internamente)</button>
-          <button type="button" class="btn-nav danger" id="btnStep2Nao">NÃO (Não foi detectado a tempo)</button>
+          <button type="button" class="primary" id="btnStep2Sim">SIM (Detectado a tempo internamente)</button>
+          <button type="button" class="danger" id="btnStep2Nao" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;font-weight:700;">NÃO (Não foi detectado a tempo)</button>
         </div>
       </div>
 
@@ -2158,8 +2209,8 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           <h4 style="margin:0;">3. Foi realizada a correção imediata eficaz (ex: repetição da corrida com novo padrão)?</h4>
         </div>
         <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
-          <button type="button" class="btn-nav primary" id="btnStep3CorrSim">SIM (Correção imediata realizada com sucesso)</button>
-          <button type="button" class="btn-nav danger" id="btnStep3CorrNao">NÃO (Sem correção imediata eficaz)</button>
+          <button type="button" class="primary" id="btnStep3CorrSim">SIM (Correção imediata realizada com sucesso)</button>
+          <button type="button" class="danger" id="btnStep3CorrNao" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;font-weight:700;">NÃO (Sem correção imediata eficaz)</button>
         </div>
       </div>
 
@@ -2175,8 +2226,8 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           <h4 style="margin:0;">3. O resultado afetado foi reportado / emitido ao cliente?</h4>
         </div>
         <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
-          <button type="button" class="btn-nav danger" id="btnStep3RepSim">SIM (Resultado já emitido ao cliente)</button>
-          <button type="button" class="btn-nav warn" id="btnStep3RepNao">NÃO (Resultado ainda não emitido / retido)</button>
+          <button type="button" class="danger" id="btnStep3RepSim" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;font-weight:700;">SIM (Resultado já emitido ao cliente)</button>
+          <button type="button" class="warn" id="btnStep3RepNao" style="background:#fef3c7;color:#b45309;border:1px solid #fcd34d;font-weight:700;">NÃO (Resultado ainda não emitido / retido)</button>
         </div>
       </div>
 
@@ -2186,7 +2237,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
     <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px;border-top:1px solid var(--line);padding-top:14px;">
       <button type="button" id="btnApplyTreeClassification" class="primary" style="display:none;">Confirmar e Iniciar ROT</button>
-      <button type="button" id="btnCancelTree" class="btn-nav">Fechar / Cancelar</button>
+      <button type="button" id="btnCancelTree" class="btn-action-outline">Fechar / Cancelar</button>
     </div>
   </div>
 </div>
@@ -2268,7 +2319,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
     <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;border-top:1px solid var(--line);padding-top:14px;">
       <button type="button" id="btnSaveSaaAction" class="primary">Salvar Ação SAA</button>
-      <button type="button" id="btnCancelSaaAction" class="btn-nav">Cancelar</button>
+      <button type="button" id="btnCancelSaaAction" class="btn-action-outline">Cancelar</button>
     </div>
   </div>
 </div>
