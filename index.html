@@ -1780,15 +1780,16 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
     <!-- Identificação do Usuário / Login Google & Perfil RBAC -->
     <div id="authContainer" style="display:flex;align-items:center;">
-      <button type="button" class="btn-google-login" id="btnGoogleLogin" onclick="loginWithGoogle()" title="Fazer login com conta Google para acessar permissões de Supervisor">
+      <button type="button" class="btn-google-login" id="btnGoogleLogin" onclick="openLoginModal()" title="Identificar-se com conta Google ou selecionar perfil de acesso">
         <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-        <span>Entrar com Google</span>
+        <span>Identificar-se / Entrar</span>
       </button>
     </div>
 
     <!-- Botões exibidos apenas no Hub (tela inicial) - Ocultados quando ROT está aberto -->
     <div id="topbarHubActions" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <button type="button" id="btnQuickNewRot" class="btn-nav" style="background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;box-shadow:0 2px 6px rgba(165,199,17,0.3);">+ Novo ROT</button>
+      <button type="button" id="btnOpenUserManagement" class="btn-nav" onclick="openUserManagementModal()" style="background:#1e3a5f;border-color:#3b82f6;color:#ffffff;font-weight:700;" title="Acessar o Cadastro de Usuários e Perfis de Acesso (Supervisor vs. Analista)">👥 Cadastro de Usuários</button>
       <button type="button" id="btnOpenTrainingCases" class="btn-nav">🧪 Casos da Aula</button>
       <button type="button" id="btnTriggerDecisionTree" class="btn-nav">🌳 Triagem / Fluxograma</button>
       <button type="button" id="btnPrintOfficial" class="btn-nav" style="background:var(--en-blue);border-color:#156ba6;color:#ffffff;font-weight:700;">🖨️ Imprimir PDF Oficial</button>
@@ -1798,6 +1799,9 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     <div id="topbarWorkspaceActions" style="display:none;align-items:center;gap:8px;">
       <button type="button" class="btn-nav" onclick="showHubView()" style="background:#10527e;border-color:var(--en-blue);font-weight:650;font-size:12.5px;color:#ffffff;" title="Sair da ocorrência e voltar à tela inicial">
         🏠 Tela Inicial
+      </button>
+      <button type="button" class="btn-nav" onclick="openUserManagementModal()" style="background:#1e3a5f;border-color:#3b82f6;color:#ffffff;font-weight:700;font-size:12.5px;" title="Acessar o Cadastro de Usuários">
+        👥 Cadastro de Usuários
       </button>
     </div>
   </div>
@@ -3175,44 +3179,134 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 </div>
 
 <!-- ======================================================== -->
-<!-- MODAL: GESTÃO DE USUÁRIOS E PERMISSÕES (SUPERVISOR / RQ) -->
+<!-- MODAL: LOGIN E IDENTIFICAÇÃO DO USUÁRIO                  -->
 <!-- ======================================================== -->
-<div class="modal-backdrop" id="modalUserManagement" style="display:none;z-index:99990;">
-  <div class="modal" style="max-width:760px;">
+<div class="modal-backdrop" id="modalLogin" style="display:none;z-index:99995;">
+  <div class="modal" style="max-width:540px;">
     <div class="modal-head">
       <div>
         <span class="badge ok">Controle de Acesso · ISO/IEC 17025</span>
-        <h2 style="margin:4px 0 0;">👥 Gestão de Usuários e Perfis</h2>
+        <h2 style="margin:4px 0 0;">🔑 Identificação do Usuário</h2>
+      </div>
+      <button type="button" class="modal-close" onclick="closeModal('modalLogin')">&times;</button>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);margin:8px 0 14px;">
+      Identifique-se para definir seu perfil no sistema. A <b>Etapa 5 (Eficácia & Riscos)</b> é de preenchimento privativo de <b>Supervisores / RQ</b>.
+    </p>
+
+    <!-- Alerta de status ou aviso explicativo -->
+    <div id="loginNoticeAlert" style="display:none;padding:12px;border-radius:8px;margin-bottom:14px;font-size:12.5px;line-height:1.45;"></div>
+
+    <!-- Opção 1: Login com Conta Google -->
+    <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:16px;margin-bottom:14px;text-align:center;">
+      <h4 style="margin:0 0 6px;color:var(--navy);font-size:14px;">Login Oficial com Conta Google</h4>
+      <p style="font-size:12px;color:var(--muted);margin:0 0 12px;">Autentique com seu e-mail institucional ou conta Google via Firebase Auth.</p>
+      
+      <button type="button" class="btn-google-login" id="btnModalGoogleAction" onclick="executeGoogleLoginFromModal()" style="margin:0 auto;padding:10px 20px;font-size:13.5px;width:100%;max-width:320px;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        <span id="txtGoogleBtnModal">Entrar com o Google</span>
+      </button>
+    </div>
+
+    <!-- Divisor "OU" -->
+    <div style="display:flex;align-items:center;gap:12px;margin:14px 0;">
+      <div style="flex:1;height:1px;background:var(--line);"></div>
+      <span style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;">OU ACESSO DIRETO POR PERFIL</span>
+      <div style="flex:1;height:1px;background:var(--line);"></div>
+    </div>
+
+    <!-- Opção 2: Seleção Rápida de Usuários Cadastrados -->
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <label style="font-size:13px;font-weight:700;color:var(--navy);margin:0;">Selecione seu Perfil Ativo:</label>
+        <button type="button" class="btn-action-outline smallbtn" onclick="closeModal('modalLogin');openUserManagementModal();" style="font-size:11px;">
+          👥 Abrir Cadastro Completo
+        </button>
+      </div>
+      <div id="quickLoginUsersList" style="display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;padding-right:2px;">
+        <!-- Injetado dinamicamente via renderQuickLoginUsersList() -->
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-top:14px;border-top:1px solid var(--line);padding-top:12px;">
+      <button type="button" class="btn-action-outline" onclick="closeModal('modalLogin')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================== -->
+<!-- MODAL: CADASTRO DE USUÁRIOS E PERFIS (SUPERVISOR / RQ)   -->
+<!-- ======================================================== -->
+<div class="modal-backdrop" id="modalUserManagement" style="display:none;z-index:99990;">
+  <div class="modal" style="max-width:820px;">
+    <div class="modal-head">
+      <div>
+        <span class="badge ok">Controle de Acesso · ISO/IEC 17025</span>
+        <h2 style="margin:4px 0 0;">👥 Cadastro de Usuários & Perfis</h2>
       </div>
       <button type="button" class="modal-close" onclick="closeModal('modalUserManagement')">&times;</button>
     </div>
 
     <div class="notice info" style="margin:10px 0 16px;">
-      <b>Regra de Perfis Normativos (IT-LM-GE-003):</b>
-      <br>• <b>Supervisor / RQ:</b> Acesso irrestrito com autorização privativa para preencher a <b>Etapa 5 (Avaliação da Eficácia & Gestão de Riscos)</b>, revisar a Matriz de Riscos e gerenciar perfis.
-      <br>• <b>Analista:</b> Abre ROTs, registra ações imediatas, investiga causas e cadastra ações SAA com evidências. Visualização somente-leitura na Etapa 5.
+      <b>Regras de Perfis Normativos (IT-LM-GE-003):</b>
+      <br>• <b>🛡️ Supervisor / RQ:</b> Acesso total irrestrito com autorização privativa para preencher a <b>Etapa 5 (Avaliação da Eficácia & Gestão de Riscos)</b>, homologar encerramentos e gerenciar colaboradores.
+      <br>• <b>🔬 Analista:</b> Abre ROTs, registra ações imediatas, investiga causas (5 Porquês e Ishikawa 6M) e cadastra ações SAA com evidências. Visualização somente-leitura na Etapa 5.
     </div>
 
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
-      <h3 style="margin:0;font-size:15px;color:var(--navy);">Usuários Autorizados no Sistema</h3>
-      <button type="button" class="btn-action-outline smallbtn" onclick="promptAddUserEmail()">
-        + Autorizar Novo E-mail
-      </button>
+    <!-- FORMULÁRIO DE CADASTRO DIRETO DE NOVO USUÁRIO -->
+    <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h4 style="margin:0 0 12px;color:var(--navy);font-size:14px;display:flex;align-items:center;gap:6px;">
+        <span>➕</span> Cadastrar Novo Usuário / Colaborador no Laboratório
+      </h4>
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));gap:12px;margin-bottom:12px;">
+        <div class="field" style="margin:0;">
+          <label for="newUserName" style="font-size:12px;font-weight:700;">Nome Completo <span class="req">*</span></label>
+          <input type="text" id="newUserName" placeholder="Ex: Carla de Brito Caetano" style="font-size:12.5px;padding:7px 10px;">
+        </div>
+        <div class="field" style="margin:0;">
+          <label for="newUserEmail" style="font-size:12px;font-weight:700;">E-mail Institucional/Google <span class="req">*</span></label>
+          <input type="email" id="newUserEmail" placeholder="Ex: carla.brito@id.uff.br" style="font-size:12.5px;padding:7px 10px;">
+        </div>
+        <div class="field" style="margin:0;">
+          <label for="newUserRole" style="font-size:12px;font-weight:700;">Perfil de Acesso <span class="req">*</span></label>
+          <select id="newUserRole" style="font-size:12.5px;padding:7px 10px;">
+            <option value="ANALISTA">🔬 Analista de Laboratório</option>
+            <option value="SUPERVISOR">🛡️ Supervisor / RQ (Acesso Total + Etapa 5)</option>
+          </select>
+        </div>
+        <div class="field" style="margin:0;">
+          <label for="newUserCargo" style="font-size:12px;font-weight:700;">Cargo / Matrícula</label>
+          <input type="text" id="newUserCargo" placeholder="Ex: Representante da Qualidade" style="font-size:12.5px;padding:7px 10px;">
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;">
+        <button type="button" class="btn-primary" onclick="handleAddNewUserFromModal()" style="background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;padding:8px 18px;box-shadow:0 2px 6px rgba(165,199,17,0.3);">
+          + Salvar e Cadastrar Usuário
+        </button>
+      </div>
     </div>
 
-    <div class="scroll" style="max-height:360px;">
+    <!-- LISTA DE USUÁRIOS CADASTRADOS -->
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+      <h3 style="margin:0;font-size:15px;color:var(--navy);">Usuários Cadastrados no Sistema</h3>
+      <span style="font-size:12px;color:var(--muted);">Clique em <b>"Entrar com este"</b> para ativar a sessão do usuário desejado.</span>
+    </div>
+
+    <div class="scroll" style="max-height:340px;">
       <table id="tableUsersList">
         <thead>
           <tr>
             <th>Usuário</th>
             <th>E-mail</th>
             <th>Perfil / Função</th>
-            <th>Último Acesso</th>
-            <th style="width:120px;text-align:center;">Alternar Perfil</th>
+            <th style="width:140px;text-align:center;">Sessão Ativa</th>
+            <th style="width:130px;text-align:center;">Alternar Perfil</th>
+            <th style="width:50px;text-align:center;">Excluir</th>
           </tr>
         </thead>
         <tbody id="tbodyUsersList">
-          <!-- Injetado dinamicamente -->
+          <!-- Injetado dinamicamente via renderUsersTable() -->
         </tbody>
       </table>
     </div>
@@ -3658,12 +3752,22 @@ function loadLocalUsersDirectory() {
     } else {
       usersDirectory = [
         {
-          uid: 'bootstrap_super_1',
+          uid: 'super_caguerra',
           email: 'caguerra@id.uff.br',
           displayName: 'Carlos Alberto Guerra (Supervisor / RQ)',
           role: 'SUPERVISOR',
+          cargo: 'Representante da Qualidade / Supervisor Técnico',
           photoURL: '',
           lastLogin: new Date().toISOString()
+        },
+        {
+          uid: 'analista_carla',
+          email: 'carla.brito@id.uff.br',
+          displayName: 'Carla de Brito Caetano (Analista)',
+          role: 'ANALISTA',
+          cargo: 'Analista de Ensaios Físico-Químicos',
+          photoURL: '',
+          lastLogin: null
         }
       ];
       saveLocalUsersDirectory();
@@ -3680,6 +3784,12 @@ function loadLocalUsersDirectory() {
     }
   } catch (e) {
     currentUser = null;
+  }
+
+  // Se nenhum usuário estiver logado, inicializa com o Supervisor por padrão para o sistema abrir totalmente utilizável
+  if (!currentUser && usersDirectory && usersDirectory.length > 0) {
+    currentUser = usersDirectory[0];
+    localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(currentUser));
   }
 }
 
@@ -3728,9 +3838,14 @@ function listenToUsersDirectory() {
         }
       }
 
-      const modal = document.getElementById('modalUserManagement');
-      if (modal && modal.style.display === 'flex') {
+      const modalMgmt = document.getElementById('modalUserManagement');
+      if (modalMgmt && modalMgmt.style.display === 'flex') {
         renderUsersTable();
+      }
+
+      const modalLg = document.getElementById('modalLogin');
+      if (modalLg && modalLg.style.display === 'flex') {
+        renderQuickLoginUsersList();
       }
     },
     (err) => {
@@ -3759,9 +3874,7 @@ function initAuthListener() {
       if (currentUser && currentUser.isDemo) {
         updateAuthUI();
         applyStep5Permissions();
-      } else {
-        currentUser = null;
-        localStorage.removeItem(AUTH_USER_STORAGE_KEY);
+      } else if (!currentUser) {
         updateAuthUI();
         applyStep5Permissions();
       }
@@ -3789,6 +3902,7 @@ function handleUserLoggedIn(user) {
     displayName: displayName,
     photoURL: photoURL,
     role: role,
+    cargo: existing ? existing.cargo : (role === 'SUPERVISOR' ? 'Supervisor Técnico' : 'Analista'),
     lastLogin: new Date().toISOString(),
     isDemo: false
   };
@@ -3810,9 +3924,41 @@ function handleUserLoggedIn(user) {
   applyStep5Permissions();
 }
 
-async function loginWithGoogle() {
+// Abre o modal completo de login e identificação
+function openLoginModal() {
+  closeUserDropdown();
+  const alertBox = document.getElementById('loginNoticeAlert');
+  if (alertBox) {
+    alertBox.style.display = 'none';
+    alertBox.innerHTML = '';
+  }
+  renderQuickLoginUsersList();
+  openModal('modalLogin');
+}
+
+// Atalho para compatibilidade
+function loginWithGoogle() {
+  openLoginModal();
+}
+
+// Execução da autenticação oficial Google a partir do modal
+async function executeGoogleLoginFromModal() {
+  const alertBox = document.getElementById('loginNoticeAlert');
+  const btnTxt = document.getElementById('txtGoogleBtnModal');
+  if (btnTxt) btnTxt.textContent = 'Conectando ao Google...';
+
   if (!firebaseAuth || !googleAuthProvider) {
-    offerFallbackAuthChoice('O serviço de autenticação do Firebase ainda não está ativo.');
+    if (alertBox) {
+      alertBox.style.display = 'block';
+      alertBox.style.background = '#fffbeb';
+      alertBox.style.border = '1.5px solid #f59e0b';
+      alertBox.style.color = '#92400e';
+      alertBox.innerHTML = `
+        <strong>ℹ️ Autenticação Google em Nuvem</strong>
+        <p style="margin:4px 0 0;font-size:12px;">Para utilizar a API oficial do Google Sign-In em produção, o domínio deve estar autorizado no Firebase Console. Para testar e operar o sistema sem barreiras agora, utilize o <b>Acesso Direto por Perfil</b> listado abaixo.</p>
+      `;
+    }
+    if (btnTxt) btnTxt.textContent = 'Entrar com o Google';
     return;
   }
 
@@ -3820,49 +3966,133 @@ async function loginWithGoogle() {
     const result = await firebaseAuth.signInWithPopup(googleAuthProvider);
     if (result && result.user) {
       handleUserLoggedIn(result.user);
+      closeModal('modalLogin');
     }
   } catch (error) {
     console.error('Erro no login Google:', error);
 
     if (error.code === 'auth/popup-closed-by-user') {
+      if (btnTxt) btnTxt.textContent = 'Entrar com o Google';
       return;
     }
 
-    if (error.code === 'auth/operation-not-allowed' ||
-        error.code === 'auth/configuration-not-found' ||
-        error.code === 'auth/unauthorized-domain') {
-      offerFallbackAuthChoice(
-        `O login oficial do Google precisa ser ativado no Firebase Console (Authentication > Sign-in method > Google).\n\nCódigo: ${error.code}`
-      );
-    } else {
-      offerFallbackAuthChoice(`Não foi possível autenticar com o Google (${error.message}).`);
+    if (alertBox) {
+      alertBox.style.display = 'block';
+      alertBox.style.background = '#fef2f2';
+      alertBox.style.border = '1.5px solid #ef4444';
+      alertBox.style.color = '#991b1b';
+      let msg = 'Não foi possível conectar com a conta Google.';
+      if (error.code === 'auth/unauthorized-domain') {
+        msg = 'Domínio atual não autorizado no Firebase Console (Authentication > Settings > Authorized domains).';
+      } else if (error.code === 'auth/operation-not-allowed') {
+        msg = 'O provedor Google precisa ser ativado no Firebase Console (Sign-in method).';
+      }
+      alertBox.innerHTML = `
+        <strong>⚠️ ${msg}</strong>
+        <p style="margin:4px 0 0;font-size:12px;">Você pode acessar imediatamente clicando em qualquer um dos perfis listados em <b>Acesso Direto por Perfil</b> abaixo.</p>
+      `;
     }
+  } finally {
+    if (btnTxt) btnTxt.textContent = 'Entrar com o Google';
   }
 }
 
-function offerFallbackAuthChoice(reasonMessage) {
-  const msg = `${reasonMessage}\n\n` +
-    `Para testar o fluxo com perfis normativos no sistema agora, selecione uma opção:\n\n` +
-    `• Clique em [OK] para entrar como SUPERVISOR / RQ (Acesso total com liberação da Etapa 5)\n` +
-    `• Clique em [Cancelar] para entrar como ANALISTA (Somente leitura na Etapa 5)`;
+// Renderiza a lista de perfis disponíveis para 1-clique
+function renderQuickLoginUsersList() {
+  const container = document.getElementById('quickLoginUsersList');
+  if (!container) return;
 
-  if (confirm(msg)) {
-    setSimulatedUser('SUPERVISOR');
-  } else {
-    setSimulatedUser('ANALISTA');
+  if (!usersDirectory || usersDirectory.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:14px;color:var(--muted);font-size:12.5px;border:1px dashed var(--line);border-radius:8px;">
+        Nenhum usuário cadastrado no momento.
+        <br><button type="button" class="smallbtn btn-action-outline" onclick="closeModal('modalLogin');openUserManagementModal();" style="margin-top:8px;">+ Cadastrar Primeiro Usuário</button>
+      </div>
+    `;
+    return;
   }
+
+  container.innerHTML = usersDirectory.map(u => {
+    const isSuper = u.role === 'SUPERVISOR';
+    const isSelf = currentUser && currentUser.email && u.email && currentUser.email.toLowerCase() === u.email.toLowerCase();
+    const initials = (u.displayName || u.email || 'U').charAt(0).toUpperCase();
+    const avatarBg = isSuper ? '10b981' : '0284c7';
+    const avatarUrl = u.photoURL ? u.photoURL : `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${avatarBg}&color=fff&size=40`;
+
+    return `
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;background:#ffffff;border:1.5px solid ${isSelf ? 'var(--en-green-dark)' : 'var(--line)'};border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.04);transition:all 0.15s ease;">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+          <img src="${avatarUrl}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.src='https://ui-avatars.com/api/?name=U&background=64748b&color=fff'">
+          <div style="min-width:0;">
+            <div style="font-weight:700;font-size:13px;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              ${escapeHtml(u.displayName || u.email)}
+            </div>
+            <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px;">
+              <span>${escapeHtml(u.email || '—')}</span>
+              <span class="badge ${isSuper ? 'ok' : 'info'}" style="font-size:9.5px;padding:1px 6px;">
+                ${isSuper ? '🛡️ Supervisor / RQ' : '🔬 Analista'}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          ${isSelf ? `
+            <span class="badge ok" style="font-size:11px;font-weight:700;padding:5px 10px;">✓ Ativo Agora</span>
+          ` : `
+            <button type="button" class="smallbtn ${isSuper ? 'btn-primary' : 'btn-action-outline'}" onclick="selectActiveUser('${escapeHtml(u.email)}')" style="${isSuper ? 'background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:700;' : 'font-weight:600;'}font-size:11.5px;padding:5px 12px;">
+              Entrar
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Ativa a sessão do usuário selecionado em 1 clique
+function selectActiveUser(email) {
+  if (!email) return;
+  const user = usersDirectory.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
+  if (!user) {
+    alert('Usuário não encontrado no diretório.');
+    return;
+  }
+
+  currentUser = {
+    uid: user.uid || ('user_' + Date.now()),
+    email: user.email,
+    displayName: user.displayName || user.email,
+    photoURL: user.photoURL || '',
+    role: user.role || 'ANALISTA',
+    cargo: user.cargo || (user.role === 'SUPERVISOR' ? 'Supervisor Técnico' : 'Analista'),
+    lastLogin: new Date().toISOString(),
+    isDemo: false
+  };
+
+  user.lastLogin = currentUser.lastLogin;
+  saveLocalUsersDirectory();
+  saveUserToCloud(user);
+  localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(currentUser));
+
+  closeModal('modalLogin');
+  closeModal('modalUserManagement');
+  closeUserDropdown();
+  updateAuthUI();
+  applyStep5Permissions();
 }
 
 function setSimulatedUser(role) {
   const isSupervisor = (role === 'SUPERVISOR');
   currentUser = {
     uid: 'demo_' + role.toLowerCase(),
-    email: isSupervisor ? 'caguerra@id.uff.br' : 'analista.laboratorio@uff.br',
-    displayName: isSupervisor ? 'Carlos Alberto Guerra (Supervisor / RQ)' : 'Analista de Bancada',
+    email: isSupervisor ? 'caguerra@id.uff.br' : 'carla.brito@id.uff.br',
+    displayName: isSupervisor ? 'Carlos Alberto Guerra (Supervisor / RQ)' : 'Carla de Brito Caetano (Analista)',
     photoURL: '',
     role: role,
+    cargo: isSupervisor ? 'Representante da Qualidade / Supervisor' : 'Analista de Laboratório',
     lastLogin: new Date().toISOString(),
-    isDemo: true
+    isDemo: false
   };
 
   const existing = usersDirectory.find(u => u.email && u.email.toLowerCase() === currentUser.email.toLowerCase());
@@ -3893,11 +4123,11 @@ function logoutUser() {
 function switchUserRolePrompt() {
   closeUserDropdown();
   if (!currentUser) {
-    offerFallbackAuthChoice('Selecione o perfil desejado para acessar o sistema:');
+    openLoginModal();
     return;
   }
   const nextRole = currentUser.role === 'SUPERVISOR' ? 'ANALISTA' : 'SUPERVISOR';
-  if (confirm(`Deseja alternar seu perfil atual de "${currentUser.role}" para "${nextRole}"?\n\nIsso simulará instantaneamente o comportamento visual e as restrições da Etapa 5.`)) {
+  if (confirm(`Deseja alternar seu perfil ativo de "${currentUser.role}" para "${nextRole}"?\n\nIsso simulará instantaneamente a liberação ou restrição de edição na Etapa 5.`)) {
     currentUser.role = nextRole;
 
     const match = usersDirectory.find(u => u.email && u.email.toLowerCase() === currentUser.email.toLowerCase());
@@ -3919,9 +4149,9 @@ function updateAuthUI() {
 
   if (!currentUser) {
     container.innerHTML = `
-      <button type="button" class="btn-google-login" id="btnGoogleLogin" onclick="loginWithGoogle()" title="Fazer login com conta Google para acessar permissões de Supervisor">
+      <button type="button" class="btn-google-login" id="btnGoogleLogin" onclick="openLoginModal()" title="Fazer login ou selecionar perfil de acesso">
         <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-        <span>Entrar com Google</span>
+        <span>Identificar-se / Entrar</span>
       </button>
     `;
   } else {
@@ -3953,15 +4183,17 @@ function updateAuthUI() {
               </span>
             </div>
           </div>
-          ${isSupervisor ? `
-            <button type="button" class="user-dropdown-item" onclick="openUserManagementModal()">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-              <span>👥 Gestão de Usuários & Perfis</span>
-            </button>
-          ` : ''}
-          <button type="button" class="user-dropdown-item" onclick="switchUserRolePrompt()">
+          <button type="button" class="user-dropdown-item" onclick="openUserManagementModal()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <span>👥 Cadastro de Usuários & Perfis</span>
+          </button>
+          <button type="button" class="user-dropdown-item" onclick="openLoginModal()">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-            <span>Alternar Perfil (Simulação)</span>
+            <span>🔄 Trocar de Usuário / Sessão</span>
+          </button>
+          <button type="button" class="user-dropdown-item" onclick="switchUserRolePrompt()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+            <span>⚡ Alternar Perfil (Simulação)</span>
           </button>
           <button type="button" class="user-dropdown-item danger" onclick="logoutUser()">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
@@ -4029,12 +4261,9 @@ function applyStep5Permissions() {
             <br>Seu perfil atual é <b>${escapeHtml(roleDesc)}</b>. Você pode consultar as informações já registradas, mas os campos de edição e conclusão permanecem bloqueados.
           </div>
           <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-            ${!currentUser ? `
-              <button type="button" class="btn-google-login" onclick="loginWithGoogle()" style="background:#fff;border-color:#ea580c;padding:5px 12px;font-size:12px;">
-                <svg viewBox="0 0 24 24" width="14" height="14"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-                <span>Entrar como Supervisor</span>
-              </button>
-            ` : ''}
+            <button type="button" class="btn-action-outline smallbtn" onclick="openLoginModal()" style="background:#fff;border-color:#ea580c;color:#9a3412;font-weight:700;">
+              🔑 Identificar-se / Trocar de Usuário
+            </button>
             <button type="button" class="btn-action-outline smallbtn" onclick="switchUserRolePrompt()" style="background:#fff;border-color:#ea580c;color:#9a3412;">
               ⚡ Alternar Perfil (Supervisor ↔ Analista)
             </button>
@@ -4070,14 +4299,110 @@ function applyStep5Permissions() {
   });
 }
 
+// Abre o painel de Cadastro de Usuários (sem bloqueios indevidos)
 function openUserManagementModal() {
   closeUserDropdown();
-  if (!currentUser || currentUser.role !== 'SUPERVISOR') {
-    alert('Acesso restrito: Apenas Supervisores têm permissão para acessar o painel de Gestão de Usuários.');
-    return;
-  }
   openModal('modalUserManagement');
   renderUsersTable();
+}
+
+// Cadastro direto de novo colaborador através do formulário
+function handleAddNewUserFromModal() {
+  const nameInput = document.getElementById('newUserName');
+  const emailInput = document.getElementById('newUserEmail');
+  const roleSelect = document.getElementById('newUserRole');
+  const cargoInput = document.getElementById('newUserCargo');
+
+  const name = (nameInput?.value || '').trim();
+  const email = (emailInput?.value || '').trim().toLowerCase();
+  const role = roleSelect?.value || 'ANALISTA';
+  const cargo = (cargoInput?.value || '').trim();
+
+  if (!name) {
+    alert('Por favor, informe o Nome Completo do colaborador.');
+    if (nameInput) nameInput.focus();
+    return;
+  }
+
+  if (!email || !email.includes('@')) {
+    alert('Por favor, informe um E-mail institucional ou Google válido (Ex: nome@id.uff.br).');
+    if (emailInput) emailInput.focus();
+    return;
+  }
+
+  const existing = usersDirectory.find(u => u.email && u.email.toLowerCase() === email);
+  if (existing) {
+    existing.displayName = name;
+    existing.role = role;
+    if (cargo) existing.cargo = cargo;
+    saveLocalUsersDirectory();
+    saveUserToCloud(existing);
+    alert(`✓ Usuário "${email}" já estava cadastrado e teve seus dados atualizados com perfil de ${role}!`);
+  } else {
+    const newUser = {
+      uid: 'user_' + Date.now(),
+      email: email,
+      displayName: name,
+      role: role,
+      cargo: cargo,
+      photoURL: '',
+      lastLogin: null
+    };
+
+    usersDirectory.push(newUser);
+    saveLocalUsersDirectory();
+    saveUserToCloud(newUser);
+    alert(`✓ Colaborador "${name}" cadastrado com sucesso com perfil de ${role}!`);
+  }
+
+  // Limpa campos
+  if (nameInput) nameInput.value = '';
+  if (emailInput) emailInput.value = '';
+  if (cargoInput) cargoInput.value = '';
+
+  renderUsersTable();
+  renderQuickLoginUsersList();
+}
+
+// Exclui colaborador do diretório
+function deleteUserFromDirectory(email) {
+  if (!email) return;
+  const target = usersDirectory.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
+  if (!target) return;
+
+  if (target.role === 'SUPERVISOR') {
+    const supervisors = usersDirectory.filter(u => u.role === 'SUPERVISOR');
+    if (supervisors.length <= 1) {
+      alert('Atenção: Não é possível excluir o único Supervisor cadastrado no sistema.');
+      return;
+    }
+  }
+
+  if (!confirm(`Deseja realmente remover o colaborador "${target.displayName || target.email}" do cadastro?`)) {
+    return;
+  }
+
+  usersDirectory = usersDirectory.filter(u => !u.email || u.email.toLowerCase() !== email.toLowerCase());
+  saveLocalUsersDirectory();
+
+  if (firestoreDb && target.email) {
+    try {
+      const docId = target.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+      firestoreDb.collection(FIRESTORE_USERS_COLLECTION).doc(docId).delete().catch(console.warn);
+    } catch (e) {}
+  }
+
+  // Se o usuário excluído era o usuário ativo, seleciona outro
+  if (currentUser && currentUser.email && currentUser.email.toLowerCase() === email.toLowerCase()) {
+    if (usersDirectory.length > 0) {
+      selectActiveUser(usersDirectory[0].email);
+    } else {
+      logoutUser();
+    }
+  }
+
+  renderUsersTable();
+  renderQuickLoginUsersList();
 }
 
 function renderUsersTable() {
@@ -4085,7 +4410,7 @@ function renderUsersTable() {
   if (!tbody) return;
 
   if (!usersDirectory || usersDirectory.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:18px;">Nenhum usuário cadastrado até o momento.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:18px;">Nenhum usuário cadastrado até o momento. Utilize o formulário acima para cadastrar colaboradores.</td></tr>`;
     return;
   }
 
@@ -4100,15 +4425,18 @@ function renderUsersTable() {
     const isSuper = u.role === 'SUPERVISOR';
     const isSelf = currentUser && currentUser.email && u.email && currentUser.email.toLowerCase() === u.email.toLowerCase();
     const initials = (u.displayName || u.email || 'U').charAt(0).toUpperCase();
-    const avatarUrl = u.photoURL ? u.photoURL : `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${isSuper ? '10b981' : '0284c7'}&color=fff&size=40`;
+    const avatarBg = isSuper ? '10b981' : '0284c7';
+    const avatarUrl = u.photoURL ? u.photoURL : `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${avatarBg}&color=fff&size=40`;
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>
         <div style="display:flex;align-items:center;gap:8px;">
-          <img src="${avatarUrl}" style="width:26px;height:26px;border-radius:50%;object-fit:cover;" onerror="this.src='https://ui-avatars.com/api/?name=U&background=64748b&color=fff'">
-          <strong>${escapeHtml(u.displayName || 'Sem nome')}</strong>
-          ${isSelf ? '<span class="badge info" style="font-size:9px;">Você</span>' : ''}
+          <img src="${avatarUrl}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.src='https://ui-avatars.com/api/?name=U&background=64748b&color=fff'">
+          <div>
+            <strong style="color:var(--navy);font-size:13px;">${escapeHtml(u.displayName || 'Sem nome')}</strong>
+            ${u.cargo ? `<div style="font-size:11px;color:var(--muted);">${escapeHtml(u.cargo)}</div>` : ''}
+          </div>
         </div>
       </td>
       <td><span style="font-size:12px;color:var(--navy);font-family:monospace;">${escapeHtml(u.email || '—')}</span></td>
@@ -4117,12 +4445,25 @@ function renderUsersTable() {
           ${isSuper ? '🛡️ Supervisor / RQ' : '🔬 Analista'}
         </span>
       </td>
-      <td><span style="font-size:11.5px;color:var(--muted);">${u.lastLogin ? formatDateBr(u.lastLogin.slice(0, 10)) : '—'}</span></td>
+      <td style="text-align:center;">
+        ${isSelf ? `
+          <span class="badge ok" style="font-size:11px;padding:3px 8px;">✓ Ativo Agora</span>
+        ` : `
+          <button type="button" class="smallbtn btn-action-outline" onclick="selectActiveUser('${escapeHtml(u.email)}')" style="font-size:11px;padding:3px 8px;">
+            Entrar com este
+          </button>
+        `}
+      </td>
       <td style="text-align:center;">
         <button type="button" class="smallbtn ${isSuper ? 'btn-action-outline' : 'btn-primary'}" 
                 onclick="toggleUserRole('${escapeHtml(u.email)}')" 
-                style="${isSuper ? 'font-size:11px;' : 'font-size:11px;background:var(--en-green);border-color:var(--en-green-dark);color:#082903;'}">
+                style="${isSuper ? 'font-size:11px;' : 'font-size:11px;background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:700;'}">
           ${isSuper ? 'Tornar Analista' : 'Promover a Supervisor'}
+        </button>
+      </td>
+      <td style="text-align:center;">
+        <button type="button" class="smallbtn" onclick="deleteUserFromDirectory('${escapeHtml(u.email)}')" style="color:#ef4444;background:transparent;border:none;font-size:14px;cursor:pointer;padding:2px 6px;" title="Remover usuário">
+          🗑️
         </button>
       </td>
     `;
@@ -4131,11 +4472,6 @@ function renderUsersTable() {
 }
 
 function toggleUserRole(email) {
-  if (!currentUser || currentUser.role !== 'SUPERVISOR') {
-    alert('Apenas Supervisores podem alterar perfis de usuários.');
-    return;
-  }
-
   const user = usersDirectory.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
   if (!user) return;
 
@@ -4167,41 +4503,7 @@ function toggleUserRole(email) {
   }
 
   renderUsersTable();
-}
-
-function promptAddUserEmail() {
-  if (!currentUser || currentUser.role !== 'SUPERVISOR') {
-    alert('Apenas Supervisores podem autorizar novos e-mails.');
-    return;
-  }
-
-  const email = prompt('Digite o e-mail Google/institucional a ser autorizado no sistema:\n(Ex: analista@id.uff.br)');
-  if (!email || !email.trim()) return;
-
-  const cleanEmail = email.trim().toLowerCase();
-  const existing = usersDirectory.find(u => u.email && u.email.toLowerCase() === cleanEmail);
-  if (existing) {
-    alert(`O e-mail "${cleanEmail}" já está cadastrado com a função de "${existing.role}".`);
-    return;
-  }
-
-  const roleChoice = confirm(`Autorizar "${cleanEmail}" como SUPERVISOR / RQ?\n\n• [OK] para autorizar como SUPERVISOR\n• [Cancelar] para autorizar como ANALISTA`);
-  const assignedRole = roleChoice ? 'SUPERVISOR' : 'ANALISTA';
-
-  const newUser = {
-    uid: 'invited_' + Date.now(),
-    email: cleanEmail,
-    displayName: cleanEmail.split('@')[0],
-    role: assignedRole,
-    photoURL: '',
-    lastLogin: null
-  };
-
-  usersDirectory.push(newUser);
-  saveLocalUsersDirectory();
-  saveUserToCloud(newUser);
-  renderUsersTable();
-  alert(`✓ E-mail "${cleanEmail}" autorizado com sucesso como ${assignedRole}!`);
+  renderQuickLoginUsersList();
 }
 
 function updateCloudSyncStatus(status, text, tooltip) {
@@ -4222,6 +4524,7 @@ function initApp() {
   updateTopbarMode(false);
   initFirebase();
   updateAuthUI();
+  applyStep5Permissions();
 }
 
 function loadDatabase() {
