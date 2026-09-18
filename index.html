@@ -127,6 +127,7 @@ header.app-header{
 }
 header.app-header p{max-width:980px;color:#e8f4fc;margin:8px 0 0;font-size:14.5px;line-height:1.5}
 .app-header-container{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.header-text-block{flex:1 1 550px;min-width:280px;max-width:1050px}
 
 /* Header Logos & Desenvolvedor */
 .author-line{margin-top:12px;font-size:13px;color:#d8ecf8;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -1416,6 +1417,21 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   .doc-watermark{bottom:0!important;left:0!important;right:0!important}
 }
 
+/* Ajuste intermediário para Tablets e Telas Médias (<= 960px) */
+@media (max-width: 960px) {
+  .app-header-container {
+    gap: 12px;
+  }
+  .header-text-block {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  .header-logos-wrapper {
+    margin-left: 0!important;
+    align-self: flex-start!important;
+  }
+}
+
 /* ======================================================== */
 /* OTIMIZAÇÕES RESPONSIVAS PARA CELULAR / MOBILE (<= 768px) */
 /* ======================================================== */
@@ -1480,29 +1496,39 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
   /* Header e Logos Mobile */
   header.app-header {
-    padding: 16px 12px;
+    padding: 14px 12px;
   }
   .app-header-container {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    gap: 8px;
   }
-  .header-logos-wrapper {
-    width: auto;
-    max-width: 100%;
-    margin-left: auto!important;
-    align-self: flex-end!important;
-    justify-content: flex-end;
-    padding: 8px 12px;
-    margin-top: 6px;
-  }
-  .header-logos-wrapper img {
-    height: 38px;
-    max-width: 120px;
+  .header-text-block {
+    flex: 0 0 auto!important;
+    width: 100%!important;
+    max-width: 100%!important;
+    min-width: 0!important;
   }
   .author-line {
     font-size: 12px;
     margin-top: 8px;
+    line-height: 1.4;
+  }
+  .header-logos-wrapper {
+    width: fit-content;
+    max-width: 100%;
+    margin: 4px 0 0 0!important;
+    align-self: flex-start!important;
+    justify-content: flex-start;
+    padding: 6px 12px;
+    gap: 10px;
+  }
+  .header-logos-wrapper img {
+    height: 34px;
+    max-width: 115px;
+  }
+  .header-logos-divider {
+    height: 28px;
   }
 
   /* Painel de Métricas (Cards) */
@@ -1741,6 +1767,10 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     max-height: 92vh;
     overflow-y: auto;
   }
+  .author-modal-content {
+    margin: 10px 0 12px!important;
+    padding: 10px 12px!important;
+  }
   .author-logos-container {
     flex-wrap: wrap;
     gap: 8px;
@@ -1748,7 +1778,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   .author-logo-card {
     max-width: none;
     flex: 1 1 90px;
-    height: 75px;
+    height: 70px;
   }
 
   /* Tabelas com rolagem suave no toque */
@@ -1841,7 +1871,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 <!-- HEADER APLICAÇÃO -->
 <header class="app-header">
   <div class="app-header-container">
-    <div style="flex:1 1 650px; min-width: 280px; max-width: 1050px;">
+    <div class="header-text-block">
       <div class="eyebrow">Laboratório de Monitoração Ambiental (LMA) · Central Nuclear Almirante Álvaro Alberto · CNAAA</div>
       <h1 id="appHeaderTitle">Tratamento de Ocorrências (IT-LM-GE-003)</h1>
       <p id="appHeaderDesc">Cumprimento à <b>Instrução de Trabalho IT-LM-GE-003 Rev. 0</b> e aos requisitos normativos <b>ABNT NBR ISO/IEC 17025:2017 (§ 7.10, § 8.5 e § 8.7)</b>;</p>
