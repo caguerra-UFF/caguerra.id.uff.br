@@ -727,9 +727,40 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 .modal-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}
 .modal-head h2{margin:0}
 .modal-close{font-size:22px;border:0;background:transparent;cursor:pointer;color:var(--muted);padding:4px 8px;line-height:1}
-.modal-close:hover{color:var(--danger)}
-.tree-step{background:#f8fbfd;border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0}
-.tree-step h4{margin:0 0 8px;font-size:15px;color:var(--navy)}
+.tree-step{background:#f8fbfd;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px 18px;margin:14px 0;box-shadow:0 2px 6px rgba(0,0,0,0.02);transition:all .2s ease}
+.tree-step h4{margin:0 0 4px;font-size:14.5px;color:var(--navy);font-weight:750;line-height:1.4}
+
+/* Grupo e botões de opções de triagem da Árvore de Decisão */
+.tree-choices-group{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;margin-top:12px}
+.tree-choice-btn{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:10px;color:#1e293b;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s cubic-bezier(0.16, 1, 0.3, 1);text-align:left;line-height:1.35;box-shadow:0 1px 3px rgba(0,0,0,0.04);position:relative;outline:none}
+.tree-choice-btn:hover{border-color:#94a3b8;background:#f8fafc;transform:translateY(-1.5px);box-shadow:0 6px 16px rgba(0,0,0,0.07)}
+
+/* Indicador circular tipo rádio/check */
+.tree-choice-radio{width:22px;height:22px;border-radius:50%;border:2px solid #94a3b8;background:#ffffff;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:800;transition:all .2s ease;color:transparent}
+
+/* Tag SIM / NÃO */
+.tree-choice-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:800;letter-spacing:0.4px;flex-shrink:0;transition:all .2s ease}
+.tree-choice-btn.sim .tree-choice-tag{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+.tree-choice-btn.nao .tree-choice-tag{background:#fff1f2;color:#be123c;border:1px solid #fecdd3}
+
+/* Descrição textual */
+.tree-choice-desc{font-size:12.5px;font-weight:600;color:#334155;transition:color .2s ease}
+
+/* ESTADO SELECIONADO: SIM (VERDE / CONFORME / RECUPERADO) */
+.tree-choice-btn.sim.selected{background:linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%)!important;border-color:#059669!important;color:#064e3b!important;box-shadow:0 0 0 3px rgba(16,185,129,0.25), 0 6px 18px rgba(16,185,129,0.18)!important;transform:translateY(-2px)!important}
+.tree-choice-btn.sim.selected .tree-choice-radio{background:#059669!important;border-color:#059669!important;color:#ffffff!important}
+.tree-choice-btn.sim.selected .tree-choice-tag{background:#059669!important;color:#ffffff!important;border-color:#047857!important}
+.tree-choice-btn.sim.selected .tree-choice-desc{color:#064e3b!important;font-weight:700}
+
+/* ESTADO SELECIONADO: NÃO (ROSE / CRÍTICO / DESVIO) */
+.tree-choice-btn.nao.selected{background:linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%)!important;border-color:#e11d48!important;color:#881337!important;box-shadow:0 0 0 3px rgba(225,29,72,0.25), 0 6px 18px rgba(225,29,72,0.18)!important;transform:translateY(-2px)!important}
+.tree-choice-btn.nao.selected .tree-choice-radio{background:#e11d48!important;border-color:#e11d48!important;color:#ffffff!important}
+.tree-choice-btn.nao.selected .tree-choice-tag{background:#e11d48!important;color:#ffffff!important;border-color:#be123c!important}
+.tree-choice-btn.nao.selected .tree-choice-desc{color:#881337!important;font-weight:700}
+
+/* Quando um botão do grupo está selecionado, o outro fica suavemente atenuado */
+.tree-choices-group.has-selection .tree-choice-btn:not(.selected){opacity:.55;background:#f8fafc;border-color:#e2e8f0;transform:scale(0.985)}
+.tree-choices-group.has-selection .tree-choice-btn:not(.selected):hover{opacity:.9;transform:scale(1);border-color:#cbd5e1;background:#ffffff}
 .triagem-direct-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;margin:12px 0 20px}
 .triagem-card{background:white;border:1.5px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:all .22s;text-align:left;position:relative}
 .triagem-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(16,46,70,0.12)}
@@ -2964,9 +2995,17 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           </svg>
           <h4 style="margin:0;">1. Houve cumprimento estrito do procedimento técnico ou padrão pré-estabelecido?</h4>
         </div>
-        <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
-          <button type="button" class="btn-action-outline" id="btnStep1Sim">SIM (Procedimento cumprido integralmente)</button>
-          <button type="button" class="primary" id="btnStep1Nao">NÃO (Houve falha, desvio ou alteração operacional)</button>
+        <div class="tree-choices-group" id="groupStep1">
+          <button type="button" class="tree-choice-btn sim" id="btnStep1Sim">
+            <span class="tree-choice-radio">✓</span>
+            <span class="tree-choice-tag">SIM</span>
+            <span class="tree-choice-desc">Procedimento cumprido integralmente</span>
+          </button>
+          <button type="button" class="tree-choice-btn nao" id="btnStep1Nao">
+            <span class="tree-choice-radio">✓</span>
+            <span class="tree-choice-tag">NÃO</span>
+            <span class="tree-choice-desc">Houve falha, desvio ou alteração operacional</span>
+          </button>
         </div>
       </div>
 
@@ -2980,9 +3019,17 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           </svg>
           <h4 style="margin:0;">2. O desvio foi detectado a tempo (antes da emissão/liberação do resultado ao cliente)?</h4>
         </div>
-        <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
-          <button type="button" class="primary" id="btnStep2Sim">SIM (Detectado a tempo internamente)</button>
-          <button type="button" class="danger" id="btnStep2Nao" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;font-weight:700;">NÃO (Não foi detectado a tempo)</button>
+        <div class="tree-choices-group" id="groupStep2">
+          <button type="button" class="tree-choice-btn sim" id="btnStep2Sim">
+            <span class="tree-choice-radio">✓</span>
+            <span class="tree-choice-tag">SIM</span>
+            <span class="tree-choice-desc">Detectado a tempo internamente</span>
+          </button>
+          <button type="button" class="tree-choice-btn nao" id="btnStep2Nao">
+            <span class="tree-choice-radio">✓</span>
+            <span class="tree-choice-tag">NÃO</span>
+            <span class="tree-choice-desc">Não foi detectado a tempo</span>
+          </button>
         </div>
       </div>
 
@@ -2996,9 +3043,17 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           </svg>
           <h4 style="margin:0;">3. Foi realizada a correção imediata eficaz (ex: repetição da corrida com novo padrão)?</h4>
         </div>
-        <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
-          <button type="button" class="primary" id="btnStep3CorrSim">SIM (Correção imediata realizada com sucesso)</button>
-          <button type="button" class="danger" id="btnStep3CorrNao" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;font-weight:700;">NÃO (Sem correção imediata eficaz)</button>
+        <div class="tree-choices-group" id="groupStep3Sim">
+          <button type="button" class="tree-choice-btn sim" id="btnStep3CorrSim">
+            <span class="tree-choice-radio">✓</span>
+            <span class="tree-choice-tag">SIM</span>
+            <span class="tree-choice-desc">Correção imediata realizada com sucesso</span>
+          </button>
+          <button type="button" class="tree-choice-btn nao" id="btnStep3CorrNao">
+            <span class="tree-choice-radio">✓</span>
+            <span class="tree-choice-tag">NÃO</span>
+            <span class="tree-choice-desc">Sem correção imediata eficaz</span>
+          </button>
         </div>
       </div>
 
@@ -3013,9 +3068,17 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           </svg>
           <h4 style="margin:0;">3. O resultado afetado foi reportado / emitido ao cliente?</h4>
         </div>
-        <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
-          <button type="button" class="danger" id="btnStep3RepSim" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;font-weight:700;">SIM (Resultado já emitido ao cliente)</button>
-          <button type="button" class="warn" id="btnStep3RepNao" style="background:#fef3c7;color:#b45309;border:1px solid #fcd34d;font-weight:700;">NÃO (Resultado ainda não emitido / retido)</button>
+        <div class="tree-choices-group" id="groupStep3Nao">
+          <button type="button" class="tree-choice-btn nao" id="btnStep3RepSim">
+            <span class="tree-choice-radio">✓</span>
+            <span class="tree-choice-tag">SIM</span>
+            <span class="tree-choice-desc">Resultado já emitido ao cliente (Crítico)</span>
+          </button>
+          <button type="button" class="tree-choice-btn sim" id="btnStep3RepNao">
+            <span class="tree-choice-radio">✓</span>
+            <span class="tree-choice-tag">NÃO</span>
+            <span class="tree-choice-desc">Resultado ainda não emitido / retido</span>
+          </button>
         </div>
       </div>
 
@@ -6631,6 +6694,11 @@ function resetDecisionTreeSteps() {
   document.getElementById('step3_nao').style.display = 'none';
   document.getElementById('treeResultBox').style.display = 'none';
   document.getElementById('btnApplyTreeClassification').style.display = 'none';
+
+  // Limpa classes de seleção em todos os botões e grupos de opções
+  document.querySelectorAll('.tree-choice-btn').forEach(btn => btn.classList.remove('selected'));
+  document.querySelectorAll('.tree-choices-group').forEach(grp => grp.classList.remove('has-selection'));
+
   // Limpa seleção dos cards de triagem direta
   clearTriagemSelection();
   // Recolhe container de ajuda da norma
@@ -6738,43 +6806,86 @@ function confirmTriagemClassification(tipo) {
   }
 }
 
+function setTreeChoice(groupId, selectedBtnId) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  group.classList.add('has-selection');
+  group.querySelectorAll('.tree-choice-btn').forEach(btn => {
+    if (btn.id === selectedBtnId) {
+      btn.classList.add('selected');
+    } else {
+      btn.classList.remove('selected');
+    }
+  });
+}
+
 function setupDecisionTreeEvents() {
   document.getElementById('btnStep1Sim').addEventListener('click', () => {
+    setTreeChoice('groupStep1', 'btnStep1Sim');
     treeState.step1 = 'SIM';
+    // Se o procedimento foi cumprido integralmente, fecha passos posteriores e finaliza como Trabalho Conforme
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3_sim').style.display = 'none';
+    document.getElementById('step3_nao').style.display = 'none';
     finishDecisionTree('TRABALHO_CONFORME', 'Trabalho Conforme', 'Atividade realizada em plena conformidade com os procedimentos e requisitos estabelecidos. Nenhum registro ou ação necessária.', 'NENHUM');
   });
 
   document.getElementById('btnStep1Nao').addEventListener('click', () => {
+    setTreeChoice('groupStep1', 'btnStep1Nao');
     treeState.step1 = 'NAO';
-    document.getElementById('step1').style.display = 'none';
-    document.getElementById('step2').style.display = 'block';
+    // Oculta passos posteriores caso estivessem abertos anteriormente
+    document.getElementById('step3_sim').style.display = 'none';
+    document.getElementById('step3_nao').style.display = 'none';
+    document.getElementById('treeResultBox').style.display = 'none';
+    document.getElementById('btnApplyTreeClassification').style.display = 'none';
+    
+    // Revela Passo 2 mantendo Passo 1 visível para o usuário ver todo o fluxo
+    const step2 = document.getElementById('step2');
+    step2.style.display = 'block';
+    step2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
   document.getElementById('btnStep2Sim').addEventListener('click', () => {
+    setTreeChoice('groupStep2', 'btnStep2Sim');
     treeState.step2 = 'SIM';
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step3_sim').style.display = 'block';
+    document.getElementById('step3_nao').style.display = 'none';
+    document.getElementById('treeResultBox').style.display = 'none';
+    document.getElementById('btnApplyTreeClassification').style.display = 'none';
+
+    const s3 = document.getElementById('step3_sim');
+    s3.style.display = 'block';
+    s3.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
   document.getElementById('btnStep2Nao').addEventListener('click', () => {
+    setTreeChoice('groupStep2', 'btnStep2Nao');
     treeState.step2 = 'NAO';
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step3_nao').style.display = 'block';
+    document.getElementById('step3_sim').style.display = 'none';
+    document.getElementById('treeResultBox').style.display = 'none';
+    document.getElementById('btnApplyTreeClassification').style.display = 'none';
+
+    const s3n = document.getElementById('step3_nao');
+    s3n.style.display = 'block';
+    s3n.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
   document.getElementById('btnStep3CorrSim').addEventListener('click', () => {
+    setTreeChoice('groupStep3Sim', 'btnStep3CorrSim');
     finishDecisionTree('DESVIO_DE_PROCESSO', 'Desvio de Processo', 'O desvio foi detectado a tempo e a correção imediata foi aplicada. O resultado gerado é válido. Classifica-se como Desvio de Processo, exigindo atenção interna e possíveis ações preventivas de riscos.', 'SAA');
   });
 
   document.getElementById('btnStep3CorrNao').addEventListener('click', () => {
+    setTreeChoice('groupStep3Sim', 'btnStep3CorrNao');
     finishDecisionTree('TRABALHO_NAO_CONFORME', 'Trabalho Não Conforme (TNC)', 'Detectado a tempo, porém não corrigido eficazmente, impossibilitando a emissão de resultado confiável.', 'SAA');
   });
 
   document.getElementById('btnStep3RepSim').addEventListener('click', () => {
+    setTreeChoice('groupStep3Nao', 'btnStep3RepSim');
     finishDecisionTree('TRABALHO_NAO_CONFORME', 'Trabalho Não Conforme (TNC - Requisito 7.10)', 'CRÍTICO: O desvio NÃO foi detectado a tempo e o resultado JÁ FOI REPORTADO AO CLIENTE. Exige contenção imediata, retenção, avaliação de impacto retroativo e notificação formal do cliente!', 'SAA');
   });
 
   document.getElementById('btnStep3RepNao').addEventListener('click', () => {
+    setTreeChoice('groupStep3Nao', 'btnStep3RepNao');
     finishDecisionTree('DESVIO_DE_PROCESSO', 'Desvio de Processo / TNC Interno', 'Não detectado a tempo, porém o resultado não chegou a ser emitido ao cliente. Deve ser avaliado se houve comprometimento metrológico antes de qualquer liberação.', 'SAA');
   });
 
@@ -6810,6 +6921,7 @@ function finishDecisionTree(code, title, explanation, system) {
   } else {
     document.getElementById('btnApplyTreeClassification').style.display = 'none';
   }
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // Carregar Casos Práticos de Treinamento
