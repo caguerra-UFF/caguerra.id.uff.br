@@ -247,12 +247,14 @@ nav.subnav a.active{background:var(--navy);color:white;border-color:var(--navy)}
 .badge.ok{background:#e9f7f3;color:#126451;border:1px solid #b3ddc8}
 .badge.neutral{background:#eef3f7;color:var(--muted);border:1px solid var(--line)}
 
-/* Cards & Metrics Modernizados (Hub de Ocorrências) */
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:24px}
-.metric{position:relative;background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;box-shadow:0 4px 14px rgba(15,23,42,0.04),0 1px 3px rgba(15,23,42,0.02);transition:all .22s cubic-bezier(0.16,1,0.3,1);overflow:hidden}
-.metric::before{content:'';position:absolute;top:0;left:0;right:0;height:3.5px;border-radius:14px 14px 0 0;transition:height .2s ease}
-.metric:hover{transform:translateY(-3px);box-shadow:0 12px 24px -4px rgba(15,23,42,0.08),0 4px 8px -2px rgba(15,23,42,0.04);border-color:#cbd5e1}
-.metric:hover::before{height:5px}
+/* Cards & Metrics em Caixa Única com Cantos Retos (Hub de Ocorrências) */
+.cards.kpi-unified-box{display:grid;grid-template-columns:repeat(5,1fr);gap:0;background:#ffffff;border:1px solid #cbd5e1;border-radius:0px;box-shadow:0 2px 8px rgba(15,23,42,0.05);margin-bottom:20px;overflow:hidden}
+.kpi-unified-box .metric{position:relative;background:#ffffff;border:none;border-right:1px solid #e2e8f0;border-radius:0px;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;box-shadow:none;transition:background .15s ease,box-shadow .15s ease;cursor:pointer;user-select:none}
+.kpi-unified-box .metric:last-child{border-right:none}
+.kpi-unified-box .metric::before{content:'';position:absolute;top:0;left:0;right:0;height:3.5px;border-radius:0px;transition:height .18s ease}
+.kpi-unified-box .metric:hover{background:#f8fafc}
+.kpi-unified-box .metric:hover::before{height:5.5px}
+.kpi-unified-box .metric:active{background:#f1f5f9}
 
 .metric.kpi-total::before{background:linear-gradient(90deg,#1b80c4,#38bdf8)}
 .metric.kpi-danger::before{background:linear-gradient(90deg,#dc2626,#f87171)}
@@ -260,19 +262,19 @@ nav.subnav a.active{background:var(--navy);color:white;border-color:var(--navy)}
 .metric.kpi-action::before{background:linear-gradient(90deg,#2563eb,#60a5fa)}
 .metric.kpi-risk::before{background:linear-gradient(90deg,#059669,#34d399)}
 
-.kpi-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.kpi-title{font-size:11.5px;font-weight:750;text-transform:uppercase;letter-spacing:.05em;color:#64748b;line-height:1.35}
-.kpi-icon-pill{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s ease}
-.metric:hover .kpi-icon-pill{transform:scale(1.08)}
+.kpi-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.kpi-title{font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:.05em;color:#64748b;line-height:1.35}
+.kpi-icon-pill{width:32px;height:32px;border-radius:0px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .18s ease}
+.kpi-unified-box .metric:hover .kpi-icon-pill{transform:scale(1.06)}
 
-.metric.kpi-total .kpi-icon-pill{background:#eff6ff;color:#1b80c4;border:1px solid #dbeafe}
-.metric.kpi-danger .kpi-icon-pill{background:#fef2f2;color:#dc2626;border:1px solid #fee2e2}
-.metric.kpi-warn .kpi-icon-pill{background:#fffbeb;color:#d97706;border:1px solid #fef3c7}
-.metric.kpi-action .kpi-icon-pill{background:#eff6ff;color:#2563eb;border:1px solid #dbeafe}
-.metric.kpi-risk .kpi-icon-pill{background:#ecfdf5;color:#059669;border:1px solid #d1fae5}
+.metric.kpi-total .kpi-icon-pill{background:#eff6ff;color:#1b80c4;border:1px solid #bfdbfe}
+.metric.kpi-danger .kpi-icon-pill{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.metric.kpi-warn .kpi-icon-pill{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.metric.kpi-action .kpi-icon-pill{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
+.metric.kpi-risk .kpi-icon-pill{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}
 
 .kpi-value-row{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:2px 0}
-.metric strong{display:block;font-size:32px;font-weight:850;letter-spacing:-.035em;line-height:1;margin:0}
+.metric strong{display:block;font-size:28px;font-weight:850;letter-spacing:-.035em;line-height:1;margin:0}
 
 .metric.kpi-total strong{color:#0f172a}
 .metric.kpi-danger strong{color:#dc2626}
@@ -280,20 +282,30 @@ nav.subnav a.active{background:var(--navy);color:white;border-color:var(--navy)}
 .metric.kpi-action strong{color:#2563eb}
 .metric.kpi-risk strong{color:#059669}
 
-.kpi-badge{font-size:11px;font-weight:750;padding:3px 8px;border-radius:9999px;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+.kpi-badge{font-size:10px;font-weight:750;padding:2px 6px;border-radius:0px;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
 .kpi-badge-blue{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
 .kpi-badge-danger{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
 .kpi-badge-warn{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
 .kpi-badge-indigo{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
 .kpi-badge-emerald{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
 
-.kpi-desc{font-size:12px;color:#64748b;line-height:1.4}
+.kpi-desc{font-size:11.5px;color:#64748b;line-height:1.35}
 
-.kpi-risk-content{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.kpi-gauge-wrap{display:flex;align-items:center;gap:10px}
-.kpi-gauge-svg{width:42px;height:42px;transform:rotate(-90deg);flex-shrink:0}
+.kpi-risk-content{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.kpi-gauge-wrap{display:flex;align-items:center;gap:8px}
+.kpi-gauge-svg{width:38px;height:38px;transform:rotate(-90deg);flex-shrink:0}
 .kpi-gauge-bg{fill:none;stroke:#e2e8f0;stroke-width:4}
-.kpi-gauge-fill{fill:none;stroke:#059669;stroke-width:4;stroke-linecap:round;transition:stroke-dasharray .5s ease}
+.kpi-gauge-fill{fill:none;stroke:#059669;stroke-width:4;stroke-linecap:square;transition:stroke-dasharray .5s ease}
+
+/* Toolbar e Filtros com Cantos Retos */
+.hub-toolbar-box input,
+.hub-toolbar-box select,
+.hub-toolbar-box button,
+.input-square,
+.select-square,
+.btn-square {
+  border-radius: 0px !important;
+}
 
 /* Sections, Forms & Inputs */
 section.panel{background:white;border:1px solid var(--line);border-radius:12px;padding:24px;margin:18px 0;box-shadow:0 4px 14px rgba(16,46,70,0.03)}
@@ -1571,45 +1583,55 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     height: 28px;
   }
 
-  /* Painel de Métricas Moderno (Mobile) */
-  .cards {
+  /* Painel de Métricas em Caixa Única com Cantos Retos (Mobile) */
+  .cards.kpi-unified-box {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 0;
     margin-bottom: 16px;
+    border-radius: 0px;
+    border: 1px solid #cbd5e1;
   }
-  .metric {
-    padding: 13px 14px;
-    border-radius: 12px;
+  .kpi-unified-box .metric {
+    padding: 12px 14px;
+    border-radius: 0px;
+    border-right: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
     gap: 8px;
   }
+  .kpi-unified-box .metric:nth-child(2n) {
+    border-right: none;
+  }
   .metric strong {
-    font-size: 24px;
+    font-size: 22px;
   }
   .kpi-title {
-    font-size: 10.5px;
+    font-size: 10px;
   }
   .kpi-icon-pill {
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 0px;
   }
   .kpi-icon-pill svg {
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
   }
   .kpi-badge {
-    font-size: 9.5px;
-    padding: 2px 6px;
+    font-size: 9px;
+    padding: 2px 5px;
+    border-radius: 0px;
   }
   .kpi-desc {
-    font-size: 11px;
+    font-size: 10.5px;
   }
   .metric.kpi-risk {
     grid-column: span 2;
+    border-bottom: none;
+    border-right: none;
   }
   .kpi-gauge-svg {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
 
   /* Toolbar do Catálogo / Hub */
@@ -1964,14 +1986,14 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   <!-- ======================================================== -->
   <div id="hubView">
     
-    <!-- Painel de Métricas / KPIs Modernizados -->
-    <div class="cards">
+    <!-- Painel de Métricas / KPIs em Caixa Única com Cantos Retos -->
+    <div class="cards kpi-unified-box">
       <!-- Card 1: Total de Ocorrências -->
-      <div class="metric kpi-total">
+      <div class="metric kpi-total" onclick="filterHubByKpi('ALL', 'ALL')" role="button" tabindex="0" title="Clique para exibir todas as ocorrências">
         <div class="kpi-card-top">
           <span class="kpi-title">Total de Ocorrências</span>
           <div class="kpi-icon-pill" title="Catálogo Geral de Ocorrências LMA">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
           </div>
         </div>
         <div class="kpi-value-row">
@@ -1982,11 +2004,11 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       </div>
 
       <!-- Card 2: Trabalhos Não Conformes (7.10) -->
-      <div class="metric kpi-danger">
+      <div class="metric kpi-danger" onclick="filterHubByKpi('TRABALHO_NAO_CONFORME')" role="button" tabindex="0" title="Clique para filtrar apenas Trabalhos Não Conformes (7.10)">
         <div class="kpi-card-top">
           <span class="kpi-title">Trabalhos Não Conformes (7.10)</span>
           <div class="kpi-icon-pill" title="Trabalho Não Conforme - Requer ação e contenção imediata">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
           </div>
         </div>
         <div class="kpi-value-row">
@@ -1997,11 +2019,11 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       </div>
 
       <!-- Card 3: Desvios de Processo -->
-      <div class="metric kpi-warn">
+      <div class="metric kpi-warn" onclick="filterHubByKpi('DESVIO_DE_PROCESSO')" role="button" tabindex="0" title="Clique para filtrar apenas Desvios de Processo">
         <div class="kpi-card-top">
           <span class="kpi-title">Desvios de Processo</span>
           <div class="kpi-icon-pill" title="Desvio de Processo - Sem impacto direto no ensaio">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
           </div>
         </div>
         <div class="kpi-value-row">
@@ -2012,11 +2034,11 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       </div>
 
       <!-- Card 4: Ações SAA em Aberto (8.7) -->
-      <div class="metric kpi-action">
+      <div class="metric kpi-action" onclick="filterHubByKpi(undefined, 'ACOES_ANDAMENTO')" role="button" tabindex="0" title="Clique para filtrar ocorrências com ações em andamento">
         <div class="kpi-card-top">
           <span class="kpi-title">Ações SAA em Aberto (8.7)</span>
           <div class="kpi-icon-pill" title="Ações Corretivas e Preventivas - Anexo 2">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="m9 14 2 2 4-4"></path></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4"></rect><path d="m9 14 2 2 4-4"></path></svg>
           </div>
         </div>
         <div class="kpi-value-row">
@@ -2027,11 +2049,11 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       </div>
 
       <!-- Card 5: Matriz de Risco (8.5 / 8.7.1e) -->
-      <div class="metric kpi-risk">
+      <div class="metric kpi-risk" onclick="filterHubByKpi('ALL', 'ALL')" role="button" tabindex="0" title="Elo preventivo mandatório - ISO/IEC 17025">
         <div class="kpi-card-top">
           <span class="kpi-title">Matriz de Risco (8.5 / 8.7.1e)</span>
           <div class="kpi-icon-pill" title="Elo preventivo mandatório - ISO/IEC 17025">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
           </div>
         </div>
         <div class="kpi-value-row kpi-risk-content">
@@ -2048,11 +2070,11 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       </div>
     </div>
 
-    <!-- Barra de Ferramentas do Hub -->
-    <div class="toolbar" style="justify-content:space-between;align-items:center;gap:12px;">
+    <!-- Barra de Ferramentas do Hub em Caixa Única com Cantos Retos -->
+    <div class="toolbar hub-toolbar-box" style="justify-content:space-between;align-items:center;gap:12px;">
       <div class="hub-filters-trio">
-        <input type="search" id="hubSearchInput" placeholder="Buscar por nº do ROT, descrição, responsável ou palavra-chave...">
-        <select id="hubFilterType">
+        <input type="search" id="hubSearchInput" class="input-square" placeholder="Buscar por nº do ROT, descrição, responsável ou palavra-chave...">
+        <select id="hubFilterType" class="select-square">
           <option value="ALL">Todos os Tipos</option>
           <option value="TRABALHO_NAO_CONFORME">Trabalho Não Conforme (TNC)</option>
           <option value="DESVIO_DE_PROCESSO">Desvio de Processo</option>
@@ -2060,7 +2082,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           <option value="OPORTUNIDADE_MELHORIA">Oportunidade de Melhoria (OP)</option>
           <option value="RECLAMACAO_CLIENTE">Reclamação de Cliente</option>
         </select>
-        <select id="hubFilterStatus">
+        <select id="hubFilterStatus" class="select-square">
           <option value="ALL">Todos os Status</option>
           <option value="ABERTO">Em Aberto</option>
           <option value="INVESTIGACAO">Em Investigação</option>
@@ -2071,7 +2093,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       </div>
 
       <div class="hub-actions-group" style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0;">
-        <button type="button" id="btnExportSaaCsv" title="Exportar planilha consolidada de ações em formato CSV">📊 Exportar SAA (CSV)</button>
+        <button type="button" id="btnExportSaaCsv" class="btn-square" title="Exportar planilha consolidada de ações em formato CSV">📊 Exportar SAA (CSV)</button>
       </div>
     </div>
 
@@ -6123,6 +6145,17 @@ function updateHubKpis() {
   if (elTotalRiscos) elTotalRiscos.innerText = percRisco + '%';
   const gaugePath = document.getElementById('kpiRiskGaugePath');
   if (gaugePath) gaugePath.setAttribute('stroke-dasharray', `${percRisco}, 100`);
+}
+
+// Filtrar ocorrências ao clicar nos cards de métricas (comportamento de botão na caixa única)
+function filterHubByKpi(type, status) {
+  const fType = document.getElementById('hubFilterType');
+  const fStatus = document.getElementById('hubFilterStatus');
+  if (type !== undefined && fType) fType.value = type;
+  if (status !== undefined && fStatus) fStatus.value = status;
+  renderHub();
+  const grid = document.getElementById('rotCardsGrid');
+  if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // Criar Novo ROT (Abre o modal de seleção com os 4 cartões ilustrados)
