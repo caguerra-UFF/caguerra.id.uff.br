@@ -343,17 +343,19 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
 
 /* Hub Catalog Cards */
 .rot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px;margin-top:16px}
-.rot-card{background:white;border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 14px rgba(16,46,70,0.05);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;cursor:pointer;position:relative}
+.rot-card{background:white;border:1px solid var(--line);border-radius:0px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 14px rgba(16,46,70,0.05);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;cursor:pointer;position:relative}
 .rot-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(16,46,70,0.11);border-color:var(--teal)}
 .rot-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
-.rot-code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:15px;font-weight:750;background:#eef4f8;color:var(--navy);padding:4px 9px;border-radius:6px;border:1px solid #c7dce9}
+.rot-code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:15px;font-weight:750;background:#eef4f8;color:var(--navy);padding:4px 9px;border-radius:0px;border:1px solid #c7dce9}
 .rot-card h3{margin:4px 0 8px;font-size:17.5px;line-height:1.35;color:var(--navy)}
 .rot-desc{font-size:13px;color:var(--muted);line-height:1.45;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.rot-meta{background:#f8fbfd;border:1px solid #e3edf2;border-radius:8px;padding:10px;margin-bottom:16px;font-size:12px;display:flex;flex-direction:column;gap:5px}
+.rot-meta{background:#f8fbfd;border:1px solid #e3edf2;border-radius:0px;padding:10px;margin-bottom:16px;font-size:12px;display:flex;flex-direction:column;gap:5px}
 .rot-meta-row{display:flex;justify-content:space-between;gap:8px}
 .rot-meta-row span{color:var(--muted)}
 .rot-meta-row b{color:var(--text)}
 .rot-card-actions{display:flex;gap:8px;margin-top:auto}
+.rot-card-actions button{border-radius:0px !important}
+.rot-card .badge{border-radius:0px !important}
 
 /* Temas Normativos dos Cartões do Catálogo (IT-LM-GE-003) */
 .rot-card.card-tnc{
@@ -575,7 +577,7 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
   padding: 8px 20px;
   background: #ecfdf5;
   border: 1.5px solid #10b981;
-  border-radius: 999px;
+  border-radius: 0px;
   color: #065f46;
   font-weight: 750;
   font-size: 13.5px;
@@ -596,7 +598,7 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
   text-transform: uppercase;
   letter-spacing: .02em;
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: 0px;
   display: inline-block;
 }
 
@@ -608,7 +610,7 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
 }
 .rot-card-figure svg{
   display: block;
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 .rot-card-tipo-title{
@@ -652,7 +654,7 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
 .btn-ok-save:active{transform:scale(0.98)}
 
 /* Add Card */
-.add-rot-card{background:linear-gradient(145deg,#fbfdfe 0%,#f0f7f9 100%);border:2px dashed var(--teal);border-radius:12px;padding:30px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;min-height:280px;transition:all .18s}
+.add-rot-card{background:linear-gradient(145deg,#fbfdfe 0%,#f0f7f9 100%);border:2px dashed var(--teal);border-radius:0px;padding:30px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;min-height:280px;transition:all .18s}
 .add-rot-card:hover{transform:translateY(-3px);background:linear-gradient(145deg,#f4fbfa 0%,#e3f1f3 100%);border-color:#0b9ba0;box-shadow:0 10px 24px rgba(8,126,131,0.12)}
 .add-rot-icon{font-size:52px;line-height:1;color:var(--teal);font-weight:200;margin-bottom:10px}
 .add-rot-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px}
@@ -5894,32 +5896,32 @@ function openRotInWorkspace(rotId, event) {
 
 // Ícones SVG Oficiais dos Tipos de Ocorrência (Identidade Visual da Triagem)
 const TIPO_SVGS = {
-  TRABALHO_NAO_CONFORME: `<svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;border-radius:8px;">
-    <rect width="60" height="60" rx="10" fill="#fee2e2"/>
+  TRABALHO_NAO_CONFORME: `<svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;border-radius:0px;">
+    <rect width="60" height="60" rx="0" fill="#fee2e2"/>
     <path d="M30 10L52 48H8L30 10Z" fill="#dc2626" stroke="#991b1b" stroke-width="2" stroke-linejoin="round"/>
     <path d="M30 22V33" stroke="white" stroke-width="3" stroke-linecap="round"/>
     <circle cx="30" cy="40" r="2" fill="white"/>
     <path d="M38 42L52 46M52 46L49 55M52 46L37 50" stroke="#7f1d1d" stroke-width="2" stroke-linecap="round"/>
   </svg>`,
 
-  DESVIO_DE_PROCESSO: `<svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;border-radius:8px;">
-    <rect width="60" height="60" rx="10" fill="#fef3c7"/>
+  DESVIO_DE_PROCESSO: `<svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;border-radius:0px;">
+    <rect width="60" height="60" rx="0" fill="#fef3c7"/>
     <circle cx="30" cy="30" r="20" fill="#f59e0b"/>
     <path d="M22 30L28 36L40 23" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     <circle cx="30" cy="30" r="20" stroke="#b45309" stroke-width="2" stroke-dasharray="3 3"/>
   </svg>`,
 
-  NAO_CONFORMIDADE: `<svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;border-radius:8px;">
-    <rect width="60" height="60" rx="10" fill="#f3e8ff"/>
-    <rect x="15" y="11" width="30" height="38" rx="4" fill="#9333ea"/>
-    <rect x="21" y="8" width="18" height="6" rx="2" fill="#6b21a8"/>
+  NAO_CONFORMIDADE: `<svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;border-radius:0px;">
+    <rect width="60" height="60" rx="0" fill="#f3e8ff"/>
+    <rect x="15" y="11" width="30" height="38" rx="0" fill="#9333ea"/>
+    <rect x="21" y="8" width="18" height="6" rx="0" fill="#6b21a8"/>
     <path d="M21 22H39M21 28H39M21 34H31" stroke="white" stroke-width="2" stroke-linecap="round"/>
     <circle cx="39" cy="39" r="6" fill="#ef4444"/>
     <path d="M36 36L42 42M42 36L36 42" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
   </svg>`,
 
-  OPORTUNIDADE_MELHORIA: `<svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;border-radius:8px;">
-    <rect width="60" height="60" rx="10" fill="#e0f2fe"/>
+  OPORTUNIDADE_MELHORIA: `<svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;border-radius:0px;">
+    <rect width="60" height="60" rx="0" fill="#e0f2fe"/>
     <circle cx="30" cy="26" r="13" fill="#0284c7"/>
     <path d="M24 39H36M26 43H34" stroke="#0369a1" stroke-width="2.5" stroke-linecap="round"/>
     <path d="M30 19V25M27 22L33 22" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -6052,7 +6054,7 @@ function createRotCardElement(rot) {
     tipoIcon = '⚪';
     tipoNome = rot.tipo || 'Ocorrência';
     normRef = 'Procedimento IT-LM-GE-003';
-    tipoSvg = `<div style="width:44px;height:44px;background:#eef4f8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;">📋</div>`;
+    tipoSvg = `<div style="width:44px;height:44px;background:#eef4f8;border-radius:0px;display:flex;align-items:center;justify-content:center;font-size:20px;">📋</div>`;
   }
 
   // Se encerrado, aplica a classe de tema verde card-concluido
