@@ -1509,7 +1509,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   padding: 24px 14px!important;
   border-radius: 0px !important;
   max-height: 76vh!important;
-  overflow-y: auto!important;
+  overflow: auto!important;
 }
 
 /* Folha A4 Oficial — Visualização nítida em papel branco com sombra */
@@ -1559,9 +1559,11 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 }
 .doc-table {
   width: 100%!important;
+  max-width: 100%!important;
   border-collapse: collapse!important;
   margin-bottom: 4mm!important;
   background: #ffffff!important;
+  box-sizing: border-box!important;
 }
 .doc-table th, .doc-table td {
   border: 1px solid #000000!important;
@@ -1570,6 +1572,42 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   text-align: left!important;
   vertical-align: top!important;
   color: #000000!important;
+  word-wrap: break-word!important;
+  overflow-wrap: break-word!important;
+  word-break: break-word!important;
+  box-sizing: border-box!important;
+}
+
+/* Tabela Específica de Ações SAA do Anexo 2 (10 Colunas - Largura Estritamente Fixada e Proporcional) */
+.doc-table-saa {
+  width: 100%!important;
+  max-width: 100%!important;
+  table-layout: fixed!important;
+  border-collapse: collapse!important;
+  margin-top: 3mm!important;
+  margin-bottom: 4mm!important;
+  background: #ffffff!important;
+  box-sizing: border-box!important;
+}
+.doc-table-saa th, .doc-table-saa td {
+  border: 1px solid #000000!important;
+  padding: 3px 2px!important;
+  font-size: 6.8pt!important;
+  line-height: 1.2!important;
+  text-align: left!important;
+  vertical-align: top!important;
+  color: #000000!important;
+  word-wrap: break-word!important;
+  overflow-wrap: break-word!important;
+  word-break: break-word!important;
+  box-sizing: border-box!important;
+}
+.doc-table-saa th {
+  background: #e6e6e6!important;
+  font-weight: bold!important;
+  text-align: center!important;
+  vertical-align: middle!important;
+  padding: 4px 2px!important;
 }
 .doc-section-title {
   background: #e6e6e6!important;
@@ -7503,7 +7541,7 @@ function buildOfficialPrintHtml(rot) {
   let saaRowsHtml = '';
   const acoes = rot.acoesSaa || [];
   if (acoes.length === 0) {
-    saaRowsHtml = '<tr><td colspan="10" style="text-align:center;padding:12px;">Nenhuma ação SAA registrada.</td></tr>';
+    saaRowsHtml = '<tr><td colspan="10" style="text-align:center;padding:12px;font-style:italic;">Nenhuma ação SAA registrada.</td></tr>';
   } else {
     acoes.forEach(a => {
       let evidText = a.evid || '';
@@ -7513,16 +7551,16 @@ function buildOfficialPrintHtml(rot) {
       }
       saaRowsHtml += `
         <tr>
-          <td><b>${a.saa}</b></td>
-          <td>${a.desc}</td>
-          <td>${a.rot}</td>
-          <td>${a.resp}</td>
-          <td>${formatDateBr(a.prazo)}</td>
-          <td>${evidText || '—'}</td>
-          <td>${a.conclusao}</td>
-          <td>${a.eficaz === 'SIM' ? '[X] SIM [ ] NÃO' : (a.eficaz === 'NÃO' ? '[ ] SIM [X] NÃO' : '[ ] SIM [ ] NÃO')}</td>
-          <td>${formatDateBr(a.dataAval)}</td>
-          <td>${a.novaAcao || '—'}</td>
+          <td style="text-align:center;"><b>${escapeHtml(a.saa || '')}</b></td>
+          <td style="word-break:break-word;">${escapeHtml(a.desc || '')}</td>
+          <td style="text-align:center;">${escapeHtml(a.rot || '')}</td>
+          <td>${escapeHtml(a.resp || '')}</td>
+          <td style="text-align:center;">${formatDateBr(a.prazo)}</td>
+          <td style="word-break:break-word;">${escapeHtml(evidText || '—')}</td>
+          <td style="text-align:center;">${escapeHtml(a.conclusao || '')}</td>
+          <td style="text-align:center;white-space:nowrap;">${a.eficaz === 'SIM' ? '[X] SIM<br>[ &nbsp; ] NÃO' : (a.eficaz === 'NÃO' ? '[ &nbsp; ] SIM<br>[X] NÃO' : '[ &nbsp; ] SIM<br>[ &nbsp; ] NÃO')}</td>
+          <td style="text-align:center;">${formatDateBr(a.dataAval)}</td>
+          <td style="text-align:center;">${escapeHtml(a.novaAcao || '—')}</td>
         </tr>
       `;
     });
@@ -7818,19 +7856,19 @@ function buildOfficialPrintHtml(rot) {
         </tr>
       </table>
 
-      <table class="doc-table" style="font-size:7.5pt;margin-top:4mm;">
+      <table class="doc-table-saa">
         <thead>
-          <tr style="background:#e6e6e6;">
-            <th style="width:55px;">SAA</th>
-            <th>DESCRIÇÃO</th>
-            <th style="width:50px;">Nº ROT</th>
-            <th style="width:80px;">RESPONSÁVEL</th>
-            <th style="width:60px;">PRAZO</th>
-            <th>EVIDÊNCIA</th>
-            <th style="width:65px;">CONCLUSÃO</th>
-            <th style="width:75px;">A AÇÃO FOI EFICAZ?</th>
-            <th style="width:65px;">DATA DE AVALIAÇÃO</th>
-            <th style="width:50px;">Nº NOVA AÇÃO</th>
+          <tr>
+            <th style="width:6.5%;">SAA</th>
+            <th style="width:22%;">DESCRIÇÃO</th>
+            <th style="width:6.5%;">Nº ROT</th>
+            <th style="width:12%;">RESPONSÁVEL</th>
+            <th style="width:8%;">PRAZO</th>
+            <th style="width:17%;">EVIDÊNCIA</th>
+            <th style="width:8%;">CONCLUSÃO</th>
+            <th style="width:8%;">A AÇÃO<br>FOI EFICAZ?</th>
+            <th style="width:7%;">DATA DE<br>AVALIAÇÃO</th>
+            <th style="width:5%;">Nº NOVA<br>AÇÃO</th>
           </tr>
         </thead>
         <tbody>
