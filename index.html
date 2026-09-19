@@ -56,7 +56,7 @@ body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-a
 .topbar{
   background: linear-gradient(90deg, #093757 0%, #0d4a75 50%, #105587 100%);
   color: white;
-  padding: 10px max(24px,calc((100vw - 1600px)/2));
+  padding: 10px max(24px,calc((100vw - 1502px)/2));
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -141,12 +141,21 @@ body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-a
 header.app-header{
   background: linear-gradient(135deg, #093757 0%, #105587 35%, #1b80c4 85%, #2390db 100%);
   color: white;
-  padding: 28px max(24px,calc((100vw - 1552px)/2));
+  padding: 28px 0;
   border-bottom: 5px solid var(--en-green);
   box-shadow: 0 8px 24px rgba(9,55,87,0.25);
 }
 header.app-header p{max-width:980px;color:#e8f4fc;margin:8px 0 0;font-size:14.5px;line-height:1.5}
-.app-header-container{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.app-header-container{
+  max-width: 1550px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 .header-text-block{flex:1 1 550px;min-width:280px;max-width:1050px}
 
 /* Header Logos & Desenvolvedor */
@@ -1761,9 +1770,10 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
   /* Header e Logos Mobile */
   header.app-header {
-    padding: 14px 12px;
+    padding: 14px 0;
   }
   .app-header-container {
+    padding: 0 12px;
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
