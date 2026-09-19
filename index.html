@@ -219,7 +219,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   background: #ffffff;
   color: #0b3b60;
   border: 1.5px solid #cbd5e1;
-  border-radius: 8px;
+  border-radius: 0px !important;
   padding: 8px 16px;
   font-size: 13.5px;
   font-weight: 700;
@@ -1990,14 +1990,6 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M10 2v7.31L4.68 18.2A2 2 0 0 0 6.4 21h11.2a2 2 0 0 0 1.72-2.8L14 9.31V2"></path><line x1="8.5" y1="2" x2="15.5" y2="2"></line><line x1="7" y1="15" x2="17" y2="15"></line></svg>
         <span>Casos Aula</span>
       </button>
-      <button type="button" id="btnTriggerDecisionTree" class="btn-nav" style="background:#ffffff;border-color:#cbd5e1;color:#0b3b60;font-weight:700;" title="Abrir fluxo de triagem e árvore de decisão para tipificação da ocorrência">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="10" y1="6.5" x2="14" y2="6.5"></line><line x1="6.5" y1="10" x2="6.5" y2="14"></line></svg>
-        <span>Triagem</span>
-      </button>
-      <button type="button" id="btnPrintOfficial" class="btn-nav" style="background:var(--en-blue);border-color:#156ba6;color:#ffffff;font-weight:700;" title="Gerar e imprimir formulário oficial para PDF">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-        <span>Imprimir PDF</span>
-      </button>
     </div>
 
     <!-- Ações exibidas no topo quando o ROT está aberto em substituição aos botões duplicados -->
@@ -2955,11 +2947,13 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
           <!-- Ações Complementares de Impressão e Pré-visualização Oficial -->
           <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:16px;border-top:1px solid var(--line);padding-top:14px;">
-            <button type="button" class="btn-action-outline" onclick="printCurrentRot()" title="Gerar visualização e salvar PDF oficial dos Anexos 1 e 2">
-              🖨️ Imprimir PDF Oficial (Anexos 1 e 2)
+            <button type="button" id="btnPrintOfficial" class="btn-action-outline" onclick="printCurrentRot()" title="Gerar visualização e salvar PDF oficial dos Anexos 1 e 2 (IT-LM-GE-003)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              <span>Imprimir PDF Oficial (Anexos 1 e 2)</span>
             </button>
             <button type="button" class="btn-action-outline" onclick="openDocumentPreviewModal()" title="Abrir espelho fiel em tela idêntico aos formulários da IT-LM-GE-003">
-              🔍 Ver Espelho Oficial em Tela
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <span>Ver Espelho Oficial em Tela</span>
             </button>
           </div>
         </div>
@@ -5081,11 +5075,13 @@ function setupEventListeners() {
   document.getElementById('btnQuickNewRot').addEventListener('click', openNewRotTriagemModal);
   document.getElementById('btnOpenTrainingCases').addEventListener('click', () => openModal('modalTrainingCases'));
   document.getElementById('btnCloseModalCases').addEventListener('click', () => closeModal('modalTrainingCases'));
-  document.getElementById('btnTriggerDecisionTree').addEventListener('click', openNewRotTriagemModal);
+  const btnTree = document.getElementById('btnTriggerDecisionTree');
+  if (btnTree) btnTree.addEventListener('click', openNewRotTriagemModal);
   document.getElementById('btnCallDecisionTreeInForm').addEventListener('click', () => openDecisionTree('UPDATE_ACTIVE'));
   document.getElementById('btnCloseModalTree').addEventListener('click', () => closeModal('modalDecisionTree'));
   document.getElementById('btnCancelTree').addEventListener('click', () => closeModal('modalDecisionTree'));
-  document.getElementById('btnPrintOfficial').addEventListener('click', () => printCurrentRot());
+  const btnPrint = document.getElementById('btnPrintOfficial');
+  if (btnPrint) btnPrint.addEventListener('click', () => printCurrentRot());
 
   // Botão de Gravação Rápida na barra superior
   const btnSaveMain = document.getElementById('btnSaveRotMain');
