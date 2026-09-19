@@ -59,25 +59,38 @@ body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-a
 }
 .topbar-left{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .topbar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn-nav{
+.btn-nav, .btn-nav-square{
   background: rgba(255,255,255,0.12);
   color: white;
   border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 7px;
-  padding: 7px 14px;
-  font-size: 13px;
-  font-weight: 650;
+  border-radius: 0px !important;
+  padding: 6px 8px;
+  min-width: 64px;
+  min-height: 50px;
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 3.5px;
   text-decoration: none;
+  text-align: center;
+  line-height: 1.15;
   transition: all .18s ease;
+  box-sizing: border-box;
 }
-.btn-nav:hover{
+.btn-nav:hover, .btn-nav-square:hover{
   background: var(--en-blue);
   border-color: #5bb3ea;
   box-shadow: 0 2px 8px rgba(27,128,196,0.35);
+  transform: translateY(-2px);
+}
+.btn-nav svg, .btn-nav-square svg{
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
 }
 .badge-active-rot{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#c2d8e8}
 .badge-active-rot b{color:var(--en-green);font-size:14px}
@@ -1513,14 +1526,16 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   #topbarHubActions {
     width: 100%;
     display: grid!important;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(62px, 1fr))!important;
     gap: 6px;
   }
-  #topbarHubActions button {
+  #topbarHubActions button, .btn-nav {
     width: 100%;
-    justify-content: center;
-    padding: 9px 6px;
-    font-size: 12px;
+    min-width: 0;
+    min-height: 48px;
+    padding: 6px 4px;
+    font-size: 10px;
+    border-radius: 0px;
   }
   #topbarWorkspaceActions {
     width: 100%;
@@ -1896,8 +1911,9 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     </div>
 
     <!-- Botão destacado para voltar à Tela Inicial (visível quando ROT aberto) -->
-    <button type="button" id="btnGoToHub" class="btn-nav" style="display:none;background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;padding:8px 16px;box-shadow:0 2px 8px rgba(165,199,17,0.35);" title="Voltar ao catálogo geral de ocorrências (Tela Inicial)">
-      🏠 Ir para a Tela Inicial (Catálogo)
+    <button type="button" id="btnGoToHub" class="btn-nav" style="display:none;background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;box-shadow:0 2px 8px rgba(165,199,17,0.35);" title="Voltar ao catálogo geral de ocorrências (Tela Inicial)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span>Início</span>
     </button>
 
     <!-- Indicador do ROT aberto na barra superior -->
@@ -1921,21 +1937,38 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     </div>
 
     <!-- Botões exibidos apenas no Hub (tela inicial) - Ocultados quando ROT está aberto -->
-    <div id="topbarHubActions" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <button type="button" id="btnQuickNewRot" class="btn-nav" style="background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;box-shadow:0 2px 6px rgba(165,199,17,0.3);">+ Novo ROT</button>
-      <button type="button" id="btnOpenUserManagement" class="btn-nav" onclick="openUserManagementModal()" style="background:#1e3a5f;border-color:#3b82f6;color:#ffffff;font-weight:700;" title="Acessar o Cadastro de Usuários e Perfis de Acesso (Supervisor vs. Analista)">👥 Cadastro de Usuários</button>
-      <button type="button" id="btnOpenTrainingCases" class="btn-nav">🧪 Casos da Aula</button>
-      <button type="button" id="btnTriggerDecisionTree" class="btn-nav">🌳 Triagem / Fluxograma</button>
-      <button type="button" id="btnPrintOfficial" class="btn-nav" style="background:var(--en-blue);border-color:#156ba6;color:#ffffff;font-weight:700;">🖨️ Imprimir PDF Oficial</button>
+    <div id="topbarHubActions" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <button type="button" id="btnQuickNewRot" class="btn-nav" style="background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;box-shadow:0 2px 6px rgba(165,199,17,0.3);" title="Abrir novo registro de ocorrência (ROT)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        <span>Novo ROT</span>
+      </button>
+      <button type="button" id="btnOpenUserManagement" class="btn-nav" onclick="openUserManagementModal()" style="background:#1e3a5f;border-color:#3b82f6;color:#ffffff;font-weight:700;" title="Acessar o Cadastro de Usuários e Perfis de Acesso (Supervisor vs. Analista)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Usuários</span>
+      </button>
+      <button type="button" id="btnOpenTrainingCases" class="btn-nav" style="background:#ffffff;border-color:#cbd5e1;color:#0b3b60;font-weight:700;" title="Carregar casos didáticos práticos de treinamento">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M10 2v7.31L4.68 18.2A2 2 0 0 0 6.4 21h11.2a2 2 0 0 0 1.72-2.8L14 9.31V2"></path><line x1="8.5" y1="2" x2="15.5" y2="2"></line><line x1="7" y1="15" x2="17" y2="15"></line></svg>
+        <span>Casos Aula</span>
+      </button>
+      <button type="button" id="btnTriggerDecisionTree" class="btn-nav" style="background:#ffffff;border-color:#cbd5e1;color:#0b3b60;font-weight:700;" title="Abrir fluxo de triagem e árvore de decisão para tipificação da ocorrência">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="10" y1="6.5" x2="14" y2="6.5"></line><line x1="6.5" y1="10" x2="6.5" y2="14"></line></svg>
+        <span>Triagem</span>
+      </button>
+      <button type="button" id="btnPrintOfficial" class="btn-nav" style="background:var(--en-blue);border-color:#156ba6;color:#ffffff;font-weight:700;" title="Gerar e imprimir formulário oficial para PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        <span>Imprimir PDF</span>
+      </button>
     </div>
 
     <!-- Ações exibidas no topo quando o ROT está aberto em substituição aos botões duplicados -->
     <div id="topbarWorkspaceActions" style="display:none;align-items:center;gap:8px;">
-      <button type="button" class="btn-nav" onclick="showHubView()" style="background:#10527e;border-color:var(--en-blue);font-weight:650;font-size:12.5px;color:#ffffff;" title="Sair da ocorrência e voltar à tela inicial">
-        🏠 Tela Inicial
+      <button type="button" class="btn-nav" onclick="showHubView()" style="background:#10527e;border-color:var(--en-blue);font-weight:700;color:#ffffff;" title="Sair da ocorrência e voltar à tela inicial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Início</span>
       </button>
-      <button type="button" class="btn-nav" onclick="openUserManagementModal()" style="background:#1e3a5f;border-color:#3b82f6;color:#ffffff;font-weight:700;font-size:12.5px;" title="Acessar o Cadastro de Usuários">
-        👥 Cadastro de Usuários
+      <button type="button" class="btn-nav" onclick="openUserManagementModal()" style="background:#1e3a5f;border-color:#3b82f6;color:#ffffff;font-weight:700;" title="Acessar o Cadastro de Usuários">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Usuários</span>
       </button>
     </div>
   </div>
