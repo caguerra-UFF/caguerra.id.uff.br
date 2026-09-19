@@ -2111,14 +2111,8 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 <!-- TOPBAR NAVEGAÇÃO -->
 <div class="topbar">
   <div class="topbar-left">
-    <!-- Identificação do sistema (visível no Hub / Tela Inicial) -->
-    <div id="topbarHubBrand" style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:13.5px;color:#ffffff;">
-      <span style="font-size:17px;color:var(--en-green);">⚛️</span>
-      <span><strong style="color:var(--en-green);letter-spacing:.04em;">LMA</strong> · Tratamento de Ocorrências e Ações Corretivas (ISO/IEC 17025)</span>
-    </div>
-
-    <!-- Botão destacado para voltar à Tela Inicial (visível quando ROT aberto) -->
-    <button type="button" id="btnGoToHub" class="btn-nav btn-primary" style="display:none;background:var(--btn-green-bg);border:1px solid var(--btn-green-border);color:var(--btn-green-text);font-weight:750;box-shadow:0 2px 8px rgba(163,230,53,0.35);border-radius:0px;" title="Voltar ao catálogo geral de ocorrências (Tela Inicial)">
+    <!-- Botão permanente para ir/voltar à Tela Inicial -->
+    <button type="button" id="btnGoToHub" class="btn-nav btn-primary" style="display:inline-flex;background:var(--btn-green-bg);border:1px solid var(--btn-green-border);color:var(--btn-green-text);font-weight:750;box-shadow:0 2px 8px rgba(163,230,53,0.35);border-radius:0px;" title="Ir para a Tela Inicial (Catálogo geral de ocorrências)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
       <span>Início</span>
     </button>
@@ -5349,21 +5343,19 @@ function setupEventListeners() {
 
 // Alternância do Modo da Barra Superior (Topbar Global)
 function updateTopbarMode(isWorkspaceOpen) {
-  const hubBrand = document.getElementById('topbarHubBrand');
   const btnGoToHub = document.getElementById('btnGoToHub');
   const topbarActiveBadge = document.getElementById('topbarActiveBadge');
   const hubActions = document.getElementById('topbarHubActions');
   const wsActions = document.getElementById('topbarWorkspaceActions');
 
+  // O botão Início fica SEMPRE visível em ambas as telas (mesmo já estando no início)
+  if (btnGoToHub) btnGoToHub.style.display = 'inline-flex';
+
   if (isWorkspaceOpen) {
-    if (hubBrand) hubBrand.style.display = 'none';
-    if (btnGoToHub) btnGoToHub.style.display = 'inline-flex';
     if (topbarActiveBadge) topbarActiveBadge.style.display = 'inline-flex';
     if (hubActions) hubActions.style.display = 'none'; // Some os botões duplicados do topo!
     if (wsActions) wsActions.style.display = 'inline-flex';
   } else {
-    if (hubBrand) hubBrand.style.display = 'inline-flex';
-    if (btnGoToHub) btnGoToHub.style.display = 'none';
     if (topbarActiveBadge) topbarActiveBadge.style.display = 'none';
     if (hubActions) hubActions.style.display = 'flex'; // Reaparecem no Hub
     if (wsActions) wsActions.style.display = 'none';
