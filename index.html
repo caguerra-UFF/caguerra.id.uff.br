@@ -247,31 +247,22 @@ nav.subnav a.active{background:var(--navy);color:white;border-color:var(--navy)}
 .badge.ok{background:#e9f7f3;color:#126451;border:1px solid #b3ddc8}
 .badge.neutral{background:#eef3f7;color:var(--muted);border:1px solid var(--line)}
 
-/* Cards & Metrics em Caixa Única com Cantos Retos (Hub de Ocorrências) */
-.cards.kpi-unified-box{display:grid;grid-template-columns:repeat(5,1fr);gap:0;background:#ffffff;border:1px solid #cbd5e1;border-radius:0px;box-shadow:0 2px 8px rgba(15,23,42,0.05);margin-bottom:20px;overflow:hidden}
-.kpi-unified-box .metric{position:relative;background:#ffffff;border:none;border-right:1px solid #e2e8f0;border-radius:0px;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;box-shadow:none;transition:background .15s ease,box-shadow .15s ease;cursor:pointer;user-select:none}
-.kpi-unified-box .metric:last-child{border-right:none}
-.kpi-unified-box .metric::before{content:'';position:absolute;top:0;left:0;right:0;height:3.5px;border-radius:0px;transition:height .18s ease}
-.kpi-unified-box .metric:hover{background:#f8fafc}
-.kpi-unified-box .metric:hover::before{height:5.5px}
-.kpi-unified-box .metric:active{background:#f1f5f9}
-
-.metric.kpi-total::before{background:linear-gradient(90deg,#1b80c4,#38bdf8)}
-.metric.kpi-danger::before{background:linear-gradient(90deg,#dc2626,#f87171)}
-.metric.kpi-warn::before{background:linear-gradient(90deg,#d97706,#fbbf24)}
-.metric.kpi-action::before{background:linear-gradient(90deg,#2563eb,#60a5fa)}
-.metric.kpi-risk::before{background:linear-gradient(90deg,#059669,#34d399)}
+/* Cards & Metrics com Cantos Retos e Espaçamento (Hub de Ocorrências) */
+.cards.kpi-unified-box{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:20px;background:transparent;border:none;box-shadow:none}
+.kpi-unified-box .metric{position:relative;background:#ffffff;border:1px solid #e2e8f0;border-radius:0px;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;box-shadow:0 1px 3px rgba(15,23,42,0.04);transition:all .18s ease;cursor:pointer;user-select:none}
+.kpi-unified-box .metric:hover{background:#f8fafc;border-color:#cbd5e1;transform:translateY(-2px);box-shadow:0 6px 16px -2px rgba(15,23,42,0.06)}
+.kpi-unified-box .metric:active{background:#f1f5f9;transform:none}
 
 .kpi-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .kpi-title{font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:.05em;color:#64748b;line-height:1.35}
-.kpi-icon-pill{width:32px;height:32px;border-radius:0px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .18s ease}
+.kpi-icon-pill{width:32px;height:32px;border-radius:0px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .18s ease;background:#f8fafc;border:1px solid #e2e8f0}
 .kpi-unified-box .metric:hover .kpi-icon-pill{transform:scale(1.06)}
 
-.metric.kpi-total .kpi-icon-pill{background:#eff6ff;color:#1b80c4;border:1px solid #bfdbfe}
-.metric.kpi-danger .kpi-icon-pill{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
-.metric.kpi-warn .kpi-icon-pill{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
-.metric.kpi-action .kpi-icon-pill{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
-.metric.kpi-risk .kpi-icon-pill{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}
+.metric.kpi-total .kpi-icon-pill{color:#1b80c4}
+.metric.kpi-danger .kpi-icon-pill{color:#dc2626}
+.metric.kpi-warn .kpi-icon-pill{color:#d97706}
+.metric.kpi-action .kpi-icon-pill{color:#2563eb}
+.metric.kpi-risk .kpi-icon-pill{color:#059669}
 
 .kpi-value-row{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:2px 0}
 .metric strong{display:block;font-size:28px;font-weight:850;letter-spacing:-.035em;line-height:1;margin:0}
@@ -282,12 +273,12 @@ nav.subnav a.active{background:var(--navy);color:white;border-color:var(--navy)}
 .metric.kpi-action strong{color:#2563eb}
 .metric.kpi-risk strong{color:#059669}
 
-.kpi-badge{font-size:10px;font-weight:750;padding:2px 6px;border-radius:0px;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
-.kpi-badge-blue{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
-.kpi-badge-danger{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
-.kpi-badge-warn{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
-.kpi-badge-indigo{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
-.kpi-badge-emerald{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+.kpi-badge{font-size:10px;font-weight:750;padding:2px 6px;border-radius:0px;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;border:1px solid #e2e8f0;background:#f8fafc}
+.kpi-badge-blue{color:#1d4ed8}
+.kpi-badge-danger{color:#b91c1c}
+.kpi-badge-warn{color:#b45309}
+.kpi-badge-indigo{color:#1d4ed8}
+.kpi-badge-emerald{color:#047857}
 
 .kpi-desc{font-size:11.5px;color:#64748b;line-height:1.35}
 
@@ -1583,23 +1574,20 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     height: 28px;
   }
 
-  /* Painel de Métricas em Caixa Única com Cantos Retos (Mobile) */
+  /* Painel de Métricas com Cantos Retos e Espaçamento (Mobile) */
   .cards.kpi-unified-box {
     grid-template-columns: repeat(2, 1fr);
-    gap: 0;
+    gap: 10px;
     margin-bottom: 16px;
     border-radius: 0px;
-    border: 1px solid #cbd5e1;
+    border: none;
+    background: transparent;
   }
   .kpi-unified-box .metric {
     padding: 12px 14px;
     border-radius: 0px;
-    border-right: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
+    border: 1px solid #e2e8f0;
     gap: 8px;
-  }
-  .kpi-unified-box .metric:nth-child(2n) {
-    border-right: none;
   }
   .metric strong {
     font-size: 22px;
@@ -1626,8 +1614,6 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
   }
   .metric.kpi-risk {
     grid-column: span 2;
-    border-bottom: none;
-    border-right: none;
   }
   .kpi-gauge-svg {
     width: 34px;
