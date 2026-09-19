@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Showcase & Biblioteca Visual · Design System Oficial LMA</title>
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--ds-bg-page);
+      color: var(--ds-text);
+    }
+    .demo-container {
+      max-width: 1400px;
+      margin: 30px auto 60px;
+      padding: 0 24px;
+    }
+    .demo-section {
+      background: #ffffff;
+      border: 1.5px solid var(--ds-border);
+      border-radius: var(--ds-radius);
+      padding: 28px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .demo-section h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: var(--ds-navy);
+      border-bottom: 2px solid var(--ds-border-light);
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .demo-section p.subtitle {
+      margin: 0 0 20px;
+      font-size: 13px;
+      color: var(--ds-muted);
+    }
+    .demo-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .code-preview {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 16px;
+      border-radius: var(--ds-radius);
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+    .color-swatch {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--ds-border);
+      border-radius: var(--ds-radius);
+      overflow: hidden;
+      font-size: 11.5px;
+    }
+    .swatch-color {
+      height: 55px;
+    }
+    .swatch-info {
+      padding: 8px;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================== -->
+  <!-- 1. CABEÇALHO INSTITUCIONAL OFICIAL                        -->
+  <!-- ======================================================== -->
+  <header class="ds-header">
+    <div class="ds-header-container">
+      <div class="ds-header-titles">
+        <h1>DESIGN SYSTEM OFICIAL & VITRINE DE COMPONENTES</h1>
+        <p>Laboratório de Monitoração Ambiental (LMA / ELMA) · Identidade Visual Reutilizável</p>
+      </div>
+      <div class="ds-header-logos-box">
+        <img src="assets/logo_eletronuclear.png" alt="Eletronuclear">
+        <div class="ds-header-logos-divider"></div>
+        <img src="assets/logo_elma.png" alt="LMA / ELMA">
+      </div>
+    </div>
+  </header>
+
+  <main class="demo-container">
+
+    <!-- SEÇÃO: REGRAS FUNDAMENTAIS -->
+    <div class="demo-section">
+      <h2>📐 Diretrizes Mandatórias de Aplicação</h2>
+      <p class="subtitle">Critérios técnicos e estéticos unificados para todos os projetos do laboratório.</p>
+      
+      <div class="demo-grid">
+        <div class="ds-box ds-box-info" style="margin:0;">
+          <strong>1. 100% Cantos Retos:</strong> Todos os botões, caixas, modais, formulários e badges devem possuir obrigatoriamente <code>border-radius: 0px</code>.
+        </div>
+        <div class="ds-box ds-box-warn" style="margin:0;">
+          <strong>2. Sem Bordas Laterais Coloridas:</strong> Nunca utilize <code>border-left</code> colorido/grosso nas caixas informativas. A borda deve ser uniforme de 1px em todo o contorno.
+        </div>
+        <div class="ds-box ds-box-ok" style="margin:0;">
+          <strong>3. Botões Verde Claro:</strong> Os botões primários adotam fundo verde claro de ação (<code>#d9f99d</code>) com texto escuro para garantia de alto contraste (WCAG AAA).
+        </div>
+        <div class="ds-box ds-box-danger" style="margin:0;">
+          <strong>4. Logos sem Slogans:</strong> Nunca adicione textos complementares ou slogans abaixo da logo da Eletronuclear (ex: sem "Energia Limpa").
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: PALETA DE CORES -->
+    <div class="demo-section">
+      <h2>🎨 Paleta de Cores e Tokens</h2>
+      <p class="subtitle">Tokens oficiais CSS disponíveis globalmente via <code>assets/css/design-system.css</code>.</p>
+      
+      <div class="demo-grid">
+        <div class="color-swatch">
+          <div class="swatch-color" style="background:#0b3b60;"></div>
+          <div class="swatch-info">
+            <strong>Azul Marinho Primário</strong><br>
+            <code>--ds-navy</code><br>
+            #0b3b60
+          </div>
+        </div>
+
+        <div class="color-swatch">
+          <div class="swatch-color" style="background:#d9f99d;"></div>
+          <div class="swatch-info">
+            <strong>Verde Ação (Botões)</strong><br>
+            <code>--ds-green-action</code><br>
+            #d9f99d
+          </div>
+        </div>
+
+        <div class="color-swatch">
+          <div class="swatch-color" style="background:#1a3806;"></div>
+          <div class="swatch-info">
+            <strong>Texto Botão Ação</strong><br>
+            <code>--ds-green-text</code><br>
+            #1a3806 (Alto Contraste)
+          </div>
+        </div>
+
+        <div class="color-swatch">
+          <div class="swatch-color" style="background:#cbd5e1;"></div>
+          <div class="swatch-info">
+            <strong>Borda Estrutural</strong><br>
+            <code>--ds-border</code><br>
+            #cbd5e1
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: BOTÕES PADRONIZADOS -->
+    <div class="demo-section">
+      <h2>🔘 Tipos de Botões (3 Variantes Oficiais)</h2>
+      <p class="subtitle">Padronização de hierarquia de ações com cantos retos.</p>
+
+      <div class="demo-row">
+        <!-- Botão Primário -->
+        <button type="button" class="ds-btn ds-btn-primary">
+          <span>➕</span> Salvar / Cadastrar Registro
+        </button>
+
+        <!-- Botão Secundário / Outline -->
+        <button type="button" class="ds-btn ds-btn-secondary">
+          <span>↺</span> Entrar com este / Alternar
+        </button>
+
+        <!-- Botão de Ação Crítica / Perigo -->
+        <button type="button" class="ds-btn ds-btn-danger">
+          <span>🗑️</span> Excluir Ocorrência
+        </button>
+
+        <!-- Variações Small -->
+        <button type="button" class="ds-btn ds-btn-primary ds-btn-sm">
+          Ação Pequena
+        </button>
+        <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm">
+          Fechar
+        </button>
+      </div>
+
+      <div class="code-preview">
+&lt;button type="button" class="ds-btn ds-btn-primary"&gt;Salvar Registro&lt;/button&gt;
+&lt;button type="button" class="ds-btn ds-btn-secondary"&gt;Fechar&lt;/button&gt;
+&lt;button type="button" class="ds-btn ds-btn-danger"&gt;Excluir&lt;/button&gt;
+      </div>
+    </div>
+
+    <!-- SEÇÃO: CAIXAS INFORMATIVAS & PAINÉIS -->
+    <div class="demo-section">
+      <h2>📦 Caixas Informativas (Sem Bordas Laterais Coloridas)</h2>
+      <p class="subtitle">Bordas perimétricas completas e uniformes de 1px com cantos retos.</p>
+
+      <div class="ds-box ds-box-info">
+        <b>Informativo:</b> Regras de Perfis Normativos (IT-LM-GE-003): Analista abre e executa; Supervisor/RQ homologa.
+      </div>
+
+      <div class="ds-box ds-box-ok">
+        <b>Sucesso / Eficácia Atestada:</b> Ação corretiva concluída e eficácia validada no sistema.
+      </div>
+
+      <div class="ds-box ds-box-warn">
+        <b>Atenção:</b> Prazo para execução da ação corretiva vence em 5 dias úteis.
+      </div>
+
+      <div class="ds-box ds-box-danger">
+        <b>Trabalho Não Conforme (Requisito 7.10):</b> Interrupção imediata, retenção de laudos e avaliação de impacto.
+      </div>
+
+      <div class="code-preview">
+&lt;div class="ds-box ds-box-info"&gt;&lt;b&gt;Info:&lt;/b&gt; Mensagem institucional...&lt;/div&gt;
+&lt;div class="ds-box ds-box-ok"&gt;&lt;b&gt;Sucesso:&lt;/b&gt; Ação concluída...&lt;/div&gt;
+&lt;div class="ds-box ds-box-warn"&gt;&lt;b&gt;Atenção:&lt;/b&gt; Prazo pendente...&lt;/div&gt;
+&lt;div class="ds-box ds-box-danger"&gt;&lt;b&gt;Crítico:&lt;/b&gt; Trabalho Não Conforme...&lt;/div&gt;
+      </div>
+    </div>
+
+    <!-- SEÇÃO: FORMULÁRIOS & CAMPOS -->
+    <div class="demo-section">
+      <h2>📝 Campos de Formulário</h2>
+      <p class="subtitle">Inputs, selects e textareas padronizados com cantos retos.</p>
+
+      <div class="demo-grid">
+        <div>
+          <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Nome Completo</label>
+          <input type="text" class="ds-input" placeholder="Ex: Carla de Brito Caetano">
+        </div>
+
+        <div>
+          <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Perfil de Acesso</label>
+          <select class="ds-select">
+            <option>Analista de Laboratório</option>
+            <option>Supervisor / RQ</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Status</label>
+          <div style="display:flex;gap:6px;margin-top:6px;">
+            <span class="ds-badge ds-badge-ok">✓ Eficaz</span>
+            <span class="ds-badge ds-badge-info">Em Análise</span>
+            <span class="ds-badge ds-badge-danger">Aberta</span>
+            <span class="ds-badge ds-badge-warn">Pendente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: ÍCONES EM SVG -->
+    <div class="demo-section">
+      <h2>✨ Ícones em SVG Oficiais (Sem Artefatos Vetoriais)</h2>
+      <p class="subtitle">Vetores limpos, otimizados e com contenção retilínea (rx="0").</p>
+
+      <div class="demo-row">
+        <!-- Trabalho Não Conforme -->
+        <div style="text-align:center;">
+          <div class="ds-icon-box" title="Trabalho Não Conforme">
+            <svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="60" height="60" rx="0" fill="#fee2e2"/>
+              <path d="M30 10L52 48H8L30 10Z" fill="#dc2626" stroke="#991b1b" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M30 22V33" stroke="white" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="30" cy="40" r="2" fill="white"/>
+            </svg>
+          </div>
+          <span style="font-size:11px;font-weight:700;color:var(--ds-muted);margin-top:4px;display:block;">TNC</span>
+        </div>
+
+        <!-- Desvio de Processo -->
+        <div style="text-align:center;">
+          <div class="ds-icon-box" title="Desvio de Processo">
+            <svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="60" height="60" rx="0" fill="#fef3c7"/>
+              <circle cx="30" cy="30" r="20" fill="#f59e0b"/>
+              <path d="M22 30L28 36L40 23" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="30" cy="30" r="20" stroke="#b45309" stroke-width="2" stroke-dasharray="3 3"/>
+            </svg>
+          </div>
+          <span style="font-size:11px;font-weight:700;color:var(--ds-muted);margin-top:4px;display:block;">Desvio</span>
+        </div>
+
+        <!-- Não Conformidade -->
+        <div style="text-align:center;">
+          <div class="ds-icon-box" title="Não Conformidade">
+            <svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="60" height="60" rx="0" fill="#f3e8ff"/>
+              <rect x="15" y="11" width="30" height="38" rx="0" fill="#9333ea"/>
+              <rect x="21" y="8" width="18" height="6" rx="0" fill="#6b21a8"/>
+              <path d="M21 22H39M21 28H39M21 34H31" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="39" cy="39" r="6" fill="#ef4444"/>
+              <path d="M36 36L42 42M42 36L36 42" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span style="font-size:11px;font-weight:700;color:var(--ds-muted);margin-top:4px;display:block;">NC</span>
+        </div>
+
+        <!-- Oportunidade de Melhoria -->
+        <div style="text-align:center;">
+          <div class="ds-icon-box" title="Oportunidade de Melhoria">
+            <svg viewBox="0 0 60 60" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="60" height="60" rx="0" fill="#e0f2fe"/>
+              <circle cx="30" cy="26" r="13" fill="#0284c7"/>
+              <path d="M24 39H36M26 43H34" stroke="#0369a1" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M30 19V25M27 22L33 22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <path d="M42 14L45 11M18 42L21 39M15 14L18 17M45 42L42 39" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span style="font-size:11px;font-weight:700;color:var(--ds-muted);margin-top:4px;display:block;">Melhoria</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

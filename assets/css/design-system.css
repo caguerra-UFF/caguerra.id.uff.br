@@ -1,0 +1,336 @@
+/**
+ * ==========================================================================
+ * DESIGN SYSTEM OFICIAL · LMA / ELETRONUCLEAR
+ * Identidade Visual e Biblioteca de Componentes Reutilizáveis
+ * ==========================================================================
+ * DIRETRIZES MANDATÓRIAS:
+ * 1. 100% Cantos Retos: border-radius: 0px em TODOS os componentes.
+ * 2. Caixas e Painéis: Borda perimétrica uniforme de 1px. Proibido border-left colorido.
+ * 3. Botões Primários: Fundo verde claro de ação (#d9f99d) com texto escuro (#1a3806).
+ * 4. Logos e Cabeçalhos: Institucional limpo, sem slogans ou textos sob a logo.
+ * 5. Ícones SVG: Geometria limpa, rx="0", sem artefatos vetoriais.
+ * ==========================================================================
+ */
+
+:root {
+  /* Cores Institucionais Principais */
+  --ds-navy: #0b3b60;            /* Azul Marinho Primário */
+  --ds-navy-dark: #07263e;       /* Azul Petróleo Profundo */
+  --ds-navy-light: #165b94;      /* Azul Secundário */
+  
+  /* Verde de Ação / Destaque (Verde Claro com Alto Contraste) */
+  --ds-green-action: #d9f99d;    /* Fundo verde claro para botões de ação */
+  --ds-green-action-hover: #bef264; /* Fundo no hover */
+  --ds-green-action-active: #a3e635; /* Fundo no clique/ativo */
+  --ds-green-action-border: #84cc16; /* Borda de reforço */
+  --ds-green-text: #1a3806;      /* Texto verde-oliva ultra escuro (contraste AAA) */
+
+  /* Cores Neutras e Estruturais */
+  --ds-bg-page: #f4f7f9;
+  --ds-bg-card: #ffffff;
+  --ds-border: #cbd5e1;
+  --ds-border-light: #e2e8f0;
+  --ds-text: #1e293b;
+  --ds-muted: #64748b;
+
+  /* Estados e Contextos */
+  --ds-info-bg: #f0f7fb;
+  --ds-info-border: #bae6fd;
+  --ds-info-text: #0369a1;
+
+  --ds-ok-bg: #f0fdf4;
+  --ds-ok-border: #a7f3d0;
+  --ds-ok-text: #15803d;
+
+  --ds-warn-bg: #fffbeb;
+  --ds-warn-border: #fde68a;
+  --ds-warn-text: #b45309;
+
+  --ds-danger-bg: #fff1f2;
+  --ds-danger-border: #fecdd3;
+  --ds-danger-text: #991b1b;
+
+  /* Geometria Mandatória */
+  --ds-radius: 0px !important;
+}
+
+/* ==========================================================================
+   1. CABEÇALHO INSTITUCIONAL (.ds-header)
+   ========================================================================== */
+.ds-header {
+  background: var(--ds-navy);
+  color: #ffffff;
+  padding: 20px 28px;
+  border-bottom: 3px solid var(--ds-green-action);
+}
+
+.ds-header-container {
+  max-width: 1550px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.ds-header-titles h1 {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.ds-header-titles p {
+  margin: 0;
+  font-size: 13.5px;
+  color: #d8ecf8;
+  line-height: 1.4;
+}
+
+.ds-header-logos-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  padding: 8px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--ds-radius);
+  flex-shrink: 0;
+}
+
+.ds-header-logos-box img {
+  height: 40px;
+  max-width: 125px;
+  object-fit: contain;
+  display: block;
+}
+
+.ds-header-logos-divider {
+  width: 1px;
+  height: 32px;
+  background: #cbd5e1;
+}
+
+/* ==========================================================================
+   2. BOTÕES PADRONIZADOS (.ds-btn-*)
+   ========================================================================== */
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: var(--ds-radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  line-height: 1.2;
+  box-sizing: border-box;
+}
+
+/* 2.1 Botão Primário: Verde Claro com Texto Escuro de Alto Contraste */
+.ds-btn-primary {
+  background: var(--ds-green-action);
+  color: var(--ds-green-text);
+  border: 1px solid var(--ds-green-action-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.ds-btn-primary:hover {
+  background: var(--ds-green-action-hover);
+  border-color: #65a30d;
+  color: #0d1f03;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(132, 204, 22, 0.25);
+}
+
+.ds-btn-primary:active {
+  background: var(--ds-green-action-active);
+  transform: translateY(0);
+}
+
+/* 2.2 Botão Secundário / Outline: Fundo Branco, Borda 1px, Texto Marinho */
+.ds-btn-secondary {
+  background: #ffffff;
+  color: var(--ds-navy);
+  border: 1.5px solid var(--ds-border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.ds-btn-secondary:hover {
+  background: #f8fafc;
+  border-color: var(--ds-navy);
+  color: var(--ds-navy-dark);
+  transform: translateY(-1px);
+}
+
+.ds-btn-secondary:active {
+  background: #f1f5f9;
+  transform: translateY(0);
+}
+
+/* 2.3 Botão de Perigo / Ação Crítica: Fundo Rosa Suave com Borda Avermelhada */
+.ds-btn-danger {
+  background: var(--ds-danger-bg);
+  color: var(--ds-danger-text);
+  border: 1px solid var(--ds-danger-border);
+}
+
+.ds-btn-danger:hover {
+  background: #ffe4e6;
+  border-color: #fda4af;
+  color: #881337;
+  transform: translateY(-1px);
+}
+
+.ds-btn-danger:active {
+  background: #fecdd3;
+  transform: translateY(0);
+}
+
+/* Tamanho Pequeno (Small) */
+.ds-btn-sm {
+  padding: 6px 12px;
+  font-size: 11.5px;
+}
+
+/* ==========================================================================
+   3. CAIXAS INFORMATIVAS & PAINÉIS (.ds-box-*)
+   Regra: Borda perimétrica uniforme de 1px, sem border-left colorido
+   ========================================================================== */
+.ds-box {
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  border-radius: var(--ds-radius);
+  border: 1px solid var(--ds-border-light);
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.ds-box-info {
+  background: var(--ds-info-bg);
+  border: 1px solid var(--ds-info-border);
+  color: var(--ds-info-text);
+}
+
+.ds-box-ok {
+  background: var(--ds-ok-bg);
+  border: 1px solid var(--ds-ok-border);
+  color: var(--ds-ok-text);
+}
+
+.ds-box-warn {
+  background: var(--ds-warn-bg);
+  border: 1px solid var(--ds-warn-border);
+  color: var(--ds-warn-text);
+}
+
+.ds-box-danger {
+  background: var(--ds-danger-bg);
+  border: 1px solid var(--ds-danger-border);
+  color: var(--ds-danger-text);
+}
+
+/* ==========================================================================
+   4. FORMULÁRIOS & CAMPOS COM CANTOS RETOS
+   ========================================================================== */
+.ds-input,
+.ds-select,
+.ds-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--ds-text);
+  background: #ffffff;
+  border: 1.5px solid var(--ds-border);
+  border-radius: var(--ds-radius);
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ds-input:focus,
+.ds-select:focus,
+.ds-textarea:focus {
+  outline: none;
+  border-color: var(--ds-navy);
+  box-shadow: 0 0 0 2px rgba(11, 59, 96, 0.15);
+}
+
+/* ==========================================================================
+   5. BADGES & PÍLULAS DE STATUS (CANTOS RETOS)
+   ========================================================================== */
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-radius: var(--ds-radius);
+  border: 1px solid transparent;
+  line-height: 1;
+}
+
+.ds-badge-ok {
+  background: var(--ds-ok-bg);
+  color: var(--ds-ok-text);
+  border-color: var(--ds-ok-border);
+}
+
+.ds-badge-warn {
+  background: var(--ds-warn-bg);
+  color: var(--ds-warn-text);
+  border-color: var(--ds-warn-border);
+}
+
+.ds-badge-danger {
+  background: var(--ds-danger-bg);
+  color: var(--ds-danger-text);
+  border-color: var(--ds-danger-border);
+}
+
+.ds-badge-info {
+  background: var(--ds-info-bg);
+  color: var(--ds-info-text);
+  border-color: var(--ds-info-border);
+}
+
+/* ==========================================================================
+   6. CARDS & PAINÉIS ESTRUTURAIS
+   ========================================================================== */
+.ds-card {
+  background: #ffffff;
+  border: 1.5px solid var(--ds-border);
+  border-radius: var(--ds-radius);
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   7. ÍCONES SVG (CONTAINER COM CANTOS RETOS)
+   ========================================================================== */
+.ds-icon-box {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ds-radius);
+  flex-shrink: 0;
+}
+
+.ds-icon-box svg {
+  display: block;
+  border-radius: var(--ds-radius);
+}
