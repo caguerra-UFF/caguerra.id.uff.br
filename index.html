@@ -6021,7 +6021,6 @@ function createRotCardElement(rot) {
   let tipoIcon = '🔴';
   let tipoNome = 'Trabalho Não Conforme';
   let normRef = 'Requisito 7.10 (ISO 17025)';
-  let fluxoHint = '➔ Pula Campo 5 · Contenção mandatória (Campo 6)';
   let tipoSvg = TIPO_SVGS.TRABALHO_NAO_CONFORME;
 
   if (rot.tipo === 'TRABALHO_NAO_CONFORME') {
@@ -6029,35 +6028,30 @@ function createRotCardElement(rot) {
     tipoIcon = '🔴';
     tipoNome = 'Trabalho Não Conforme';
     normRef = 'Requisito 7.10 (ISO 17025)';
-    fluxoHint = '➔ Pula Campo 5 · Contenção mandatória (Campo 6)';
     tipoSvg = TIPO_SVGS.TRABALHO_NAO_CONFORME;
   } else if (rot.tipo === 'DESVIO_DE_PROCESSO') {
     tipoClass = 'card-desvio';
     tipoIcon = '🟠';
     tipoNome = 'Desvio de Processo';
     normRef = 'Item 6.3.6 do Procedimento';
-    fluxoHint = '➔ Abre Campo 5 (Ações Imediatas) e Plano SAA';
     tipoSvg = TIPO_SVGS.DESVIO_DE_PROCESSO;
   } else if (rot.tipo === 'NAO_CONFORMIDADE') {
     tipoClass = 'card-nc';
     tipoIcon = '🟣';
     tipoNome = 'Não Conformidade';
     normRef = 'Requisito 8.7 (ISO 17025)';
-    fluxoHint = '➔ Abre Campo 5 (Ações Imediatas) e Plano SAA';
     tipoSvg = TIPO_SVGS.NAO_CONFORMIDADE;
   } else if (rot.tipo === 'OPORTUNIDADE_MELHORIA') {
     tipoClass = 'card-op';
     tipoIcon = '🔵';
     tipoNome = 'Oportunidade Melhoria';
     normRef = 'Item 6.5.3 do Procedimento';
-    fluxoHint = '➔ Abre Campo 5 (Ações Imediatas, se aplicável)';
     tipoSvg = TIPO_SVGS.OPORTUNIDADE_MELHORIA;
   } else {
     tipoClass = 'card-neutral';
     tipoIcon = '⚪';
     tipoNome = rot.tipo || 'Ocorrência';
     normRef = 'Procedimento IT-LM-GE-003';
-    fluxoHint = '';
     tipoSvg = `<div style="width:44px;height:44px;background:#eef4f8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;">📋</div>`;
   }
 
@@ -6115,7 +6109,7 @@ function createRotCardElement(rot) {
             <span>Eficácia:</span> <b>${rot.statusEficacia === 'SIM' ? '✓ Atestada (Eficaz)' : 'Avaliada'}</b>
           </div>
           ${rot.dataEficacia ? `<div class="rot-meta-row" style="font-weight:600;font-size:11.5px;color:#065f46;"><span>Data Encerramento:</span> <b>${formatDateBr(rot.dataEficacia)}</b></div>` : ''}
-        ` : (fluxoHint ? `<div class="rot-meta-row" style="margin-top:4px;padding-top:6px;border-top:1px dashed rgba(0,0,0,0.12);font-weight:700;font-size:11.5px;"><span style="color:inherit;">${fluxoHint}</span></div>` : '')}
+        ` : ''}
       </div>
       <div class="rot-card-actions">
         <button type="button" class="btn-open-rot primary smallbtn" onclick="openRotInWorkspace('${rot.id}', event)" style="flex:1;">Abrir / Editar</button>
