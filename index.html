@@ -2348,9 +2348,6 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
         <button type="button" id="btnOpenDidacticGuideModal" class="btn-action-outline smallbtn" title="Consultar conceitos teóricos e orientações" onclick="openModal('modalDidacticGuide')">
           📘 Orientações
         </button>
-        <button type="button" id="btnCallDecisionTreeInForm" class="btn-action-outline smallbtn" title="Dúvida na classificação? Abrir Árvore de Decisão do Item 6.3.6" onclick="openDecisionTree('UPDATE_ACTIVE')">
-          🌳 Triagem / Fluxograma
-        </button>
         <button type="button" id="btnSaveRotMain" class="btn-ok-save" title="Confirmar e gravar os dados do registro no sistema" onclick="confirmAndSaveRot()">
           ✓ OK · Gravar Dados
         </button>
@@ -5240,7 +5237,8 @@ function setupEventListeners() {
   document.getElementById('btnCloseModalCases').addEventListener('click', () => closeModal('modalTrainingCases'));
   const btnTree = document.getElementById('btnTriggerDecisionTree');
   if (btnTree) btnTree.addEventListener('click', openNewRotTriagemModal);
-  document.getElementById('btnCallDecisionTreeInForm').addEventListener('click', () => openDecisionTree('UPDATE_ACTIVE'));
+  const btnCallTree = document.getElementById('btnCallDecisionTreeInForm');
+  if (btnCallTree) btnCallTree.addEventListener('click', () => openDecisionTree('UPDATE_ACTIVE'));
   document.getElementById('btnCloseModalTree').addEventListener('click', () => closeModal('modalDecisionTree'));
   document.getElementById('btnCancelTree').addEventListener('click', () => closeModal('modalDecisionTree'));
   const btnPrint = document.getElementById('btnPrintOfficial');
