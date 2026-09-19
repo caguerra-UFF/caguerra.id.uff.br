@@ -11,6 +11,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
 
+<link rel="stylesheet" href="assets/css/design-system.css">
+
 <style>
 :root{
   --en-blue: #1b80c4;
@@ -21,6 +23,11 @@
   --en-green-hover: #b5d81b;
   --en-green-dark: #8aa70e;
   --en-green-light: #f3f9d2;
+  /* Design System: Botões de Ação Verde Claro */
+  --btn-green-bg: #d9f99d;
+  --btn-green-hover: #bef264;
+  --btn-green-border: #a3e635;
+  --btn-green-text: #1a3806;
   --en-gray: #7c7b7b;
   --navy: #0b3b60;
   --blue: #1b80c4;
@@ -191,6 +198,22 @@ button.danger{background:transparent;color:var(--danger);border-color:#e8b7bd}
 button.danger:hover{background:var(--danger-bg)}
 button.smallbtn{padding:5px 9px;font-size:12.5px}
 button:disabled{opacity:.5;cursor:not-allowed}
+
+.btn-primary, .btn-green {
+  background: var(--btn-green-bg) !important;
+  border: 1px solid var(--btn-green-border) !important;
+  color: var(--btn-green-text) !important;
+  font-weight: 750 !important;
+  border-radius: 0px !important;
+  transition: all .18s ease;
+  cursor: pointer;
+}
+.btn-primary:hover, .btn-green:hover {
+  background: var(--btn-green-hover) !important;
+  border-color: #84cc16 !important;
+  box-shadow: 0 2px 8px rgba(163,230,53,0.35) !important;
+  transform: translateY(-1px);
+}
 
 .btn-action-outline{
   background: #ffffff;
@@ -1928,7 +1951,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
     </div>
 
     <!-- Botão destacado para voltar à Tela Inicial (visível quando ROT aberto) -->
-    <button type="button" id="btnGoToHub" class="btn-nav" style="display:none;background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;box-shadow:0 2px 8px rgba(165,199,17,0.35);" title="Voltar ao catálogo geral de ocorrências (Tela Inicial)">
+    <button type="button" id="btnGoToHub" class="btn-nav btn-primary" style="display:none;background:var(--btn-green-bg);border:1px solid var(--btn-green-border);color:var(--btn-green-text);font-weight:750;box-shadow:0 2px 8px rgba(163,230,53,0.35);border-radius:0px;" title="Voltar ao catálogo geral de ocorrências (Tela Inicial)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
       <span>Início</span>
     </button>
@@ -1955,7 +1978,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
     <!-- Botões exibidos apenas no Hub (tela inicial) - Ocultados quando ROT está aberto -->
     <div id="topbarHubActions" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-      <button type="button" id="btnQuickNewRot" class="btn-nav" style="background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;box-shadow:0 2px 6px rgba(165,199,17,0.3);" title="Abrir novo registro de ocorrência (ROT)">
+      <button type="button" id="btnQuickNewRot" class="btn-nav btn-primary" style="background:var(--btn-green-bg);border:1px solid var(--btn-green-border);color:var(--btn-green-text);font-weight:750;box-shadow:0 2px 6px rgba(163,230,53,0.3);border-radius:0px;" title="Abrir novo registro de ocorrência (ROT)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
         <span>Novo ROT</span>
       </button>
@@ -3548,7 +3571,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
         </div>
       </div>
       <div style="display:flex;justify-content:flex-end;">
-        <button type="button" class="btn-primary" onclick="handleAddNewUserFromModal()" style="background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:750;padding:8px 18px;box-shadow:0 2px 6px rgba(165,199,17,0.3);">
+        <button type="button" class="btn-primary" onclick="handleAddNewUserFromModal()" style="background:var(--btn-green-bg);border:1px solid var(--btn-green-border);color:var(--btn-green-text);font-weight:750;padding:8px 18px;border-radius:0px;box-shadow:0 2px 6px rgba(163,230,53,0.25);">
           + Salvar e Cadastrar Usuário
         </button>
       </div>
@@ -4307,7 +4330,7 @@ function renderQuickLoginUsersList() {
           ${isSelf ? `
             <span class="badge ok" style="font-size:11px;font-weight:700;padding:5px 10px;">✓ Ativo Agora</span>
           ` : `
-            <button type="button" class="smallbtn ${isSuper ? 'btn-primary' : 'btn-action-outline'}" onclick="selectActiveUser('${escapeHtml(u.email)}')" style="${isSuper ? 'background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:700;' : 'font-weight:600;'}font-size:11.5px;padding:5px 12px;">
+            <button type="button" class="smallbtn ${isSuper ? 'btn-primary' : 'btn-action-outline'}" onclick="selectActiveUser('${escapeHtml(u.email)}')" style="${isSuper ? 'background:var(--btn-green-bg);border:1px solid var(--btn-green-border);color:var(--btn-green-text);font-weight:700;' : 'font-weight:600;'}font-size:11.5px;padding:5px 12px;border-radius:0px;">
               Entrar
             </button>
           `}
@@ -4724,7 +4747,7 @@ function renderUsersTable() {
       <td style="text-align:center;">
         <button type="button" class="smallbtn ${isSuper ? 'btn-action-outline' : 'btn-primary'}" 
                 onclick="toggleUserRole('${escapeHtml(u.email)}')" 
-                style="${isSuper ? 'font-size:11px;' : 'font-size:11px;background:var(--en-green);border-color:var(--en-green-dark);color:#082903;font-weight:700;'}">
+                style="${isSuper ? 'font-size:11px;border-radius:0px;' : 'font-size:11px;background:var(--btn-green-bg);border:1px solid var(--btn-green-border);color:var(--btn-green-text);font-weight:700;border-radius:0px;'}">
           ${isSuper ? 'Tornar Analista' : 'Promover a Supervisor'}
         </button>
       </td>
