@@ -816,7 +816,7 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;vertical-align:mid
 .save-status-pill.unsaved{background:#fef4e5;color:#8a570c;border:1px solid #f6dcb3}
 .save-status-pill.saved{background:#e8f5ee;color:#126451;border:1px solid #b3ddc8}
 .save-status-pill.new-draft{background:#eaf2f8;color:var(--blue);border:1px solid #c0d8ea}
-.btn-ok-save{background:#126451!important;color:white!important;border-color:#126451!important;font-weight:700!important;font-size:13.5px!important;padding:8px 16px!important;display:inline-flex!important;align-items:center!important;gap:7px!important;box-shadow:0 2px 6px rgba(18,100,81,0.25);cursor:pointer;border-radius:0px !important;transition:all .15s ease}
+.btn-ok-save{background:#126451!important;color:white!important;border-color:#126451!important;font-weight:700!important;font-size:13.5px!important;padding:8px 16px!important;display:inline-flex;align-items:center!important;gap:7px!important;box-shadow:0 2px 6px rgba(18,100,81,0.25);cursor:pointer;border-radius:0px !important;transition:all .15s ease}
 .btn-ok-save:hover{background:#0e4e3f!important}
 .btn-ok-save:active{transform:scale(0.98)}
 
@@ -5211,6 +5211,9 @@ function updateSaveBannerStatus(state, customMessage) {
       btnMain.innerHTML = '✓ OK · Gravar Dados';
       btnMain.style.background = '#126451';
     }
+    if (typeof currentWizardStep !== 'undefined' && currentWizardStep === WIZARD_TOTAL_STEPS) {
+      btnMain.style.setProperty('display', 'none', 'important');
+    }
   }
 
   // Atualiza review notice no Step 6
@@ -5221,10 +5224,10 @@ function updateSaveBannerStatus(state, customMessage) {
       reviewNotice.innerHTML = `✓ <b>Registro gravado com sucesso!</b> ${customMessage || ''}`;
     } else if (state === 'new_draft') {
       reviewNotice.className = 'notice info';
-      reviewNotice.innerHTML = `⚠️ <b>Novo registro ainda não gravado.</b> Confira os dados consolidados e clique em <b>✓ Gravar e Concluir ROT</b> abaixo.`;
+      reviewNotice.innerHTML = `⚠️ <b>Novo registro ainda não gravado.</b> Confira os dados consolidados e clique em <b>💾 Gravar Dados e Sair da Edição</b> abaixo.`;
     } else {
       reviewNotice.className = 'notice';
-      reviewNotice.innerHTML = `⚠️ <b>Alterações pendentes.</b> Clique em <b>✓ Gravar e Concluir ROT</b> abaixo para persistir no banco e retornar ao catálogo.`;
+      reviewNotice.innerHTML = `⚠️ <b>Alterações pendentes.</b> Clique em <b>💾 Gravar Dados e Sair da Edição</b> abaixo para persistir no banco e retornar ao catálogo.`;
     }
   }
 }
@@ -5519,10 +5522,17 @@ function goToWizardStep(stepNum) {
     btnNext.innerHTML = stepNum === WIZARD_TOTAL_STEPS - 1 ? 'Revisar & Gravar ➔' : 'Avançar para Próxima Etapa ➔';
   }
 
-  // Na Etapa 6, oculta o botão da barra superior para que haja RIGOROSAMENTE APENAS UM botão na tela
+  // Na Etapa 6, oculta o botão da barra superior para que haja RIGOROSAMENTE APENAS UM botão de gravação na tela
   if (btnMainSave) {
-    btnMainSave.style.display = (stepNum === WIZARD_TOTAL_STEPS) ? 'none' : 'inline-flex';
+    if (stepNum === WIZARD_TOTAL_STEPS) {
+      btnMainSave.style.setProperty('display', 'none', 'important');
+    } else {
+      btnMainSave.style.removeProperty('display');
+      btnMainSave.style.display = 'inline-flex';
+    }
   }
+
+  currentWizardStep = stepNum;
 
   // Na Etapa 5: aplica o guardião de permissões normativas (Supervisor vs. Analista)
   if (stepNum === 5) {
@@ -5534,7 +5544,6 @@ function goToWizardStep(stepNum) {
     renderWizardReviewSummary();
   }
 
-  currentWizardStep = stepNum;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
