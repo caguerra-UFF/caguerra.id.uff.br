@@ -3088,7 +3088,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
           </div>
 
           <!-- Status e Alerta de Gravação -->
-          <div class="notice warn" id="reviewSaveStatusNotice" style="margin:12px 0;">
+          <div class="notice warn" id="reviewSaveStatusNotice" style="margin:12px 0;display:none;">
             <!-- Atualizado dinamicamente -->
           </div>
 
@@ -5204,28 +5204,26 @@ function updateSaveBannerStatus(state, customMessage) {
   }
 
   if (btnMain) {
-    if (state === 'saved') {
-      btnMain.innerHTML = '✓ OK · Dados Gravados';
-      btnMain.style.background = '#126451';
-    } else {
-      btnMain.innerHTML = '✓ OK · Gravar Dados';
-      btnMain.style.background = '#126451';
-    }
+    btnMain.innerHTML = '✓ OK · Gravar Dados';
+    btnMain.style.background = '#126451';
     if (typeof currentWizardStep !== 'undefined' && currentWizardStep === WIZARD_TOTAL_STEPS) {
       btnMain.style.setProperty('display', 'none', 'important');
     }
   }
 
-  // Atualiza review notice no Step 6
+  // Atualiza review notice no Step 6 (exibido apenas se houver pendências para não duplicar o pill de status do topo)
   const reviewNotice = document.getElementById('reviewSaveStatusNotice');
   if (reviewNotice) {
     if (state === 'saved') {
+      reviewNotice.style.display = 'none';
       reviewNotice.className = 'notice ok';
-      reviewNotice.innerHTML = `✓ <b>Registro gravado com sucesso!</b> ${customMessage || ''}`;
+      reviewNotice.innerHTML = '';
     } else if (state === 'new_draft') {
+      reviewNotice.style.display = 'block';
       reviewNotice.className = 'notice info';
       reviewNotice.innerHTML = `⚠️ <b>Novo registro ainda não gravado.</b> Confira os dados consolidados e clique em <b>💾 Gravar Dados e Sair da Edição</b> abaixo.`;
     } else {
+      reviewNotice.style.display = 'block';
       reviewNotice.className = 'notice';
       reviewNotice.innerHTML = `⚠️ <b>Alterações pendentes.</b> Clique em <b>💾 Gravar Dados e Sair da Edição</b> abaixo para persistir no banco e retornar ao catálogo.`;
     }
