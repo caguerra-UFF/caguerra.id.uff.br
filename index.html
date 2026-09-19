@@ -2127,10 +2127,14 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
       <span>Início</span>
     </button>
 
-    <!-- Indicador do ROT aberto na barra superior -->
-    <div class="badge-active-rot" id="topbarActiveBadge" style="display:none;">
-      <span style="color:#c2d8e8;font-size:12px;">Editando:</span>
-      <b id="topbarActiveRotCode" style="color:var(--en-green);font-size:14px;">ROT Nº ---</b>
+    <!-- Bloco com texto institucional e identificador do ROT abaixo -->
+    <div style="display:flex;flex-direction:column;justify-content:center;gap:1px;">
+      <span style="font-size:13.5px;font-weight:700;color:#ffffff;line-height:1.2;">Laboratório de Monitoração Ambiental (LMA)</span>
+      <!-- Indicador do ROT aberto na barra superior (abaixo desse texto quando ocorrer) -->
+      <div class="badge-active-rot" id="topbarActiveBadge" style="display:none;padding:0;background:transparent;border:none;">
+        <span style="color:#c2d8e8;font-size:12px;">Editando:</span>
+        <b id="topbarActiveRotCode" style="color:var(--en-green);font-size:12.5px;">ROT Nº ---</b>
+      </div>
     </div>
   </div>
 
@@ -2148,10 +2152,6 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 
     <!-- Botões exibidos apenas no Hub (tela inicial) - Ocultados quando ROT está aberto -->
     <div id="topbarHubActions" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-      <button type="button" id="btnQuickNewRot" class="btn-nav btn-primary" style="background:var(--btn-green-bg);border:1px solid var(--btn-green-border);color:var(--btn-green-text);font-weight:750;box-shadow:0 2px 6px rgba(163,230,53,0.3);border-radius:0px;" title="Abrir novo registro de ocorrência (ROT)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-        <span>Novo ROT</span>
-      </button>
       <button type="button" id="btnOpenUserManagement" class="btn-nav" onclick="openUserManagementModal()" style="background:#1e3a5f;border-color:#3b82f6;color:#ffffff;font-weight:700;" title="Acessar o Cadastro de Usuários e Perfis de Acesso (Supervisor vs. Analista)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         <span>Usuários</span>
@@ -2176,7 +2176,7 @@ td input,td select{padding:6px 8px;font-size:12.5px;min-width:110px}
 <header class="app-header">
   <div class="app-header-container">
     <div class="header-text-block">
-      <div class="eyebrow">Laboratório de Monitoração Ambiental (LMA) · Central Nuclear Almirante Álvaro Alberto · CNAAA</div>
+      <div class="eyebrow">Laboratório de Monitoração Ambiental (LMA)</div>
       <h1 id="appHeaderTitle">Tratamento de Ocorrências (IT-LM-GE-003)</h1>
       <p id="appHeaderDesc">Cumprimento à <b>Instrução de Trabalho IT-LM-GE-003 Rev. 0</b> e aos requisitos normativos <b>ABNT NBR ISO/IEC 17025:2017 (§ 7.10, § 8.5 e § 8.7)</b>;</p>
       
@@ -5236,7 +5236,8 @@ function setupEventListeners() {
   document.getElementById('btnGoToHub').addEventListener('click', showHubView);
   const btnHubNew = document.getElementById('btnHubNewRot');
   if (btnHubNew) btnHubNew.addEventListener('click', openNewRotTriagemModal);
-  document.getElementById('btnQuickNewRot').addEventListener('click', openNewRotTriagemModal);
+  const btnQuickNew = document.getElementById('btnQuickNewRot');
+  if (btnQuickNew) btnQuickNew.addEventListener('click', openNewRotTriagemModal);
   document.getElementById('btnOpenTrainingCases').addEventListener('click', () => openModal('modalTrainingCases'));
   document.getElementById('btnCloseModalCases').addEventListener('click', () => closeModal('modalTrainingCases'));
   const btnTree = document.getElementById('btnTriggerDecisionTree');
